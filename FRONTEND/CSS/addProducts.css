@@ -1,0 +1,91 @@
+.addProduct-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    margin-top: 30px;
+}
+
+.fg{
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.fg label{
+    display: block;
+    margin-bottom: 5px;
+    font-size: 16px;
+}
+
+.fg input{
+    width: 100%;
+    padding: 12px;
+    border-radius: 34px;
+    border: 1px solid rgb(0, 0, 0);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: rgb(0, 0, 0);
+    font-size: 16px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.fg input:focus{
+    border: 2px solid #65bac9;
+    box-shadow: 0 0 10px #8ef2ed, 0 0 20px #59707a, 0 0 30px #e4e2e2;
+}
+
+.errMsg {
+    color: #ff6b6b;
+    font-size: 14px;
+    margin-top: 5px;
+    min-height: 20px;
+}
+
+#frmMsg {
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: 500;
+}
+
+#frmMsg.success {
+    background-color: rgba(0, 255, 0, 0.2);
+    color: #00ff00;
+}
+
+#frmMsg.error {
+    background-color: rgba(255, 0, 0, 0.2);
+    color: #ff6b6b;
+}
+
+
+#submit-button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    font-size: 18px;
+}
+
+.smol-card {
+    width: 90%;
+    max-width: 475px;
+    margin: 20px auto;
+}
+
+.login-link {
+    margin-top: 19px;
+    color: white;
+    text-align: center;
+}
+
+.login-link a {
+    color:rgb(38, 0, 255);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.login-link a:hover {
+    color:rgb(56, 59, 59);
+    text-decoration: underline;
+}

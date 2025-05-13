@@ -1,0 +1,57 @@
+body{
+    margin-top: 10%;
+}
+
+table td, table th {
+    vertical-align: middle;
+}
+
+form input[type="text"] {
+    max-width: 30%;
+}
+
+.checkcon {
+  position: relative;
+  cursor: pointer;
+}
+
+.checkcon input {
+  position: absolute;
+  opacity: 0;
+}
+
+.checkmark {
+  width: 30px;
+  height: 30px;
+  position: relative;
+  top: 0;
+  left: 0;
+  border: 2px solid #323232;            
+  border-radius: 5px;
+  box-shadow: 4px 4px #323232;          
+  background-color: #ccc;            
+  transition: all 0.3s;
+}
+
+.checkcon input:checked ~ .checkmark {
+  background-color: #2d8cf0;            
+}
+
+.checkmark:after {
+  content: "";
+  width: 7px;
+  height: 15px;
+  position: absolute;
+  top: 2px;
+  left: 8px;
+  display: none;
+  border: solid #fff;                 
+  border-width: 0 2.5px 2.5px 0;
+  transform: rotate(45deg);
+}
+
+.checkcon input:checked ~ .checkmark:after {
+  display: block;
+}
+
+

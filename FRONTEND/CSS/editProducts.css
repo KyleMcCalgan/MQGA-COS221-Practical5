@@ -1,0 +1,27 @@
+body{
+    padding-top: 3%;
+}
+
+.table th,
+.table td {
+    vertical-align: middle;
+}
+
+.form-label {
+    font-weight: 500;
+}
+
+.dropdown-checklist {
+    display: flex;
+    flex-direction: column;
+    max-height: 150px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.dropdown-checklist label {
+    margin-bottom: 5px;
+}
+

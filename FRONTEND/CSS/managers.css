@@ -1,0 +1,26 @@
+.dashboard__title {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.store-card__header h5.store-card__title {
+    font-size: 18px;
+}
+
+.store-card__admins-label {
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.admin-list__item {
+    font-size: 15px;
+    padding: 10px 15px;
+}
+
+.add-admin-form button {
+    font-size: 14px;
+}
+
+body{
+    margin-top: 10%;
+}
