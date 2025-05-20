@@ -14,7 +14,7 @@ if (!function_exists('checkAuth')) {
             $internalDbConnection = true;
         }
 
-        $stmt = $dbConnection->prepare("SELECT user_type FROM users WHERE apikey = ? LIMIT 1");
+        $stmt = $dbConnection->prepare("SELECT user_type FROM USERS WHERE apikey = ? LIMIT 1");
         if (!$stmt) {
             if ($internalDbConnection) $dbConnection->close();
             return false; 
