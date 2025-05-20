@@ -59,12 +59,12 @@ document.addEventListener('DOMContentLoaded', function(){
         link.href = `view.php?id=${encodeURIComponent(product.id || '')}`;
 
         const img = document.createElement('img');
-        img.src = product.thumbnail || product.smallThumbnail || 'https://placehold.co/200x300/EFEFEF/AAAAAA?text=No+Image';
+        img.src = product.thumbnail || product.smallThumbnail || '../Images/notfound.png';
         img.alt = product.title || 'Book image';
         img.className = 'card-image';
         img.onerror = function(){
             this.onerror = null;
-            this.src = 'https://placehold.co/200x300/EFEFEF/AAAAAA?text=Image+Error';
+            this.src = '../Images/notfound.png';
             this.alt = 'Image failed to load';
         };
 
@@ -131,8 +131,11 @@ document.addEventListener('DOMContentLoaded', function(){
         }
         showUserMessage(featuredBooksContainer, 'Loading featured books...');
         try{
-            const products = await fetchApiData({ type: "GetFeaturedProducts", api_key: apiKey });
-            displayProducts(featuredBooksContainer, products, false);
+            const productsFromServer = await fetchApiData({ type: "GetFeaturedProducts", api_key: apiKey });
+
+            const clientShuffledFeaturedProducts = [...productsFromServer].sort(() => 0.5 - Math.random());
+
+            displayProducts(featuredBooksContainer, clientShuffledFeaturedProducts, false);
         } catch (error){
             showUserMessage(featuredBooksContainer, `Error loading featured books: ${error.message}`, true);
         }

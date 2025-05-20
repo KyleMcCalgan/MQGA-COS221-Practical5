@@ -78,12 +78,12 @@ document.addEventListener('DOMContentLoaded', function(){
             card.className = 'card';
 
             const img = document.createElement('img');
-            img.src = product.thumbnail || product.smallThumbnail || '../Images/default_book.png'; 
+            img.src = product.thumbnail || product.smallThumbnail || '../Images/notfound.png'; 
             img.alt = product.title || 'Book Cover';
             img.className = 'card-image';
             img.onerror = function() {
                 this.onerror = null;
-                this.src = '../Images/harry1.jpg';
+                this.src = '../Images/notfound.jpg';
                 this.alt = 'Image failed to load';
             };
 
