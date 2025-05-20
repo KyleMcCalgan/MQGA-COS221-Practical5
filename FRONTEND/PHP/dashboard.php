@@ -191,5 +191,5 @@
 
     </div>
 </br></br>
-
+<script src="../JS/dashboard.js"></script>
 <?php include "footer.php"?>
