@@ -106,6 +106,19 @@ switch ($actionType) {
         }
         break;
 
+        case 'AddInfoForStore': 
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for AddInfoForStore. Use POST.', 405);
+        }
+        
+        if (file_exists(__DIR__ . '/../src/handlers/AddInfoForStore_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/AddInfoForStore_handler.php';
+            handleAddInfoForStore($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'AddInfoForStore handler not found.', 500);
+        }
+        break;
+
     case null:
         apiResponse(true, ['info' => 'API is operational. Please specify a type.'], null);
         break;
