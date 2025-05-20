@@ -17,7 +17,7 @@
   height: 80px;
   min-width: 50%;
   background-size: 200% 200%;
-  animation: gradientAnimation 10s infinite alternate ease-in-out;
+  animation: gradientAnimation 5s infinite alternate ease-in-out;
 }
 
 @keyframes gradientAnimation{
@@ -26,7 +26,7 @@
   100% { background-position: 0% 50%; }
 }
 
-.ribbon .logo {
+.ribbon .logo{
   display: flex;
   align-items: center;
   justify-content: center;
@@ -34,7 +34,7 @@
   cursor: pointer;
 }
 
-.ribbon .logo img {
+.ribbon .logo img { 
   max-height: 80%;
   height: auto;
   width: auto;
@@ -83,11 +83,6 @@ button::before {
   transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
 }
 
-.card h2 {
-  color: black;
-  font-size: 22px;
-}
-
 button:hover::before {
   transform: scale(3);
 }
@@ -95,7 +90,7 @@ button:hover::before {
 button:hover {
   color: #e0e0e0;
   transform: scale(1.1);
-  box-shadow: 0 0px 70px rgba(100, 100, 100,0.4);
+  box-shadow: 0 0px 20px rgba(100, 100, 100, 0.4);
 }
 
 button:active {
@@ -109,12 +104,16 @@ button:active {
 .content{
   font-family: "Inter", sans-serif;
   padding-top: 80px;
-  font-size: 30px;
-  color: black;
-  justify-content: center;
-  z-index: -1;
   text-align: center;
-  flex : 1;
+  font-size: 40px;
+  justify-content: center;
+  color: black;
+  z-index: -1;
+  padding-bottom: 40px;
+}
+
+.content p{
+  font-size: 24px;
 }
 
 body{
@@ -124,7 +123,7 @@ body{
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  background-color: rgb(221, 221, 221);
+  background: linear-gradient(45deg, rgb(200, 200, 200), rgb(230, 230, 230), rgb(250, 240, 240));
   background-size: 200% 200%;
   animation: gradientAnimation 10s infinite alternate ease-in-out;
 }
@@ -134,65 +133,54 @@ a{
   text-decoration: none;
 }
 
-.card{
-  width: 100%;
-  min-width: 350px;
-  max-width: 350px;
-  border-radius: 20px;
-  background: #f0f0f0;
+.card {
+  color: black;
+  width: 95%;
+  margin: 20px auto;
+  border-radius: 10px;
   box-shadow: 15px 15px 30px rgb(200, 200, 200), -15px -15px 30px rgb(180, 180, 180);
-  padding: 20px;
   text-align: center;
-  transition: transform 0.3s ease-in-out;
-  height: auto ;
-  background-color: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-  overflow: visible;
-  color: black;
-}
-
-.range{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 50px;
-  align-items: stretch;
-}
-
-.card:hover{
-  cursor: pointer;
-  transform: scale(1.03);
-}
-
-.card img {
-  border-radius: 15px;
-  width: 100%;
   height: auto;
-  max-height: 600px;
-  object-fit: contain;
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.7);
+  position: relative;
+  min-height: 100px;
 }
 
-.card-content{
-  color: black;
-  margin-top: 10px;
+.item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  margin: 0;
+  border-bottom: 1px solid #eee;
 }
 
-.card-content p {
-  white-space: normal;
-  word-wrap: break-word;
-  word-break: break-word;
-  overflow: visible;
+.item p {
+  flex: 1;
+  font-size: 16px;
+  padding-right: 10px;
+  text-align: left;
+  margin: 0; 
 }
 
-.card p{
-  font-size: 18px;
+.item p strong { 
+    font-weight: bold;
+}
+
+hr{ 
+  display: none;
 }
 
 .current-tab-btn{
   background-color: #333333;
   color: white;
   transform: scale(1.1);
-  box-shadow: 0 0px 20px rgba(100, 100, 100,0.4);
+  box-shadow: 0 0px 20px rgba(100, 100, 100, 0.4);
 }
 
 .footer-content {
@@ -220,33 +208,4 @@ a{
 
 .footer-button:hover {
   background-color: #e0e0e0;
-}
-
-.image-wrapper-for-badge {
-  position: relative;
-  display: block;
-  line-height: 0;
-}
-
-.image-wrapper-for-badge .card-image {
-  display: block;
-}
-
-.image-number-badge {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  width: 35px;
-  height: 35px;
-  background-color: white;
-  color: black;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 15px;
-  font-weight: bold;
-  border: 1.5px solid black;
-  z-index: 1;
-  box-shadow: 0px 1px 3px rgba(0,0,0,0.3);
 }
