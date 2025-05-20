@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../utils/auth_utils.php';
 if (!function_exists('handleGetAllProducts')) {
     function handleGetAllProducts($data, $db) {
         $apiKey = $data['api_key'] ?? null;

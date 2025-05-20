@@ -70,7 +70,7 @@ switch ($actionType) {
         }
         break;
 
-    case 'getAllProducts':
+    case 'GetAllProducts':
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for getAllProducts. Use POST.', 405);
         }
@@ -81,6 +81,19 @@ switch ($actionType) {
             apiResponse(false, null, 'GetAllProducts handler not found.', 500);
         }
         break;
+
+    case 'GetHighestRatedProducts':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for GetHighestRatedProducts. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/gethighestratedproducts_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/gethighestratedproducts_handler.php';
+            handleGetHighestRatedProducts($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'GetHighestRatedProducts handler not found.', 500);
+        }
+        break;
+
 
 
     case null:
