@@ -142,6 +142,18 @@ switch ($actionType) {
         }
         break;
 
+    case 'DeleteStore':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for DeleteStore. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/deletestore_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/deletestore_handler.php';
+            handleDeleteStore($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'DeleteStore handler not found.', 500);
+        }
+        break;
+
     case null:
         apiResponse(true, ['info' => 'API is operational. Please specify a type.'], null);
         break;
