@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
         const nameRegex = /^[a-zA-Z]{1,60}$/;
 
-        document.querySelectorAll('.errMsg').forEach(el => el.textContent = '');
+        document.querySelectorAll('.errMsg').forEach(el => el.textContent= '');
         document.getElementById('frmMsg').textContent = '';
 
         let isValid = true;
@@ -35,12 +35,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 'Password must be 8+ characters and include uppercase, number, and special character.';
             isValid = false;
         }
-        if (!isValid) {
-            return;
-        }
-
-        console.log('shap');
-
+        if (!isValid) return;
+        
         const requestPayload = {
             type: 'Register',
             name, 
@@ -70,16 +66,13 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             const result = await response.json();
-            if (result.status === 'success' && result.data) {
+            if (result.status=== 'success' && result.data) {
                 sessionStorage.setItem('api_key', result.data.api_key)
                 window.location.href = 'launch.php';
-            } else {
-                document.getElementById('frmMsg').textContent = result.message;
-                // console.error('API Error:', result);
-            }
+            } else document.getElementById('frmMsg').textContent = result.message;
+            
         } catch (error) {
             document.getElementById('frmMsg').textContent = `Failed to register. ${error.message}`;
-            // console.error('Error during registration:', error);
         }
     });
 });
