@@ -62,5 +62,6 @@
         </form>
     </div>
 
-    <?php include "footer.php"; ?>
+    <script src="../JS/register.js"></script>
 </body>
+<?php include "footer.php"; ?>

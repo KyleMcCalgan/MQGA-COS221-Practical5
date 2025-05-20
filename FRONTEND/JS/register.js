@@ -1,71 +1,85 @@
-document.getElementById('signup-form').addEventListener('submit', function (e) {
-    e.preventDefault(); 
+document.addEventListener('DOMContentLoaded', function () {
+    const signupForm = document.querySelector('.signup-form');
+    const apiUrl = '../../BACKEND/public/index.php';
 
-    const name = document.getElementById('name').value.trim();
-    const surname = document.getElementById('surname').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value;
-    const accountType = document.getElementById('type').value;
+    signupForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{9,20}$/;
-    const nameRegex = /^[a-zA-Z]{1,60}$/;
+        const name = document.getElementById('name').value.trim();
+        const surname = document.getElementById('surname').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
 
-    if (name === '' || name.length > 60) {
-        alert('First name must be filled in and under 60 characters.');
-        return;
-    }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+        const nameRegex = /^[a-zA-Z]{1,60}$/;
 
-    if (surname === '' || surname.length > 60) {
-        alert('Last name must be filled in and under 60 characters.');
-        return;
-    }
+        document.querySelectorAll('.errMsg').forEach(el => el.textContent = '');
+        document.getElementById('frmMsg').textContent = '';
 
-    if (!emailRegex.test(email) || email.length > 100) {
-        alert('Enter a valid email address (max 100 characters).');
-        return;
-    }
-
-    if (!passwordRegex.test(password)) {
-        alert('Password must be 9-20 characters long, and include:\n- Uppercase\n- Lowercase\n- Digit\n- Symbol');
-        return;
-    }
-
-    console.log("Form validated successfully!");
-
-    var formData = {
-        type: "Register",
-        name: name,
-        surname: surname,
-        email: email,
-        password: password,
-        user_type: accountType 
-    };
-
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "../../api.php", true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4) {
-            try {
-                console.log("Raw response:", xhr.responseText);
-                var response = JSON.parse(xhr.responseText);
-                console.log(response.data);
-        
-                if (xhr.status === 200 && response.status === "success") {
-                    alert("Registration successful! Your API key is " + response.data.apikey);
-                    window.location.href = 'login.php';
-                } else {
-                    alert("Error: " + response.data);
-                }
-            } catch (err) {
-                console.error("Error parsing the server response:", err);
-                console.error("Raw server response:", xhr.responseText);
-                alert("Unexpected error occurred. Please try again.");
-            }
+        let isValid = true;
+        if (!nameRegex.test(name)) {
+            document.getElementById('name-error').textContent = '1-60 characters, no numbers or special characters';
+            isValid = false;
         }
-    };
+        if (!nameRegex.test(surname)) {
+            document.getElementById('surname-error').textContent = '1-60 characters, no numbers or special characters';
+            isValid = false;
+        }
+        if (!emailRegex.test(email) || email.length > 100) {
+            document.getElementById('email-error').textContent = 'Enter a valid email address(max 100 characters)';
+            isValid = false;
+        }
+        if (!passwordRegex.test(password)) {
+            document.getElementById('password-error').textContent =
+                'Password must be 8+ characters and include uppercase, number, and special character.';
+            isValid = false;
+        }
+        if (!isValid) {
+            return;
+        }
 
-    xhr.send(JSON.stringify(formData));
+        console.log('shap');
+
+        const requestPayload = {
+            type: 'Register',
+            name, 
+            surname, 
+            email, 
+            password
+        };
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestPayload)
+            });
+
+            if (!response.ok) {
+                let errorData;
+                try {
+                    errorData = await response.json();
+                } catch (e) {
+                    throw new Error(`HTTP error ${response.status}`);
+                }
+                const errorMessage = errorData && errorData.message ? errorData.message : `HTTP error ${response.status}`;
+                throw new Error(errorMessage);
+            }
+
+            const result = await response.json();
+            if (result.status === 'success' && result.data) {
+                sessionStorage.setItem('api_key', result.data.api_key)
+                window.location.href = 'launch.php';
+            } else {
+                document.getElementById('frmMsg').textContent = result.message;
+                // console.error('API Error:', result);
+            }
+        } catch (error) {
+            document.getElementById('frmMsg').textContent = `Failed to register. ${error.message}`;
+            // console.error('Error during registration:', error);
+        }
+    });
 });
