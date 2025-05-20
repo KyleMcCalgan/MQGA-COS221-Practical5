@@ -3,8 +3,19 @@ document.addEventListener('DOMContentLoaded', function(){
     const apiKey = 'apikey1223432432432';
 
     const productContainers = document.querySelectorAll('.range');
-    const featuredBooksContainer = productContainers[0];
-    const highestRatedBooksContainer = productContainers[1];
+    const featuredBooksContainer = productContainers.length > 0 ? productContainers[0] : null;
+    const highestRatedBooksContainer = productContainers.length > 1 ? productContainers[1] : null;
+
+    function showUserMessage(container, message, isError = false){
+        if (!container) return;
+        container.innerHTML = '';
+        const p = document.createElement('p');
+        p.textContent = message;
+        if (isError){
+            p.style.color = 'red'; 
+        }
+        container.appendChild(p);
+    }
 
     async function fetchApiData(payload){
         try{
@@ -15,24 +26,27 @@ document.addEventListener('DOMContentLoaded', function(){
                 },
                 body: JSON.stringify(payload)
             });
+
             if (!response.ok){
                 let errorData;
                 try{
                     errorData = await response.json();
-                }catch (e){
+                } catch (e){
                 }
-                const errorMessage = errorData && errorData.message ? errorData.message : `HTTP error ${response.status}`;
-                throw new Error(errorMessage);
+                const DerrorMessage = errorData && errorData.message ? errorData.message : `An HTTP error ${response.status} occurred.`;
+                throw new Error(DerrorMessage);
             }
+
             const result = await response.json();
+
             if (result.status === "success" && result.data){
                 return result.data;
-            }else{
-                const errorMessage = result.message || "Could not retrieve products.";
-                throw new Error(errorMessage);
+            } else{
+                const DerrorMessage = result.message || "Could not retrieve products due to an unknown API response.";
+                throw new Error(DerrorMessage);
             }
-        }catch (error){
-            console.error(`Error fetching ${payload.type}:`, error);
+        } catch (error){
+            console.error(`Error fetching ${payload.type}:`, error.message);
             throw error;
         }
     }
@@ -42,18 +56,19 @@ document.addEventListener('DOMContentLoaded', function(){
         card.className = 'card';
 
         const link = document.createElement('a');
-        link.href = `view.php?id=${product.id}`;
+        link.href = `view.php?id=${encodeURIComponent(product.id || '')}`;
 
         const img = document.createElement('img');
         img.src = product.thumbnail || product.smallThumbnail || 'https://placehold.co/200x300/EFEFEF/AAAAAA?text=No+Image';
         img.alt = product.title || 'Book image';
         img.className = 'card-image';
         img.onerror = function(){
-            this.onerror=null;
-            this.src='https://placehold.co/200x300/EFEFEF/AAAAAA?text=Image+Error';
+            this.onerror = null;
+            this.src = 'https://placehold.co/200x300/EFEFEF/AAAAAA?text=Image+Error';
+            this.alt = 'Image failed to load';
         };
 
-        if (includeBadge){
+        if (includeBadge && typeof index === 'number'){
             const imageWrapper = document.createElement('div');
             imageWrapper.className = 'image-wrapper-for-badge';
             const badge = document.createElement('div');
@@ -62,44 +77,47 @@ document.addEventListener('DOMContentLoaded', function(){
             imageWrapper.appendChild(img);
             imageWrapper.appendChild(badge);
             link.appendChild(imageWrapper);
-        }else{
+        } else{
             link.appendChild(img);
         }
 
-        const title = document.createElement('h2');
-        title.textContent = product.title || 'Untitled Book';
-        link.appendChild(title);
+        const titleElement = document.createElement('h2');
+        titleElement.textContent = product.title || 'Untitled Book';
+        link.appendChild(titleElement);
         card.appendChild(link);
 
         const cardContent = document.createElement('div');
         cardContent.className = 'card-content';
 
-        const author = document.createElement('p');
-        author.textContent = product.author || 'Author N/A';
-        cardContent.appendChild(author);
+        const authorElement = document.createElement('p');
+        authorElement.textContent = product.author || 'Author N/A';
+        cardContent.appendChild(authorElement);
 
-        const rating = document.createElement('p');
+        const ratingElement = document.createElement('p');
         if (product.book_rating){
             const numericRating = parseFloat(product.book_rating);
             if (!isNaN(numericRating)){
-                rating.textContent = `${numericRating.toFixed(1)}⭐`;
-            }else{
-                rating.textContent = 'Rating N/A ⭐';
+                ratingElement.textContent = `${numericRating.toFixed(1)} ⭐`;
+            } else{
+                ratingElement.textContent = 'Rating N/A ⭐';
             }
-        }else{
-            rating.textContent = 'Not Rated ⭐';
+        } else{
+            ratingElement.textContent = 'Not Rated ⭐';
         }
-        cardContent.appendChild(rating);
+        cardContent.appendChild(ratingElement);
         card.appendChild(cardContent);
         return card;
     }
 
     function displayProducts(container, products, includeBadge = false){
-        container.innerHTML = '';
+        if (!container) return;
+        container.innerHTML = ''; 
+
         if (!products || products.length === 0){
-            container.innerHTML = '<p>No books found.</p>';
+            showUserMessage(container, 'No books found.');
             return;
         }
+
         products.forEach((product, index) =>{
             const card = createProductCard(product, index, includeBadge);
             container.appendChild(card);
@@ -107,24 +125,30 @@ document.addEventListener('DOMContentLoaded', function(){
     }
 
     async function loadFeaturedBooks(){
-        if (!featuredBooksContainer) return;
-        featuredBooksContainer.innerHTML = '<p>Loading featured books...</p>';
+        if (!featuredBooksContainer){
+            console.warn('Featured books container not found.');
+            return;
+        }
+        showUserMessage(featuredBooksContainer, 'Loading featured books...');
         try{
             const products = await fetchApiData({ type: "GetFeaturedProducts", api_key: apiKey });
             displayProducts(featuredBooksContainer, products, false);
-        }catch (error){
-            featuredBooksContainer.innerHTML = `<p>Error loading featured books: ${error.message}</p>`;
+        } catch (error){
+            showUserMessage(featuredBooksContainer, `Error loading featured books: ${error.message}`, true);
         }
     }
 
     async function loadHighestRatedBooks(){
-        if (!highestRatedBooksContainer) return;
-        highestRatedBooksContainer.innerHTML = '<p>Loading highest rated books...</p>';
+        if (!highestRatedBooksContainer){
+            console.warn('Highest rated books container not found.');
+            return;
+        }
+        showUserMessage(highestRatedBooksContainer, 'Loading highest rated books...');
         try{
             const products = await fetchApiData({ type: "GetHighestRatedProducts", api_key: apiKey });
             displayProducts(highestRatedBooksContainer, products, true);
-        }catch (error){
-            highestRatedBooksContainer.innerHTML = `<p>Error loading highest rated books: ${error.message}</p>`;
+        } catch (error){
+            showUserMessage(highestRatedBooksContainer, `Error loading highest rated books: ${error.message}`, true);
         }
     }
 
