@@ -1,8 +1,8 @@
 <?php
 require_once __DIR__ . '/../utils/auth_utils.php';
 
-if (!function_exists('handleGetHighestRatedProducts')) {
-    function handleGetHighestRatedProducts($data, $db) {
+if (!function_exists('handleGetFeaturedProducts')) {
+    function handleGetFeaturedProducts($data, $db) {
         $apiKey = $data['api_key'] ?? null;
 
         if (empty($apiKey)) {
@@ -15,9 +15,12 @@ if (!function_exists('handleGetHighestRatedProducts')) {
 
         $query = "SELECT P.id, P.title, P.description, P.isbn13, P.publishedDate, P.publisher, P.author, P.pageCount, P.maturityRating, P.language, P.smallThumbnail, P.thumbnail, P.accessibleIn, P.ratingsCount, AVG(R.rating) as book_rating 
                   FROM PRODUCTS P 
-                  JOIN RATINGS R ON P.id = R.book_id 
+                  JOIN BOOK_CATS BC ON P.id = BC.book_id 
+                  JOIN CATEGORIES C ON BC.category_id = C.category_id 
+                  LEFT JOIN RATINGS R ON P.id = R.book_id 
+                  WHERE C.genre = 'Action' 
                   GROUP BY P.id 
-                  ORDER BY book_rating DESC 
+                  ORDER BY RAND() 
                   LIMIT 5";
 
         $stmt = $db->prepare($query);
@@ -33,7 +36,7 @@ if (!function_exists('handleGetHighestRatedProducts')) {
         $products = [];
 
         while ($row = $result->fetch_assoc()) {
-            $row['book_rating'] = number_format($row['book_rating'], 2);
+            $row['book_rating'] = $row['book_rating'] ? number_format($row['book_rating'], 2) : null;
             $products[] = $row;
         }
 
