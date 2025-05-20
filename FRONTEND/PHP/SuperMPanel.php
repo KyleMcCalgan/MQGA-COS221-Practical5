@@ -21,6 +21,8 @@
             <button type="button" class="btn btn-outline-dark d-block mx-auto" style="width: 50%;" onclick="location.href='managers.php'">Stores</button>
             <button type="button" class="btn btn-outline-dark d-block mx-auto" style="width: 50%;" onclick="location.href='viewUsers.php'">Users</button>
             <button type="button" class="btn btn-outline-dark d-block mx-auto" style="width: 50%;" onclick="location.href='genres.php'">Genres</button>
+            <button type="button" class="btn btn-outline-dark d-block mx-auto" style="width: 50%;" onclick="location.href='addProducts.php'">Add book</button>
+             <button type="button" class="btn btn-outline-dark d-block mx-auto" style="width: 50%;" onclick="location.href='editProducts.php'">Edit books</button>
 
         </div>
 

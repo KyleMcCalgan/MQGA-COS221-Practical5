@@ -11,6 +11,8 @@
   align-items: center;
   z-index: 9999;
 }
+
+
 .error {
   color: red;
   text-align: center;
@@ -118,14 +120,16 @@ button:active {
   font-family: "Inter", sans-serif;
   padding-top: 80px;
   text-align: center;
-  font-size: 30px;
+
+  font-size: 40px;
   justify-content: center;
   color: black;
   z-index: -1;
 }
 
 .content p{
-  font-size: 18px;
+
+  font-size: 24px;
 }
 
 .inter-font{
@@ -205,21 +209,19 @@ body{
   margin-bottom: 10px; 
 }
 
-.smol-card{
+
+.smol-card {
   color: black;
-  width: 50%;
-  border-radius: 10px;
-  box-shadow: 15px 15px 30px rgb(200, 200, 200), -15px -15px 30px rgb(180, 180, 180);
-  text-align: center;
-  height: auto;
-  backdrop-filter: blur(10px);
+  width: calc(50% - 10px); /* Each card takes up half the space minus half the gap */
+  border-radius: 8px;
+  box-shadow: 8px 8px 15px rgba(200, 200, 200, 0.6), -8px -8px 15px rgba(190, 190, 190, 0.6); /* Softer shadow for nested cards */
+  text-align: left; /* Align text/labels to the left */
+  backdrop-filter: blur(5px); /* Optional: slightly less blur */
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-self: center;
-  gap: 0px;
-  padding: 10px;
-  background-color: rgba(255, 255, 255, 0.7); 
+  gap: 18px; /* Space between form groups (fg) inside a smol-card */
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 .smol-card h1{
@@ -648,9 +650,10 @@ hr {
 }
 
 .content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+
+  /* padding-top: 80px; -- Already present */
+  text-align: center; /* Ensures the h1 and p are centered */
+  padding-bottom: 40px; /* Add some space at the bottom */
 }
 
 .card {
@@ -843,4 +846,159 @@ hr {
 .item > .price {
   grid-column-start: 7;
   text-align: right;
+
+}
+
+.main-form-card {
+  width: 90%;
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 25px;
+  background-color: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  box-shadow: 15px 15px 30px rgb(200, 200, 200), -15px -15px 30px rgb(180, 180, 180);
+}
+
+#addProduct-form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px; 
+}
+
+.form-columns {
+  display: flex;
+  justify-content: space-between; 
+  gap: 20px; 
+  width: 100%;
+}
+
+.fg {
+  display: flex;
+  flex-direction: column; 
+  gap: 6px;
+}
+
+.fg label {
+  font-weight: 500;
+  font-size: 0.7em; 
+  color: #333;
+}
+
+.fg input[type="text"],
+.fg input[type="date"],
+.fg input[type="number"],
+.fg textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 0.7em;
+}
+
+.fg input[type="text"]:focus,
+.fg input[type="date"]:focus,
+.fg input[type="number"]:focus,
+.fg textarea:focus {
+  border-color: #65bac9;
+  box-shadow: 0 0 0 2px rgba(101, 186, 201, 0.3);
+  outline: none;
+}
+
+.fg textarea {
+  resize: vertical;
+}
+
+.upload-btn { /* This is the button that looks like an input field or a styled button */
+  cursor: pointer;
+  position: relative;
+  padding: 10px 15px;
+  font-size: 0.7em;
+  color: rgb(0, 0, 0); 
+  border: 1px solid rgb(0, 0, 0); 
+  border-radius: 5px;
+  background-color: transparent;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+  overflow: hidden;
+  text-align: center;
+  width: auto; /* Or set a specific width if desired */
+  align-self: flex-start;
+}
+
+.upload-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 75px;
+  height: 75px;
+  border-radius: inherit;
+  transform: scale(0);
+  z-index: -1;
+  background-color: rgb(0, 0, 0); 
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+.upload-btn:hover::before {
+  transform: scale(3);
+}
+
+.upload-btn:hover {
+  color: #e0e0e0;
+  transform: scale(1.05);
+  box-shadow: 0 0px 15px rgba(100, 100, 100, 0.3);
+}
+
+.upload-btn:active {
+  transform: scale(1);
+}
+
+
+.add-book-button-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 10px;
+}
+
+#submit-button {
+  padding: 12px 35px;
+  font-size: 0.7em;
+}
+
+#frmMsg {
+  text-align: center;
+  width: 100%;
+  margin-top: 20px;
+  font-size: 0.7em;
+}
+
+@media (max-width: 768px) {
+  .main-form-card {
+    width: 95%;
+    padding: 20px;
+  }
+
+  .form-columns {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+
+
+  .fg label,
+  .fg input[type="text"],
+  .fg input[type="date"],
+  .fg input[type="number"],
+  .fg textarea,
+  .upload-btn {
+    font-size: 0.85em;
+  }
+
+  #submit-button {
+    font-size: 1em;
+    padding: 10px 25px;
+  }
 }
