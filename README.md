@@ -4,7 +4,7 @@ This repository is for a web application designed to allow users to compare book
 
 ## Project Structure
 
-The project is organized into two main folders: `FRONTEND` and `BACKEND`.
+The project is organised into two main folders: `FRONTEND` and `BACKEND`.
 
 ### `FRONTEND`
 
@@ -48,9 +48,9 @@ This folder houses the server-side logic and API for the application.
         * Product management: `add_product_handler.php`, `delete_product_handler.php`, `getallproducts_handler.php`, `getproduct_handler.php`, `updateProductAdmin_handler.php`, `getfeaturedproducts_handler.php`, `gethighestratedproducts_handler.php`.
         * Store and listing management: `AddInfoForStore_handler.php`, `delete_store_products_handler.php`, `get_store_products_handler.php`, `getalllistedproducts_handler.php`.
     * **`utils/`**:
-        * `auth_utils.php`: Provides functions for checking user authentication and authorization based on API keys and user types.
-        * `response_utils.php`: Includes a function to standardize API JSON responses.
-        * `sanitise_utils.php`: Contains functions for sanitizing user input to prevent security vulnerabilities.
+        * `auth_utils.php`: Provides functions for checking user authentication and authorisation based on API keys and user types.
+        * `response_utils.php`: Includes a function to standardise API JSON responses.
+        * `sanitise_utils.php`: Contains functions for sanitising user input to prevent security vulnerabilities.
 
 ### Root Directory
 
