@@ -69,6 +69,56 @@ switch ($actionType) {
             apiResponse(false, null, 'Endpoint configuration error (Login).', 500);
         }
         break;
+    
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Kyle Section
+        case 'GetStoreProducts':
+        if ($_SERVER['REQUEST_METHOD'] !== 'GET' && $_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for GetStoreProducts. Use GET or POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/get_store_products_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/get_store_products_handler.php';
+            handleGetStoreProducts($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'GetStoreProducts handler not found.', 500);
+        }
+        break;
+
+        case 'DeleteStoreProducts':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' && $_SERVER['REQUEST_METHOD'] !== 'DELETE') {
+            apiResponse(false, null, 'Invalid request method for DeleteStoreProducts. Use POST or DELETE.', 405);
+        }   
+        if (file_exists(__DIR__ . '/../src/handlers/delete_store_products_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/delete_store_products_handler.php';
+            handleDeleteStoreProducts($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'DeleteStoreProducts handler not found.', 500);
+        }
+        break;
+
+        case 'DeleteProduct':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' && $_SERVER['REQUEST_METHOD'] !== 'DELETE') {
+            apiResponse(false, null, 'Invalid request method for DeleteProduct. Use POST or DELETE.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/delete_product_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/delete_product_handler.php';
+            handleDeleteProduct($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'DeleteProduct handler not found.', 500);
+        }
+        break;
+
+        case 'AddProduct':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for AddProduct. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/add_product_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/add_product_handler.php';
+            handleAddProduct($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'AddProduct handler not found.', 500);
+        }
+        break;
 
     case 'GetAllProducts':
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
