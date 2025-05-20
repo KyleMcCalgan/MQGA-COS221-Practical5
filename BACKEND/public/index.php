@@ -56,7 +56,7 @@ switch ($actionType) {
         }
         break;
 
-       case 'Login':
+    case 'Login':
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for Login. Use POST.', 405);
             exit;
@@ -69,6 +69,31 @@ switch ($actionType) {
             apiResponse(false, null, 'Endpoint configuration error (Login).', 500);
         }
         break;
+
+    case 'GetAllProducts':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for getAllProducts. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/getallproducts_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/getallproducts_handler.php';
+            handleGetAllProducts($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'GetAllProducts handler not found.', 500);
+        }
+        break;
+
+    case 'GetHighestRatedProducts':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for GetHighestRatedProducts. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/gethighestratedproducts_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/gethighestratedproducts_handler.php';
+            handleGetHighestRatedProducts($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'GetHighestRatedProducts handler not found.', 500);
+        }
+        break;
+
 
 
     case null:
