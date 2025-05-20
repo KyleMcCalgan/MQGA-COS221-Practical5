@@ -49,8 +49,10 @@
                 <input type="password" id="password" name="password">
                 <div class="errMsg" id="password-error"></div>
 
+
                 <div class="password-requirements">
                     Password must: Be longer than 8 characters, contain an uppercase and lowercase letter, a digit and a symbol.
+
                 </div>
             </div>
 

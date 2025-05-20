@@ -16,7 +16,7 @@ function handleLogin($inputData) {
         return;
     }
 
-    $stmt = $conn->prepare("SELECT id, email, apikey, password, salt FROM USERS WHERE email = ? LIMIT 1");
+    $stmt = $conn->prepare("SELECT id, email, apikey, password, salt,user_type FROM USERS WHERE email = ? LIMIT 1");
 
     if (!$stmt) {
         error_log("Database prepare statement failed (login - select user): " . $conn->error);
@@ -42,6 +42,7 @@ function handleLogin($inputData) {
 
         $userSalt = $user['salt'];
         $storedHashedPassword = $user['password'];
+        $user_type=$user['user_type'];
 
         $passwordWithSalt = $userSalt . $password;
 
@@ -51,7 +52,8 @@ function handleLogin($inputData) {
 
 
                 $responseData = [
-                    'api_key' => $userApiKey
+                    'api_key' => $userApiKey,
+                    'user_type'=>$user_type
                 ];
                 
                 apiResponse(true, $responseData, 'Login successful.', 200);

@@ -12,6 +12,7 @@
   z-index: 9999;
 }
 
+
 .error {
   color: red;
   text-align: center;
@@ -119,6 +120,7 @@ button:active {
   font-family: "Inter", sans-serif;
   padding-top: 80px;
   text-align: center;
+
   font-size: 40px;
   justify-content: center;
   color: black;
@@ -126,6 +128,7 @@ button:active {
 }
 
 .content p{
+
   font-size: 24px;
 }
 
@@ -205,6 +208,7 @@ body{
   border-bottom: 2px solid #ccc; 
   margin-bottom: 10px; 
 }
+
 
 .smol-card {
   color: black;
@@ -646,6 +650,7 @@ hr {
 }
 
 .content {
+
   /* padding-top: 80px; -- Already present */
   text-align: center; /* Ensures the h1 and p are centered */
   padding-bottom: 40px; /* Add some space at the bottom */
@@ -841,6 +846,7 @@ hr {
 .item > .price {
   grid-column-start: 7;
   text-align: right;
+
 }
 
 .main-form-card {
