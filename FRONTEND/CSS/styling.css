@@ -9,7 +9,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 10;
+  z-index: 11;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -18,6 +18,7 @@
   min-width: 50%;
   background-size: 200% 200%;
   animation: gradientAnimation 10s infinite alternate ease-in-out;
+  margin-bottom: 80px;
 }
 
 @keyframes gradientAnimation{
@@ -26,7 +27,7 @@
   100% { background-position: 0% 50%; }
 }
 
-.ribbon .logo {
+.ribbon .logo{
   display: flex;
   align-items: center;
   justify-content: center;
@@ -102,8 +103,6 @@ button:active {
 }
 
 .content{
-  font-family: "Inter", sans-serif;
-  padding-top: 80px;
   font-size: 30px;
   color: black;
   z-index: -1;
@@ -115,7 +114,6 @@ button:active {
 }
 
 body{
-  font-family: "Inter", sans-serif;
   font-weight: 400;
   font-style: normal;
   margin: 0;
@@ -178,9 +176,9 @@ a{
   width: 50px;
   height: 75px;
   top: 20%;
-  left: 1800px; /* This might need adjustment for responsiveness */
+  left: 1500px; 
   transform-style: preserve-3d;
-  transform: perspective(100px); /* This seems very small, usually perspective is larger like 1000px */
+  transform: perspective(100px);
   animation: autoRun 50s linear infinite;
 }
 
@@ -197,7 +195,7 @@ a{
   inset: 0 0 0 0;
   transform:
     rotateY(calc( (var(--position) - 1) * (360 / var(--quantity)) * 1deg))
-    translateZ(200px); /* This value determines the radius of the carousel */
+    translateZ(200px); 
 }
 
 .banner .slider .item img{
@@ -218,7 +216,7 @@ a{
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  /* Removed the general .content styling from here as it's more specific */
+  
 }
 
 .banner .content h1{
@@ -236,24 +234,24 @@ a{
   z-index: 100;
 }
 
-.banner .content .author h2{ /* Added to style the h2 within .author */
-  font-size: 2em; /* Example size, adjust as needed */
+.banner .content .author h2{
+  font-size: 2em;
   margin: 0.5em 0;
 }
 
-.banner .content .author p{ /* Added to style the p within .author */
-    font-size: 1em; /* Example size */
+.banner .content .author p{
+    font-size: 1em;
     margin: 0.3em 0;
 }
 
-.banner .content .author b{ /* Added to style b within .author p */
+.banner .content .author b{
     font-weight: bold;
 }
 
 .model-container {
   position: absolute;
   bottom: 100px;
-  left: 600px; /* This might need adjustment for responsiveness */
+  left: 600px;
   width: 100%;
   height: 75vh;
   z-index: 101;

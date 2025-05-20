@@ -36,9 +36,7 @@ include "config.php";
 
 <body>
     <div class="ribbon">
-        <?php if ($currentPage == 'products.php') : ?>
-            <input type="text" class="search-bar" placeholder="Search...">
-        <?php endif; ?>
+
         <script>
             const isLoggedIn = sessionStorage.getItem('api_key') !== null;
             const userType = sessionStorage.getItem('user_type');
@@ -126,7 +124,7 @@ include "config.php";
                 document.currentScript.parentElement.appendChild(button);
             });
         </script>
+                <?php if ($currentPage == 'products.php') : ?>
+            <input type="text" class="search-bar" placeholder="Search...">
+        <?php endif; ?>
     </div>
-</body>
-
-</html>
