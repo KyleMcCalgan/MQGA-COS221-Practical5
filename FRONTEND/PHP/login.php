@@ -11,6 +11,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
 
+    <script src="../JS/login.js"></script>
+
 </head>
 
 <body>
@@ -46,7 +48,6 @@
     </div>
     </br>
 
-    <script src="../JS/login.js"></script>
 </body>
 
 <?php include "footer.php" ?>
