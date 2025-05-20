@@ -52,8 +52,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const result = await response.json();
             if (result.status === 'success' && result.data) {
                 sessionStorage.setItem('api_key', result.data.api_key);
-                // sessionStorage.setItem('user_type', result.data.user_type);
-                sessionStorage.setItem('user_type','super');
+                sessionStorage.setItem('user_type', result.data.user_type);
+                // sessionStorage.setItem('user_type','super');
                 window.location.href = 'launch.php';
             } else document.getElementById('form-message').textContent= result.message;
             
