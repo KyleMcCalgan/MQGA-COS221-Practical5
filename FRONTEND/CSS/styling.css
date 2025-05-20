@@ -122,9 +122,7 @@ button:active {
 .content{
   font-family: "Inter", sans-serif;
   padding-top: 80px;
-  text-align: center;
   font-size: 30px;
-  justify-content: center;
   color: black; 
   z-index: -1;
   flex : 1;
@@ -209,7 +207,7 @@ a{
   border-radius: 20px;
   width: 100%;
   height: auto;
-  max-height: 200px;
+  max-height: 500px;
   object-fit: contain;
 
 }
@@ -397,8 +395,8 @@ a{
     position: absolute;
     width: 50px;
     height: 75px;
-    top: 25%;
-    left: calc(50% - 50px);
+    top: 20%;
+    left: 1800px;
     transform-style: preserve-3d;
     transform: perspective(100px);
     animation: autoRun 50s linear infinite;
@@ -438,7 +436,7 @@ a{
     align-items: center;
 }
 .banner .content h1{
-  margin-top: 10px;
+    margin-top: 0px;
     font-size: 9em;
     line-height: 1em;
     color: black;
@@ -473,7 +471,7 @@ a{
 .model-container {
   position: absolute;
   bottom: 100px; /* Adjusted to make space for the footer */
-  left: 0;
+  left: 600px;
   width: 100%;
   height: 75vh;
   z-index: 101;

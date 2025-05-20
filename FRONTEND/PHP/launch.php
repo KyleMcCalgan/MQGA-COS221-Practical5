@@ -10,20 +10,21 @@
       <div class = "item" style="--position: 6"><img src="../Images/harry6.jpg" alt = ""></div>
       <div class = "item" style="--position: 7"><img src="../Images/harry7.jpg" alt = ""></div>
     </div>
+    
     <div class="content">
       <h1>
-        Welcome
+      Welcome
       </h1>
       <div class="author">
-        <h2>
-          Books website
-        </h2>
-        <p><b>Search prices</b></p>
-        <p>Welcome to the best price comparison tool bro</p>
+      <h2>
+        Books website
+      </h2>
+      <p><b>Search prices</b></p>
+      <p>Welcome to the best price comparison tool bro</p>
       </div>
-  <div class="model-container">
-    <img src="../Images/noback.png" alt="Model image" class="model-image">
-  </div>
+        <div class="model-container">       
+        <img src="../Images/noback.png" alt="Model image" class="model-image">
+      </div>
     </div>
   </div>
 

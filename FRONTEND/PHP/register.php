@@ -44,14 +44,7 @@
                     <div class="errMsg" id="password-error"></div>
 
                     <div class="password-requirements">
-                        Password must:
-                        <ul>
-                            <li id="req-length">Be longer than 8 characters</li>
-                            <li id="req-upper">Contain an uppercase letter</li>
-                            <li id="req-lower">Contain a lowercase letter</li>
-                            <li id="req-digit">Contain a digit</li>
-                            <li id="req-symbol">Contain a symbol (e.g., !@#$%^&*)</li>
-                        </ul>
+                        Password must: Be longer than 8 characters, contain an uppercase and lowercase letter, a digit and a symbol.
                     </div>
                 </div>
 

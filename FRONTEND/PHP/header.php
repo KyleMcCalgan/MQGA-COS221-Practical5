@@ -14,7 +14,7 @@ include "config.php";
     <link rel="stylesheet" type="text/css" href="<?php
     if ($currentPage == 'products.php') {
         echo '../CSS/products.css';
-    } elseif ($currentPage == 'launch.php' || $currentPage == 'dashboard.php'){
+    } elseif ($currentPage == 'launch.php'){
         echo '../CSS/styling.css';
     } elseif ($currentPage == 'login.php'){
         echo '../CSS/login.css';
@@ -24,6 +24,8 @@ include "config.php";
         echo '../CSS/register.css';
     } elseif ($currentPage == 'SuperMPanel.php'){
         echo '../CSS/superMPanel.css';
+    } elseif ($currentPage == 'dashboard.php'){
+        echo '../CSS/dashboard.css';
     }
     ?>">
 </head>
