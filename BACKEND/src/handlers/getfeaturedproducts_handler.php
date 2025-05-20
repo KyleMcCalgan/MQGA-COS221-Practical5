@@ -13,7 +13,7 @@ if (!function_exists('handleGetFeaturedProducts')) {
         //     apiResponse(false, null, 'Invalid or unauthorized API key.', 401);
         // }
 
-        $query = "SELECT P.id, P.description, P.isbn13, P.publishedDate, P.publisher, P.author, P.pageCount, P.maturityRating, P.language, P.smallThumbnail, P.thumbnail, P.accessibleIn, P.ratingsCount, AVG(R.rating) as book_rating 
+        $query = "SELECT P.id, P.title, P.description, P.isbn13, P.publishedDate, P.publisher, P.author, P.pageCount, P.maturityRating, P.language, P.smallThumbnail, P.thumbnail, P.accessibleIn, P.ratingsCount, AVG(R.rating) as book_rating 
                   FROM PRODUCTS P 
                   JOIN BOOK_CATS BC ON P.id = BC.book_id 
                   JOIN CATEGORIES C ON BC.category_id = C.category_id 

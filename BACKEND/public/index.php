@@ -106,6 +106,29 @@ switch ($actionType) {
         }
         break;
 
+    case 'GetProduct':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for GetProduct. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/getproduct_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/getproduct_handler.php';
+            handleGetProduct($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'GetProduct handler not found.', 500);
+        }
+        break;
+        
+    case 'GetAllListedProducts':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for GetAllListedProducts. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/getalllistedproducts_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/getalllistedproducts_handler.php';
+            handleGetAllListedProducts($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'GetAllListedProducts handler not found.', 500);
+        }
+        break;
 
     case null:
         apiResponse(true, ['info' => 'API is operational. Please specify a type.'], null);
