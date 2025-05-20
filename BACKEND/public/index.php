@@ -117,7 +117,7 @@ switch ($actionType) {
             apiResponse(false, null, 'GetProduct handler not found.', 500);
         }
         break;
-        
+
     case 'GetAllListedProducts':
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for GetAllListedProducts. Use POST.', 405);
@@ -127,6 +127,18 @@ switch ($actionType) {
             handleGetAllListedProducts($inputData, $dbConnection);
         } else {
             apiResponse(false, null, 'GetAllListedProducts handler not found.', 500);
+        }
+        break;
+
+    case 'GetStores':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for GetStores. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/getstores_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/getstores_handler.php';
+            handleGetStores($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'GetStores handler not found.', 500);
         }
         break;
 
