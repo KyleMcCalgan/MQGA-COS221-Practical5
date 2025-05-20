@@ -94,6 +94,17 @@ switch ($actionType) {
         }
         break;
 
+    case 'GetFeaturedProducts':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for GetFeaturedProducts. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/getfeaturedproducts_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/getfeaturedproducts_handler.php';
+            handleGetFeaturedProducts($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'GetFeaturedProducts handler not found.', 500);
+        }
+        break;
 
 
     case null:
