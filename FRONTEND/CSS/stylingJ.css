@@ -172,7 +172,7 @@ body {
   font-weight: 400;
   font-style: normal;
   margin: 0;
-  padding: 0;
+  padding-top: 80px;
   min-height: 100vh;
   background: linear-gradient(45deg, rgb(200, 200, 200), rgb(230, 230, 230), rgb(250, 240, 240));
   /* background-size: 200% 200%; */
@@ -427,3 +427,59 @@ body {
   margin: 0;
   margin-left: 10px;
 } */
+
+.ribbon {
+  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.7);
+  color: black;
+  text-align: center;
+  font-size: 18px;
+  font-family: "Inter", sans-serif;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 20px;
+  height: 80px;
+  min-width: 50%;
+  background-size: 200% 200%;
+  animation: gradientAnimation 10s infinite alternate ease-in-out;
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.ribbon .logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  cursor: pointer;
+}
+
+.ribbon .logo img {
+  max-height: 80%;
+  height: auto;
+  width: auto;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+.ribbon .logo img:hover {
+  transform: scale(1.1);
+}

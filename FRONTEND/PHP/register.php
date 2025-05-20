@@ -2,13 +2,11 @@
 <html lang="en">
 
 <head>
-    <title>Aeturnus | Signup</title>
+    <title>Register</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="../CSS/register.css">
-    <link rel="stylesheet" type="text/css" href="../CSS/footer_header.css">
-    <link rel="stylesheet" type="text/css" href="../CSS/stylingJ.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" type="text/css" href="../CSS/products.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
 
@@ -25,7 +23,7 @@
     </div>
 
     <div id="smol-card">
-        <form class="signup-form" method="POST">
+        <form class="signup-container" method="POST">
             <div class="fg">
                 <label for="name">First name</label>
                 <input type="text" id="name" name="name">
@@ -52,7 +50,6 @@
 
                 <div class="password-requirements">
                     Password must: Be longer than 8 characters, contain an uppercase and lowercase letter, a digit and a symbol.
-
                 </div>
             </div>
 

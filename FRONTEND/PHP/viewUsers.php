@@ -2,7 +2,6 @@
 <link rel="stylesheet" type="text/css" href="../CSS/viewUsers.css">
     <body>
         <div class = "content">
-        </br>
             <h1>Users</h1>
         </div>
 
