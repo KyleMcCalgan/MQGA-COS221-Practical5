@@ -89,3 +89,20 @@
     color:rgb(56, 59, 59);
     text-decoration: underline;
 }
+
+/* Just the styles needed for improving the select dropdown */
+.fg select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: white;
+    font-family: 'Inter', sans-serif;
+}
+
+.fg select:focus {
+    border-color: #65bac9;
+    outline: none;
+    box-shadow: 0 0 5px rgba(101, 186, 201, 0.3);
+}
