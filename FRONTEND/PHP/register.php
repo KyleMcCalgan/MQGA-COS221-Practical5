@@ -23,7 +23,7 @@
     </div>
 
     <div id="smol-card">
-        <form class="signup-container" method="POST">
+        <form class="signup-form" method="POST">
             <div class="fg">
                 <label for="name">First name</label>
                 <input type="text" id="name" name="name">
