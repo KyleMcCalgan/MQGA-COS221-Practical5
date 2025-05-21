@@ -20,35 +20,41 @@
 
 <body>
     <div class="logcontainer">
-        <!-- <div class="content"> -->
         <h1>Welcome back, fellow bookworm!</h1>
-        <!-- </div> -->
 
-        <div class="smol-card">
-            <p class="loginwelcome">Login to your account</p>
+        <div class="logcontcontainer">
+            <img class="bookman" src="../Images/cheapoakfinal.png">
 
-            <form id="login-form" method="POST">
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email">
-                    <div class="error-message" id="email-error"></div>
-                </div>
 
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password">
-                    <div class="error-message" id="password-error"></div>
-                </div>
+            <div class="smol-card">
+                <p class="loginwelcome">Login to your account</p>
 
-                <button class="blackbutton" type="submit" id="submit-button">Login</button>
+                <form id="login-form" method="POST">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email">
+                        <div class="error-message" id="email-error"></div>
+                    </div>
 
-                <div id="form-message"></div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password">
+                        <div class="error-message" id="password-error"></div>
+                    </div>
 
-                <div class="signup-link">
-                    Don't have an account? <a href="register.php">Sign up here</a>
-                </div>
-            </form>
+                    <button class="blackbutton" type="submit" id="submit-button">Login</button>
+
+                    <div id="form-message"></div>
+
+                    <div class="signup-link">
+                        Don't have an account? <a href="register.php">Sign up here</a>
+                    </div>
+                </form>
+            </div>
+
         </div>
+
+
     </div>
 
     <?php include "footer.php" ?>
