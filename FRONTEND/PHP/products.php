@@ -161,5 +161,6 @@
         </div>
     </div>
 </br></br>
-
+<script src="../JS/products.js"></script> </body>
 <?php include "footer.php"?>
+
