@@ -254,6 +254,18 @@ switch ($actionType) {
         }
         break;
 
+    case 'UpdateStore':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for UpdateStore. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/updatestore_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/updatestore_handler.php';
+            handleUpdateStore($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'UpdateStore handler not found.', 500);
+        }
+        break;
+
     case null:
         apiResponse(true, ['info' => 'API is operational. Please specify a type.'], null);
         break;
