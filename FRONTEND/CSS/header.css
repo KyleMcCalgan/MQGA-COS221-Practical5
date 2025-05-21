@@ -33,6 +33,7 @@
   height: 100%;
   /* cursor: pointer; */
   align-self: flex-start;
+  padding-right: 2%;
 }
 
 .ribbon .logo img {
@@ -106,7 +107,14 @@
   text-decoration: none;
 }
 
-.outbtn{
+.ribbon .outbtn{
     margin-left: auto;
     margin-right: 30px;
+}
+
+.ribbon button.current-tab-btn {
+  background-color: #333333;
+  color: white;
+  transform: scale(1.1);
+  box-shadow: 0 0px 20px rgba(100, 100, 100, 0.4);
 }
