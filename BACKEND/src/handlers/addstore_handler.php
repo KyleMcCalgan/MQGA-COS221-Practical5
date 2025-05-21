@@ -29,7 +29,7 @@ if (!function_exists('handleAddStore')) {
                 apiResponse(false, null, 'Database error: Failed to add store.', 500);
             }
         } catch (mysqli_sql_exception $e) {
-            if ($e->getCode() == 1062) { // Duplicate entry error
+            if ($e->getCode() == 1062) { 
                 apiResponse(false, null, 'Store name already exists.', 400);
             }
             apiResponse(false, null, 'Database error: ' . $e->getMessage(), 500);
