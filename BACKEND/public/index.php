@@ -154,6 +154,30 @@ switch ($actionType) {
         }
         break;
 
+    case 'AddStore':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for AddStore. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/addstore_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/addstore_handler.php';
+            handleAddStore($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'AddStore handler not found.', 500);
+        }
+        break;
+
+    case 'AddStoreAdmin':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for AddStoreAdmin. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/addstoreadmin_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/addstoreadmin_handler.php';
+            handleAddStoreAdmin($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'AddStoreAdmin handler not found.', 500);
+        }
+        break;
+
     case null:
         apiResponse(true, ['info' => 'API is operational. Please specify a type.'], null);
         break;
