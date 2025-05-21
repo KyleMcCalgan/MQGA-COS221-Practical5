@@ -51,13 +51,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const result = await response.json();
             if (result.status === 'success' && result.data) {
-                console.log("HERE");
-                sessionStorage.setItem('api_key', 1234);
+                // sessionStorage.setItem('api_key', 1234);
                 //just changed these to be hardcoded for now they can obviously be changed back
-                //sessionStorage.setItem('api_key', result.data.api_key);
+                sessionStorage.setItem('api_key', result.data.api_key);
                 //sessionStorage.setItem('user_type', result.data.user_type);
-                console.log("HERE2");
-                 sessionStorage.setItem('user_type','super');
+                sessionStorage.setItem('user_type','super');
                 window.location.href = 'launch.php';
             } else document.getElementById('form-message').textContent= result.message;
             
