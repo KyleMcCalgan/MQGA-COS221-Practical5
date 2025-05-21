@@ -35,13 +35,14 @@ include "config.php";
 
 <body>
     <div class="ribbon">
+        <img class="logo" src="../Images/logoclear.png" alt="Logo" onclick="location.href='launch.php'">
 
         <script>
             const isLoggedIn = sessionStorage.getItem('api_key') !== null;
             const userType = sessionStorage.getItem('user_type');
             const loginLogoutContainer = document.createElement('button');
             loginLogoutContainer.id = 'login-logout-container';
-            loginLogoutContainer.className = '<?php echo ($currentPage == "login.php" || $currentPage == "register.php") ? "current-tab-btn" : ""; ?>';
+            loginLogoutContainer.className = 'outbtn' + '<?php echo ($currentPage == "login.php" || $currentPage == "register.php") ? " current-tab-btn" : ""; ?>';
 
             if (isLoggedIn) {
                 loginLogoutContainer.textContent = 'Logout';
@@ -54,7 +55,6 @@ include "config.php";
                     location.href = 'login.php';
                 };
             }
-            document.currentScript.parentElement.prepend(loginLogoutContainer);
 
             const navButtons = [];
             if (!isLoggedIn) {
@@ -112,19 +112,28 @@ include "config.php";
                 }
             }
 
+            const ribbon = document.currentScript.parentElement;
+
             navButtons.forEach(btn => {
                 const button = document.createElement('button');
                 button.id = btn.id;
-                button.className = btn.active;
+                button.className = 'nav-btn' + (btn.active ? ' ' + btn.active : '');
                 button.textContent = btn.text;
                 button.onclick = function() {
                     location.href = btn.href;
                 };
-                document.currentScript.parentElement.appendChild(button);
+                ribbon.appendChild(button);
             });
+
+            <?php if ($currentPage == 'products.php') : ?>
+                const searchBar = document.createElement('input');
+                searchBar.type = 'text';
+                searchBar.className = 'search-bar';
+                searchBar.placeholder = 'Search...';
+                ribbon.appendChild(searchBar);
+            <?php endif; ?>
+
+            ribbon.appendChild(loginLogoutContainer);
         </script>
-        <?php if ($currentPage == 'products.php') : ?>
-            <input type="text" class="search-bar" placeholder="Search...">
-        <?php endif; ?>
     </div>
 </body>

@@ -11,13 +11,12 @@
   width: 100%;
   z-index: 11;
   display: flex;
-  justify-content: center;
   align-items: center;
   padding: 5px 20px;
   height: 80px;
   min-width: 50%;
   background-size: 200% 200%;
-  animation: gradientAnimation 10s infinite alternate ease-in-out;
+  /* animation: gradientAnimation 10s infinite alternate ease-in-out; */
   margin-bottom: 80px;
 }
 
@@ -32,7 +31,8 @@
   align-items: center;
   justify-content: center;
   height: 100%;
-  cursor: pointer;
+  /* cursor: pointer; */
+  align-self: flex-start;
 }
 
 .ribbon .logo img {
@@ -67,7 +67,11 @@
   font-weight: 600;
   transition: all 0.3s cubic-bezier(1, 0.5, 0.5, 1);
   overflow: hidden;
-  margin: 0 15px;
+  /* margin: 0 15px; */
+}
+
+.ribbon .nav-btn {
+  margin: 0 15px; /* Apply margin only to nav-btn buttons */
 }
 
 .ribbon button::before {
@@ -100,4 +104,9 @@
 
 .ribbon a{
   text-decoration: none;
+}
+
+.outbtn{
+    margin-left: auto;
+    margin-right: 30px;
 }
