@@ -13,7 +13,6 @@ include "config.php";
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="<?php
-
                                                     if ($currentPage == 'products.php') {
                                                         echo '../CSS/products.css';
                                                     } elseif ($currentPage == 'launch.php') {
@@ -124,7 +123,8 @@ include "config.php";
                 document.currentScript.parentElement.appendChild(button);
             });
         </script>
-                <?php if ($currentPage == 'products.php') : ?>
+        <?php if ($currentPage == 'products.php') : ?>
             <input type="text" class="search-bar" placeholder="Search...">
         <?php endif; ?>
     </div>
+</body>
