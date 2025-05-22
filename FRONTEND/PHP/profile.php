@@ -1,6 +1,5 @@
 <?php include "header.php" ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,147 +12,201 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../CSS/profile.css">
     <link rel="stylesheet" type="text/css" href="../CSS/stylingJ.css">
-
-    <script src="../JS/profile.js" ></script>
 </head>
 
 <body>
     <div class="container">
-        <h1>Profile</h1>
-        <div class="card">
+        <header>
+            <h1>Profile</h1>
+        </header>
+
+        <!-- Loading indicator -->
+        <div id="loading-profile" class="loading" style="display: block;">Loading profile...</div>
+        
+        <!-- Error/Success messages -->
+        <div id="profile-message" class="message" style="display: none;"></div>
+
+        <!-- Profile Card -->
+        <div class="card" id="profile-card" style="display: none;">
             <div class="card-body">
                 <form class="profile-form">
                     <div class="form-group">
-                        <label for="name">Name</label>
-                        <div class="display-field">
-                            <span>Cait Smith</span>
-                            <button type="button" class="editBtn" onclick="openNameModal()">
-                                <svg height="1em" viewBox="0 0 512 512">
-                                    <path d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"></path>
-                                </svg>
-                            </button>
-                        </div>
+                        <label for="display-name">Name</label>
+                        <input type="text" id="display-name" name="name" readonly>
+                        <button type="button" onclick="openNameModal()" style="margin-top: 5px;">Edit Name</button>
                     </div>
 
                     <div class="form-group">
-                        <label for="email">Email</label>
-                        <div class="display-field">
-                            <span>cait.smith@example.com</span>
-                            <button type="button" class="editBtn" onclick="openEmailModal()">
-                                <svg height="1em" viewBox="0 0 512 512">
-                                    <path d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"></path>
-                                </svg>
-                            </button>
-                        </div>
+                        <label for="display-email">Email</label>
+                        <input type="email" id="display-email" name="email" readonly>
+                        <button type="button" onclick="openEmailModal()" style="margin-top: 5px;">Edit Email</button>
                     </div>
 
                     <div class="form-group">
-                        <label for="password">Password</label>
-                        <button type="button" class="save-btn" onclick="openPasswordModal()">Change Password</button>
-                    </div>
-
-                    <!-- Modals -->
-                    <div id="nameModal" class="modal">
-                        <div class="modal-content">
-                            <h3>Edit Name</h3>
-                            <input type="text" placeholder="New Name" class="modal-input">
-                            <input type="text" placeholder="New Surname" class="modal-input">
-                            <button class="save-btn">Save</button>
-                            <button class="save-btn" onclick="closeModal('nameModal')">Cancel</button>
-                        </div>
-                    </div>
-
-                    <div id="emailModal" class="modal">
-                        <div class="modal-content">
-                            <h3>Edit Email</h3>
-                            <input type="email" placeholder="New Email" class="modal-input">
-                            <button class="save-btn">Save</button>
-                            <button class="save-btn" onclick="closeModal('emailModal')">Cancel</button>
-                        </div>
-                    </div>
-
-                    <div id="passwordModal" class="modal">
-                        <div class="modal-content">
-                            <h3>Change Password</h3>
-                            <input type="password" placeholder="Current Password" class="modal-input">
-                            <input type="password" placeholder="New Password" class="modal-input">
-                            <button class="save-btn">Save</button>
-                            <button class="save-btn" onclick="closeModal('passwordModal')">Cancel</button>
-                        </div>
+                        <label>Password</label>
+                        <input type="password" value="••••••••" readonly>
+                        <button type="button" onclick="openPasswordModal()" style="margin-top: 5px;">Change Password</button>
                     </div>
                 </form>
             </div>
         </div>
 
-
-
         <h1>My Reviews</h1>
 
-        <div class="card">
+        <!-- Loading indicator for reviews -->
+        <div id="loading-reviews" class="loading" style="display: block;">Loading reviews...</div>
+        
+        <!-- Error message for reviews -->
+        <div id="reviews-message" class="message" style="display: none;"></div>
+
+        <!-- Reviews Card -->
+        <div class="card" id="reviews-card" style="display: none;">
             <div class="card-body">
                 <div class="user-summary">
                     <div class="user-info">
-                        <h2>Cait Smith</h2>
+                        <h2 id="user-display-name">Loading...</h2>
                         <div class="user-stats">
-                            <span>12 Reviews</span>
-                            <span>•</span>
-                            <span>27 Orders</span>
+                            <span id="review-count">0 Reviews</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="review-stats">
                     <div class="stat-item">
-                        <div class="stat-value">4.2</div>
+                        <div class="stat-value" id="avg-rating">-</div>
                         <div class="stat-label">Average Rating</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value">12</div>
+                        <div class="stat-value" id="total-reviews">0</div>
                         <div class="stat-label">Total Reviews</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value">8</div>
-                        <div class="stat-label">Verified Purchases</div>
+                        <div class="stat-value" id="total-ratings">0</div>
+                        <div class="stat-label">Total Ratings</div>
                     </div>
                 </div>
 
                 <div class="reviews-header">
                     <h3>Reviews</h3>
-                    <select class="filter-dropdown">
-                        <option value="recent">Most Recent</option>
-                        <option value="all">All reviews</option>
+                    <select class="filter-dropdown" id="sort-dropdown">
+                        <option value="newest">Most Recent</option>
+                        <option value="oldest">Oldest First</option>
+                        <option value="highest rating">Highest Rating</option>
+                        <option value="lowest rating">Lowest Rating</option>
                     </select>
                 </div>
 
-                <div class="review-item">
-                    <div class="product-info">
-                        <img src="../Images/book.jpg" alt="Product Image" class="product-image">
-                        <div class="product-details">
-                            <h3>Book for math</h3>
-                            <span class="product-price">$349.99</span>
-                            <p class="review-content">Nice book, used all of the pages for stuff</p>
-
-                            <div class="star-rating">★★★★☆</div>
-
-                            <div class="review-meta">
-                                <div class="review-actions">
-                                    <a href="#">Edit</a>
-                                    <a href="#">Delete</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                <!-- Reviews Container -->
+                <div id="reviews-container">
+                    <!-- Reviews will be populated here -->
                 </div>
 
+                <!-- Empty state -->
+                <div id="no-reviews" class="empty-wishlist" style="display: none;">
+                    You haven't written any reviews yet.
+                </div>
             </div>
         </div>
-
-
     </div>
 
+    <!-- Name Modal -->
+    <div id="nameModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+        <div class="modal-content" style="background-color: white; margin: auto; padding: 20px; border-radius: 8px; width: 400px;">
+            <h3>Edit Name</h3>
+            <form id="name-form">
+                <div class="form-group">
+                    <label for="modal-name">First Name</label>
+                    <input type="text" id="modal-name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="modal-surname">Last Name</label>
+                    <input type="text" id="modal-surname" name="surname" required>
+                </div>
+                <div style="margin-top: 20px; text-align: right;">
+                    <button type="button" onclick="closeModal('nameModal')" style="margin-right: 10px; padding: 8px 16px; border: 1px solid #ccc; background: white; border-radius: 4px; cursor: pointer;">Cancel</button>
+                    <button type="submit" class="save-btn">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Email Modal -->
+    <div id="emailModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+        <div class="modal-content" style="background-color: white; margin: auto; padding: 20px; border-radius: 8px; width: 400px;">
+            <h3>Edit Email</h3>
+            <form id="email-form">
+                <div class="form-group">
+                    <label for="modal-email">Email Address</label>
+                    <input type="email" id="modal-email" name="email" required>
+                </div>
+                <div style="margin-top: 20px; text-align: right;">
+                    <button type="button" onclick="closeModal('emailModal')" style="margin-right: 10px; padding: 8px 16px; border: 1px solid #ccc; background: white; border-radius: 4px; cursor: pointer;">Cancel</button>
+                    <button type="submit" class="save-btn">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Password Modal -->
+    <div id="passwordModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+        <div class="modal-content" style="background-color: white; margin: auto; padding: 20px; border-radius: 8px; width: 400px;">
+            <h3>Change Password</h3>
+            <form id="password-form">
+                <div class="form-group">
+                    <label for="modal-old-password">Current Password</label>
+                    <input type="password" id="modal-old-password" name="old_password" required>
+                </div>
+                <div class="form-group">
+                    <label for="modal-new-password">New Password</label>
+                    <input type="password" id="modal-new-password" name="password" required>
+                </div>
+                <div style="margin-top: 20px; text-align: right;">
+                    <button type="button" onclick="closeModal('passwordModal')" style="margin-right: 10px; padding: 8px 16px; border: 1px solid #ccc; background: white; border-radius: 4px; cursor: pointer;">Cancel</button>
+                    <button type="submit" class="save-btn">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Keep your existing modal functions
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'flex';
+            }
+        }
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
+        function openNameModal() {
+            openModal('nameModal');
+        }
+        function openEmailModal() {
+            openModal('emailModal');
+        }
+        function openPasswordModal() {
+            openModal('passwordModal');
+        }
+        document.addEventListener('click', function (event) {
+            const modals = document.getElementsByClassName('modal');
+            for (let modal of modals) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            }
+        });
+        // Prevent closing when clicking inside modal content
+        document.querySelectorAll('.modal-content').forEach(content => {
+            content.addEventListener('click', function (event) {
+                event.stopPropagation();
+            });
+        });
+    </script>
+    <script src="../JS/profile.js"></script>
 </body>
-
-
 
 <?php include "footer.php" ?>
