@@ -3,7 +3,7 @@
 function handleLogin($inputData) {
     $conn = getDbConnection();
 
-    $email = isset($inputData['email']) ? sanitizeInput($inputData['email']) : null;
+    $email = isset($inputData['email']) ? sanitiseInput($inputData['email']) : null;
     $password = isset($inputData['password']) ? $inputData['password'] : null;
 
     if (empty($email) || empty($password)) {

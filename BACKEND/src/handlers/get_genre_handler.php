@@ -46,7 +46,7 @@ if (!function_exists('handleGetGenre')) {
             }
 
             if ($searchableValue === false && $userType !== 'admin' && $userType !== 'super') {
-                apiResponse(false, null, 'Unauthorized. Only admins and super admins can view non-searchable genres.', 403);
+                apiResponse(false, null, 'Unauthorised. Only admins and super admins can view non-searchable genres.', 403);
                 return;
             }
 

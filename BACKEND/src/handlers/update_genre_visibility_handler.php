@@ -50,7 +50,7 @@ if (!function_exists('handleUpdateGenreVisibility')) {
         $searchableInt = $searchableValue ? 1 : 0;
 
         if (!checkAuth($apiKey, 'super', $db)) {
-            apiResponse(false, null, 'Unauthorized. Only super admins can update genre visibility.', 403);
+            apiResponse(false, null, 'Unauthorised. Only super admins can update genre visibility.', 403);
             return;
         }
 

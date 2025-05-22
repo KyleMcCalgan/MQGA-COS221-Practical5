@@ -28,7 +28,7 @@ if (!function_exists('handleAddGenre')) {
         }
 
         if (!checkAuth($apiKey, 'super', $db)) {
-            apiResponse(false, null, 'Unauthorized. Only super admins can add genres.', 403);
+            apiResponse(false, null, 'Unauthorised. Only super admins can add genres.', 403);
             return;
         }
 
