@@ -67,7 +67,7 @@ if (!function_exists('handleGetBookReviewsRatings')) {
             'highest rating' => 'RA.rating DESC, R.id DESC',
             'lowest rating' => 'RA.rating ASC, R.id DESC'
         ];
-        $sortOrder = $sortOptions['newest']; // Default
+        $sortOrder = $sortOptions['newest'];
         if (array_key_exists($sort, $sortOptions)) {
             $sortOrder = $sortOptions[$sort];
         }

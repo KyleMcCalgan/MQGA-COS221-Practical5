@@ -1,7 +1,6 @@
 <?php
 if (!function_exists('handleDeleteStoreProducts')) {
     function handleDeleteStoreProducts($inputData, $dbConnection) {
-        // Validate required input parameters
         if (empty($inputData['apikey'])) {
             apiResponse(false, null, 'API key is required', 400);
             return;
@@ -21,7 +20,6 @@ if (!function_exists('handleDeleteStoreProducts')) {
         $bookId = (int)$inputData['book_id'];
         $storeId = (int)$inputData['store_id'];
         
-        // Get user information by API key
         $stmt = $dbConnection->prepare("SELECT id, user_type FROM USERS WHERE apikey = ? LIMIT 1");
         if (!$stmt) {
             apiResponse(false, null, 'Database query preparation failed: ' . $dbConnection->error, 500);
@@ -42,7 +40,6 @@ if (!function_exists('handleDeleteStoreProducts')) {
         $userId = $user['id'];
         $userType = $user['user_type'];
         
-        // First check if the combination exists in STORE_INFO
         $checkStmt = $dbConnection->prepare("SELECT * FROM STORE_INFO WHERE book_id = ? AND store_id = ? LIMIT 1");
         if (!$checkStmt) {
             apiResponse(false, null, 'Database query preparation failed: ' . $dbConnection->error, 500);
@@ -60,14 +57,10 @@ if (!function_exists('handleDeleteStoreProducts')) {
             return;
         }
         
-        // Super admin can delete any store info
         if ($userType === 'super') {
-            // Proceed with deletion since super admins have full access
             performDeletion($dbConnection, $bookId, $storeId);
         } 
-        // Regular admin can only delete from their assigned store
         elseif ($userType === 'admin') {
-            // Check if admin is associated with the requested store
             $adminStoreQuery = "SELECT store_id FROM ADMINS WHERE id = ? LIMIT 1";
             
             $adminStmt = $dbConnection->prepare($adminStoreQuery);
@@ -87,13 +80,11 @@ if (!function_exists('handleDeleteStoreProducts')) {
                 return;
             }
             
-            // Check if the admin's store matches the requested store_id
             if ($adminStore['store_id'] != $storeId) {
                 apiResponse(false, null, "You don't have access to this store's book", 403);
                 return;
             }
             
-            // Admin is authorized for this store, proceed with deletion
             performDeletion($dbConnection, $bookId, $storeId);
         } else {
             apiResponse(false, null, 'Unauthorized access. Only super admins and admins can use this endpoint', 403);
@@ -101,7 +92,6 @@ if (!function_exists('handleDeleteStoreProducts')) {
         }
     }
     
-    // Helper function to perform the actual deletion
     function performDeletion($dbConnection, $bookId, $storeId) {
         $deleteStmt = $dbConnection->prepare("DELETE FROM STORE_INFO WHERE book_id = ? AND store_id = ?");
         if (!$deleteStmt) {

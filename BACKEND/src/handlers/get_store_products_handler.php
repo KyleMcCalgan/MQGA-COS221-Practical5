@@ -1,7 +1,6 @@
 <?php
 if (!function_exists('handleGetStoreProducts')) {
     function handleGetStoreProducts($inputData, $dbConnection) {
-        // Validate required input parameters
         if (empty($inputData['apikey'])) {
             apiResponse(false, null, 'API key is required', 400);
             return;
@@ -10,7 +9,6 @@ if (!function_exists('handleGetStoreProducts')) {
         $apiKey = $inputData['apikey'];
         $storeName = $inputData['store_name'] ?? null;
         
-        // Get user information by API key
         $stmt = $dbConnection->prepare("SELECT id, user_type FROM USERS WHERE apikey = ? LIMIT 1");
         if (!$stmt) {
             apiResponse(false, null, 'Database query preparation failed: ' . $dbConnection->error, 500);
@@ -31,15 +29,12 @@ if (!function_exists('handleGetStoreProducts')) {
         $userId = $user['id'];
         $userType = $user['user_type'];
         
-        // Handle super admin case
         if ($userType === 'super') {
-            // Super admin can see all books from every store
             if (empty($storeName)) {
                 apiResponse(false, null, 'Store name is required even for super admins', 400);
                 return;
             }
             
-            // First check if the store exists
             $storeCheckStmt = $dbConnection->prepare("SELECT store_id FROM STORES WHERE name = ? LIMIT 1");
             if (!$storeCheckStmt) {
                 apiResponse(false, null, 'Database query preparation failed: ' . $dbConnection->error, 500);
@@ -74,10 +69,8 @@ if (!function_exists('handleGetStoreProducts')) {
             $stmt->bind_param("s", $storeName);
             
         } 
-        // Handle admin case
         elseif ($userType === 'admin') {
-            // Admin can only see books for their store
-            // First, check if admin is associated with a store
+          
             $adminStoreQuery = "SELECT s.store_id, s.name FROM ADMINS a
                                JOIN STORES s ON a.store_id = s.store_id
                                WHERE a.id = ?";
@@ -99,13 +92,11 @@ if (!function_exists('handleGetStoreProducts')) {
                 return;
             }
             
-            // If store_name was provided, verify it matches the admin's store
             if (!empty($storeName) && $storeName !== $adminStore['name']) {
                 apiResponse(false, null, 'Admin can only access their own store', 403);
                 return;
             }
             
-            // Get books with price/rating for admin's store
             $query = "SELECT 
                         p.id, p.title, p.author, p.smallThumbnail, p.thumbnail, 
                         si.price, si.rating, s.name as store_name, s.store_id
@@ -149,7 +140,6 @@ if (!function_exists('handleGetStoreProducts')) {
         
         $stmt->close();
         
-        // Check if no books were found
         if (empty($books)) {
             if ($userType === 'super') {
                 apiResponse(true, [], 'No books found for the specified store');
