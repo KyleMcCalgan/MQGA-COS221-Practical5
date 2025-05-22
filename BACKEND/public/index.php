@@ -307,6 +307,42 @@ switch ($actionType) {
         }
         break;
 
+    case 'RemoveUserReview':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') { 
+            apiResponse(false, null, 'Invalid request method for RemoveUserReview. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/removeUserReview_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/removeUserReview_handler.php';
+            handleRemoveUserReview($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'RemoveUserReview handler not found.', 500);
+        }
+        break;
+
+    case 'AddUserRating':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for AddUserRating. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/addUserRating_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/addUserRating_handler.php';
+            handleAddUserRating($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'AddUserRating handler not found.', 500);
+        }
+        break;
+
+    case 'AddUserReview': 
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for AddUserReview. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/addUserReview_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/addUserReview_handler.php';
+            handleAddUserReview($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'AddUserReview handler not found.', 500);
+        }
+        break;
+
     case null:
         apiResponse(true, ['info' => 'API is operational. Please specify a type.'], null);
         break;
