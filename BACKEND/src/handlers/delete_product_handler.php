@@ -1,7 +1,6 @@
 <?php
 if (!function_exists('handleDeleteProduct')) {
     function handleDeleteProduct($inputData, $dbConnection) {
-        // Validate required input parameters
         if (empty($inputData['apikey'])) {
             apiResponse(false, null, 'API key is required', 400);
             return;
@@ -15,7 +14,6 @@ if (!function_exists('handleDeleteProduct')) {
         $apiKey = $inputData['apikey'];
         $bookId = (int)$inputData['book_id'];
         
-        // Get user information by API key
         $stmt = $dbConnection->prepare("SELECT user_type FROM USERS WHERE apikey = ? LIMIT 1");
         if (!$stmt) {
             apiResponse(false, null, 'Database query preparation failed: ' . $dbConnection->error, 500);
@@ -35,13 +33,11 @@ if (!function_exists('handleDeleteProduct')) {
         
         $userType = $user['user_type'];
         
-        // Only super admin can delete products
         if ($userType !== 'super') {
             apiResponse(false, null, 'You do not have access to do this. Only super admins can delete products.', 403);
             return;
         }
         
-        // First check if the book exists
         $checkStmt = $dbConnection->prepare("SELECT id FROM PRODUCTS WHERE id = ? LIMIT 1");
         if (!$checkStmt) {
             apiResponse(false, null, 'Database query preparation failed: ' . $dbConnection->error, 500);
@@ -59,9 +55,7 @@ if (!function_exists('handleDeleteProduct')) {
             return;
         }
         
-        // Delete the book from PRODUCTS table
-        // Due to foreign key constraints with ON DELETE CASCADE,
-        // this will also remove related entries in STORE_INFO, BOOK_CATS, etc.
+  
         $deleteStmt = $dbConnection->prepare("DELETE FROM PRODUCTS WHERE id = ?");
         if (!$deleteStmt) {
             apiResponse(false, null, 'Database query preparation failed: ' . $dbConnection->error, 500);
