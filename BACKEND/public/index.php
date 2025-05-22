@@ -72,6 +72,47 @@ switch ($actionType) {
     
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Kyle Section
+
+
+        case 'AddGenre':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for AddGenre. Use POST.', 405);
+        }   
+        if (file_exists(__DIR__ . '/../src/handlers/add_genre_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/add_genre_handler.php';
+            handleAddGenre($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'AddGenre handler not found.', 500);
+        }
+        break;
+
+
+        case 'UpdateGenreVisibility':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for UpdateGenreVisibility. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/update_genre_visibility_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/update_genre_visibility_handler.php';
+            handleUpdateGenreVisibility($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'UpdateGenreVisibility handler not found.', 500);
+        }
+        break;
+
+        case 'GetGenre':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for GetGenre. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/get_genre_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/get_genre_handler.php';
+            handleGetGenre($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'GetGenre handler not found.', 500);
+        }
+        break;
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
         case 'GetStoreProducts':
         if ($_SERVER['REQUEST_METHOD'] !== 'GET' && $_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for GetStoreProducts. Use GET or POST.', 405);
