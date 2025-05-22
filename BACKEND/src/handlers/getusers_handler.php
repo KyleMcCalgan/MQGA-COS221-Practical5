@@ -16,7 +16,7 @@ if (!function_exists('handleGetUsers')) {
         }
 
         if (!checkAuth($apiKey, 'super', $dbConnection)) {
-            apiResponse(false, nullзна, 'Unauthorized: Super admin access required.', 403);
+            apiResponse(false, nullзна, 'Unauthorised: Super admin access required.', 403);
         }
 
         $stmt = $dbConnection->prepare("SELECT id, name, surname, email, user_type FROM USERS WHERE user_type = ?");

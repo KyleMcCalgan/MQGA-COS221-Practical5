@@ -39,7 +39,7 @@ if (!function_exists('handleAddProduct')) {
         $userType = $user['user_type'];
         
         if ($userType !== 'super' && $userType !== 'admin') {
-            apiResponse(false, null, 'Unauthorized. Only super admins and store admins can add products.', 403);
+            apiResponse(false, null, 'Unauthorised. Only super admins and store admins can add products.', 403);
             return;
         }
         

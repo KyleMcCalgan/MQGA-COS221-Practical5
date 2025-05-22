@@ -15,7 +15,7 @@ if (!function_exists('handleGetStores')) {
         }
 
         if (!checkAuth($apiKey, 'admin', $db) && !checkAuth($apiKey, 'super', $db)) {
-            apiResponse(false, null, 'Invalid or unauthorized API key.', 401);
+            apiResponse(false, null, 'Invalid or Unauthorised API key.', 401);
         }
 
         if (checkAuth($apiKey, 'admin', $db)) {

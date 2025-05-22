@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' || $_SERVER['REQUEST_METHOD'] === 'PUT
 }
 
 if (! empty($inputData)) {
-    $inputData = sanitizeInput($inputData);
+    $inputData =sanitiseInput($inputData);
 }
 
 $actionType   = $inputData['type'] ?? null;

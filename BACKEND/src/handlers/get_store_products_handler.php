@@ -114,7 +114,7 @@ if (!function_exists('handleGetStoreProducts')) {
             $stmt->bind_param("i", $adminStore['store_id']);
             
         } else {
-            apiResponse(false, null, 'Unauthorized access. Only super admins and admins can use this endpoint', 403);
+            apiResponse(false, null, 'Unauthorised access. Only super admins and admins can use this endpoint', 403);
             return;
         }
         

@@ -87,7 +87,7 @@ if (!function_exists('handleDeleteStoreProducts')) {
             
             performDeletion($dbConnection, $bookId, $storeId);
         } else {
-            apiResponse(false, null, 'Unauthorized access. Only super admins and admins can use this endpoint', 403);
+            apiResponse(false, null, 'Unauthorised access. Only super admins and admins can use this endpoint', 403);
             return;
         }
     }
