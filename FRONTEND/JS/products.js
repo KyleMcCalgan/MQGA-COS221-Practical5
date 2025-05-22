@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const productsContainer = document.querySelector('.range');
     const apiUrl = '../../BACKEND/public/index.php';
-    const apiKey = 'apikey1223432432432';
+    const apiKey = sessionStorage.getItem('api_key');
 
     function showUserMessage(container, message, isError = false) {
         container.innerHTML = '';
