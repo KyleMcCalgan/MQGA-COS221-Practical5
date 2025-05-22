@@ -66,137 +66,76 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                         <h2>Price</h2>
                     </div>
 
-                    <div class="storerow">
-                        <h2>Store name</h2>
-                        <h2>Rating⭐</h2>
-                        <h2>Price</h2>
-                    </div>
-
-                    <div class="storerow">
-                        <h2>Store name</h2>
-                        <h2>Rating⭐</h2>
-                        <h2>Price</h2>
-                    </div>
-
-                    <div class="storerow">
-                        <h2>Store name</h2>
-                        <h2>Rating⭐</h2>
-                        <h2>Price</h2>
-                    </div>
-
-                    <div class="storerow">
-                        <h2>Store name</h2>
-                        <h2>Rating⭐</h2>
-                        <h2>Price</h2>
-                    </div>
-
-                    <div class="storerow">
-                        <h2>Store name</h2>
-                        <h2>Rating⭐</h2>
-                        <h2>Price</h2>
-                    </div>
-
-                    <div class="storerow">
-                        <h2>Store name</h2>
-                        <h2>Rating⭐</h2>
-                        <h2>Price</h2>
-                    </div>
-
-                    <div class="storerow">
-                        <h2>Store name</h2>
-                        <h2>Rating⭐</h2>
-                        <h2>Price</h2>
-                    </div>
-
-                    <div class="storerow">
-                        <h2>Store name</h2>
-                        <h2>Rating⭐</h2>
-                        <h2>Price</h2>
-                    </div>
-
-                    <div class="storerow">
-                        <h2>Store name</h2>
-                        <h2>Rating⭐</h2>
-                        <h2>Price</h2>
-                    </div>
-
-                    <div class="storerow">
-                        <h2>Store name</h2>
-                        <h2>Rating⭐</h2>
-                        <h2>Price</h2>
-                    </div>
-
-                    <div class="storerow">
-                        <h2>Store name</h2>
-                        <h2>Rating</h2>
-                        <h2>Price</h2>
-                    </div>
-
-                    <div class="storerow">
-                        <h2>Store name</h2>
-                        <h2>Rating</h2>
-                        <h2>Price</h2>
-                    </div>
-                    
-
                 </div>
 
                 <img class="priceguy" src="../Images/cheapoakfinal.png">
             </div>
 
-
-
-
-
         </div>
 
         <div class="reviewcontainer">
-            <h2>Reviews</h2>
+            <div class="revtop">
+                <h2>Ratings & Reviews</h2>
+                <h3>See what MTQGA users thought of the book!</h3>
+            </div>
 
-            <!-- <div class="Revcard">
-            <span class="title">Leave a review</span>
-            <form class="form">
-                <div class="group">
-                    <textarea placeholder="" id="comment" name="comment" rows="5" required=""></textarea>
+            <div class="revtop functions">
+                <button>Rate/Review book</button>
+
+                <div class="sortheading">
+                    <h4>Sort by:</h4>
+                    <select>
+                        <option>Newest</option>
+                        <option>Oldest</option>
+                        <option>Highest rating</option>
+                        <option>Lowwest Rating</option>
+                    </select>
                 </div>
-                <button type="submit">Submit</button>
-            </form>
-        </div> -->
 
-            <div class="accordion" id="myAccordion" style="width: 96%; margin: 0 auto;">
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingOne">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
-                            Name Rating: 4.7 ★
-                        </button>
-                    </h2>
-                    <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#myAccordion">
-                        <div class="accordion-body">
-                            This is the first item’s accordion body.
+            </div>
+
+            <div class="revouterc">
+                <div class="revleft">
+                    <h3 style="padding-left: 2%; padding-top: 2%;">Stats</h3>
+                    <h5>Average rating:4.50⭐</h5>
+                    <h5>Number of ratings:2</h5>
+                    <h5>Number of reviews:4</h5>
+                </div>
+
+                <div class="revright">
+
+                    <div class="accordion" id="myAccordion" style="width: 96%; margin: 0 auto;">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                                    Name Rating: 4.7 ★
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#myAccordion">
+                                <div class="accordion-body">
+                                    This is the first item’s accordion body.
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
 
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingTwo">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
-                            Accordion Item #2
-                        </button>
-                    </h2>
-                    <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#myAccordion">
-                        <div class="accordion-body">
-                            This is the second item’s accordion body.
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                                    Accordion Item #2
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#myAccordion">
+                                <div class="accordion-body">
+                                    This is the second item’s accordion body.
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
+
         </div>
-
-        <button class="btn btn-primary">Review Book</button>
-
-
-
 
     </div>
     <?php include "footer.php" ?>
