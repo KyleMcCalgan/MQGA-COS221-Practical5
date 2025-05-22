@@ -48,7 +48,7 @@
                             <div class="error-message" id="password-error"></div>
                         </div>
 
-                        <button class="blackbutton" type="submit" id="submit-button">Login</button>
+                        <button class="blackbutton normalbutton" type="submit" id="submit-button">Login</button>
 
                         <div id="form-message"></div>
 

@@ -63,7 +63,7 @@
                 buttons.forEach(btn => {
                     const button = document.createElement('button');
                     button.id = btn.id;
-                    button.className='mbtn blackbutton'
+                    button.className='mbtn blackbutton normalbutton'
                     button.textContent = btn.text;
                     button.onclick = function() {
                         location.href = btn.href;

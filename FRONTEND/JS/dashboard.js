@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', function(){
     const apiUrl = '../../BACKEND/public/index.php';
-    const apiKey = '9e180a9e28783275354998ff5ecdae7ff85be073f357adbd4e7da49b95e92107';
+    const apiKey = sessionStorage.getItem('api_key');
+
+
 
     const productContainers = document.querySelectorAll('.range');
     const featuredBooksContainer = productContainers.length > 0 ? productContainers[0] : null;
