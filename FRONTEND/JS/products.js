@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const apiUrl = '../../BACKEND/public/index.php';
     const apiKey = sessionStorage.getItem('api_key');
 
+
     function showUserMessage(container, message, isError = false) {
         container.innerHTML = '';
         const p = document.createElement('p');

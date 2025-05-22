@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function(){
     const apiKey = sessionStorage.getItem('api_key');
 
 
+
     const productContainers = document.querySelectorAll('.range');
     const featuredBooksContainer = productContainers.length > 0 ? productContainers[0] : null;
     const highestRatedBooksContainer = productContainers.length > 1 ? productContainers[1] : null;
