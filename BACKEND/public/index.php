@@ -355,6 +355,30 @@ switch ($actionType) {
         }
         break;
 
+    case 'GetUsers':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for GetUsers. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/getusers_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/getusers_handler.php';
+            handleGetUsers($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'GetUsers handler not found.', 500);
+        }
+        break;
+
+    case 'RemoveUsers':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for RemoveUsers. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/removeusers_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/removeusers_handler.php';
+            handleRemoveUsers($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'RemoveUsers handler not found.', 500);
+        }
+        break;
+
     case null:
         apiResponse(true, ['info' => 'API is operational. Please specify a type.'], null);
         break;
