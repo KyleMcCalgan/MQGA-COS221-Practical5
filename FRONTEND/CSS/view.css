@@ -2,6 +2,67 @@
     padding-top: 8%;
 }
 
+
+/* Table with prices========= */
+.VTableContainer {
+    width: 80%;
+    margin: 0 auto 3%;
+    /* background-color: #000; */
+    border-radius: 15px;
+    /* padding: 2%; */
+}
+
+.storerow {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: center;
+    background-color: white;
+    border-radius: 10px;
+    padding: 1%;
+    margin-bottom: 2%;
+}
+
+.store-name,
+.store-rating,
+.store-price {
+    flex: 1;
+    text-align: center;
+    padding: 0 10px;
+}
+
+.store-name {
+    flex: 2;
+    text-align: left;
+}
+
+.pricestopcontainer {
+    width: 100%;
+    background-color: white;
+    padding: 2%;
+    border-radius: 15px;
+    margin-bottom: 2%;
+}
+
+.rowcontainer {
+    width: 70%;
+}
+
+.comparesides {
+    display: flex;
+    flex-direction: row;
+}
+
+.priceguy {
+    height: 40%;
+    background-color: white;
+    border-radius: 15px;
+    padding: 2%;
+    margin-left: 2%;
+}
+
+
 .rating:not(:checked)>input {
     position: absolute;
     appearance: none;
@@ -56,32 +117,14 @@
     border-radius: 10px;
 }
 
-.VStoresTable {
-    width: 75%;
-    border-collapse: separate;
-    margin: auto;
-    border-spacing: 0 20px;
-}
-
-tr {
-    padding: 15px;
-}
-
-.vStoreRow {
-    height: 40%;
-    background-color: white;
-    box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.3);
-}
-
 .details {
     display: flex;
     flex-direction: row;
     justify-content: left;
-    width: 76%;
+    width: 80%;
     padding: 2%;
-    /* margin-left: 13%; */
     border-radius: 15px;
-    margin: 0 auto;
+    margin: 0 auto 3%;
 
     background-color: white;
 }
@@ -93,6 +136,10 @@ tr {
     text-align: left;
     /* margin: auto 0; */
 
+}
+
+.storerow.cheapest {
+    box-shadow: 0 0 8px 2px rgba(0, 255, 0, 0.3);
 }
 
 
@@ -260,7 +307,7 @@ tr {
 .item {
     display: flex;
     flex-direction: row;
-    padding: 10px 10px;
+    /* padding: 10px 10px; */
 }
 
 .ribbon {

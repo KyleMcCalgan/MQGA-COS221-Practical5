@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const modalLanguage = document.getElementById('modal-language');
     const modalAccessible = document.getElementById('modal-accessible');
     const modalCategories = document.getElementById('modal-categories');
+    const rowContainer = document.querySelector('.rowcontainer');
 
     function showUserMessage(element, message, isError = false) {
         element.textContent = message;
@@ -77,17 +78,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function populateBookDetails(product) {
         bookImage.src = product.thumbnail || product.smallThumbnail || '../Images/notfound.png';
-        bookImage.alt = product.title || 'Book Cover';
+        bookImage.alt = product.title;
         bookImage.onerror = function () {
             this.onerror = null;
             this.src = '../Images/notfound.png';
             this.alt = 'Image failed to load';
         };
 
-        bookTitle.textContent = product.title || 'Untitled Book';
-        bookAuthor.textContent = product.author || 'Author N/A';
+        bookTitle.textContent = product.title;
+        bookAuthor.textContent = product.author || 'Author unknown';
         bookPublisher.textContent = `Publisher: ${product.publisher}, ${product.publishedDate}`;
-        bookCategories.textContent = product.categories && product.categories.length ? product.categories.join(', ') : 'Categories N/A';
+        bookCategories.textContent = product.categories && product.categories.length ? 'Genres: ' + product.categories.join(', ') : 'Categories N/A';
         bookPageCount.textContent = `Page count: ${product.pageCount}`;
         bookIsbn13.textContent = `ISBN-13: ${product.isbn13}`;
     }
@@ -103,7 +104,44 @@ document.addEventListener('DOMContentLoaded', function () {
         modalMaturity.textContent = `Maturity Rating: ${product.maturityRating}`;
         modalLanguage.textContent = `Language: ${product.language}`;
         modalAccessible.textContent = `Accessible In: ${product.accessibleIn}`;
-        modalCategories.textContent = `Categories: ${product.categories && product.categories.length ? product.categories.join(', ') : 'N/A'}`;
+        modalCategories.textContent = `${product.categories && product.categories.length ? 'Genres: ' + product.categories.join(', ') : 'N/A'}`;
+    }
+
+    function populateStoreRows(stores) {
+        rowContainer.innerHTML = ''; // Clear existing rows
+        if (!stores || stores.length === 0) {
+            const noStoresMessage = document.createElement('div');
+            noStoresMessage.className = 'storerow';
+            noStoresMessage.innerHTML = `
+                <h2 class="store-name">No stores available</h2>
+                <h2 class="store-rating">-</h2>
+                <h2 class="store-price">-</h2>
+            `;
+            rowContainer.appendChild(noStoresMessage);
+            return;
+        }
+
+        const sortedStores = [...stores].sort((a, b) => {
+            const priceA = a.price && !isNaN(parseFloat(a.price)) ? parseFloat(a.price) : Infinity;
+            const priceB = b.price && !isNaN(parseFloat(b.price)) ? parseFloat(b.price) : Infinity;
+            return priceA - priceB;
+        });
+
+        const validStores = sortedStores.filter(store => store.price && !isNaN(parseFloat(store.price)));
+        const cheapestStore = validStores.length > 0
+            ? validStores[0] 
+            : null;
+
+        sortedStores.forEach(store => {
+            const storeRow = document.createElement('div');
+            storeRow.className = `storerow${cheapestStore && store.price === cheapestStore.price ? ' cheapest' : ''}`;
+            storeRow.innerHTML = `
+                <h2 class="store-name">${store.name || 'Unknown Store'}</h2>
+                <h2 class="store-rating">${store.rating ? store.rating + ' ⭐' : 'N/A'}</h2>
+                <h2 class="store-price">${store.price ? 'R' + store.price : 'N/A'}</h2>
+            `;
+            rowContainer.appendChild(storeRow);
+        });
     }
 
     function showModal() {
@@ -125,6 +163,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const product = await fetchProduct(bookId);
             populateBookDetails(product);
             populateModalDetails(product);
+            populateStoreRows(product.stores);
         } catch (error) {
             // Error message handled in fetchProduct
         }
