@@ -229,7 +229,6 @@ body {
   color: black;
   width: calc(50% - 10px);
   border-radius: 12px;
-  box-shadow: 8px 8px 15px rgba(200, 200, 200, 0.6), -8px -8px 15px rgba(190, 190, 190, 0.6);
   text-align: left;
   backdrop-filter: blur(5px);
   display: flex;
