@@ -12,30 +12,13 @@
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
         <style>
             /* Just the styles needed for improving the select dropdown */
-            .fg select {
-                width: 100%;
-                padding: 10px 12px;
-                border: 1px solid #ddd;
-                border-radius: 8px;
-                font-size: 16px;
-                background-color: white;
-                font-family: 'Inter', sans-serif;
-            }
 
-            .fg select:focus {
-                border-color: #65bac9;
-                outline: none;
-                box-shadow: 0 0 5px rgba(101, 186, 201, 0.3);
-            }
         </style>
         <script src="../JS/addProducts.js"></script>
     </head>
     <body>
-
-        <br/><br/>
         <div class="content">
             <h1>Add Books</h1>
-            <p>For Managers' eyes only</p>
 
             <div class="main-form-card">
                 <form id="addProduct-form" method="POST" onsubmit="return false;"><!-- Ensure no normal form submission -->
@@ -87,7 +70,7 @@
                                 <label for="imageUpload">Image (Coming Soon)</label>
                                 <input type="file" id="imageUpload" name="imageUpload" style="display: none;" disabled>
                                 <button type="button" class="upload-btn" style="opacity: 0.6; cursor: not-allowed;" disabled>Image Upload Unavailable</button>
-                                <small style="display: block; margin-top: 5px; color: #666;">Image uploads will be supported in a future update.</small>
+                                <!--  <small style="display: block; margin-top: 5px; color: #666;">Image uploads will be supported in a future update.</small>  -->
                             </div>
                             <div class="fg">
                                 <label for="accessibleIn">Accessible In (Optional)</label>
