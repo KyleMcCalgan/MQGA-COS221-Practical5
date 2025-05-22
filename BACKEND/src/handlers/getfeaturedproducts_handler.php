@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../utils/auth_utils.php';
+require_once __DIR__ . '/../utils/sanitise_utils.php';
 
 if (!function_exists('handleGetFeaturedProducts')) {
     function handleGetFeaturedProducts($data, $db) {
@@ -9,9 +10,23 @@ if (!function_exists('handleGetFeaturedProducts')) {
             apiResponse(false, null, 'API key is required.', 401);
         }
 
-        // if (!checkAuth($apiKey, 'regular', $db)) {
-        //     apiResponse(false, null, 'Invalid or unauthorized API key.', 401);
-        // }
+        $query = "SELECT id FROM USERS WHERE apikey = ? LIMIT 1";
+        $stmt = $db->prepare($query);
+        if (!$stmt) {
+            error_log("Database prepare statement failed (get all products - select user): " . $db->error);
+            apiResponse(false, null, 'An internal error occurred. Please try again later.', 500);
+        }
+        $stmt->bind_param("s", $apiKey);
+        if (!$stmt->execute()) {
+            error_log("Database execute failed (get all products - select user): " . $stmt->error);
+            apiResponse(false, null, 'An internal error occurred. Please try again later.', 500);
+        }
+        $result = $stmt->get_result();
+        if ($result->num_rows === 0) {
+            apiResponse(false, null, 'Invalid or unauthorized API key.', 401);
+        }
+        $stmt->close();
+
 
         $query = "SELECT P.id, P.title, P.description, P.isbn13, P.publishedDate, P.publisher, P.author, P.pageCount, P.maturityRating, P.language, P.smallThumbnail, P.thumbnail, P.accessibleIn, P.ratingsCount, AVG(R.rating) as book_rating 
                   FROM PRODUCTS P 

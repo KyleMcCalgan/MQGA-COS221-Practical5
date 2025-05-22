@@ -2,8 +2,8 @@
 require_once __DIR__ . '/../utils/auth_utils.php';
 require_once __DIR__ . '/../utils/sanitise_utils.php';
 
-if (!function_exists('handleGetAllProducts')) {
-    function handleGetAllProducts($data, $db) {
+if (!function_exists('handleGetAllProductsRR')) {
+    function handleGetAllProductsRR($data, $db) {
         $apiKey = $data['api_key'] ?? null;
         $title = $data['title'] ?? null;
         $category = $data['category'] ?? null;
@@ -12,7 +12,6 @@ if (!function_exists('handleGetAllProducts')) {
         if (empty($apiKey)) {
             apiResponse(false, null, 'API key is required.', 401);
         }
-
         $query = "SELECT id FROM USERS WHERE apikey = ? LIMIT 1";
         $stmt = $db->prepare($query);
         if (!$stmt) {
@@ -30,9 +29,11 @@ if (!function_exists('handleGetAllProducts')) {
         }
         $stmt->close();
 
+
         $query = "SELECT P.id, P.title, P.description, P.isbn13, P.publishedDate, P.publisher, P.author, P.pageCount, P.maturityRating, P.language, P.smallThumbnail, P.thumbnail, P.accessibleIn, P.ratingsCount, AVG(R.rating) as book_rating 
                   FROM PRODUCTS P 
-                  LEFT JOIN RATINGS R ON P.id = R.book_id";
+                  INNER JOIN RATINGS R ON P.id = R.book_id 
+                  INNER JOIN REVIEWS RV ON P.id = RV.book_id";
         $params = [];
         $types = '';
 
@@ -40,11 +41,12 @@ if (!function_exists('handleGetAllProducts')) {
             $query .= " JOIN BOOK_CATS BC ON P.id = BC.book_id JOIN CATEGORIES C ON BC.category_id = C.category_id WHERE C.genre = ?";
             $params[] = $category;
             $types .= 's';
+        } else {
+            $query .= " WHERE 1=1";
         }
 
         if ($title) {
-            $query .= $category ? " AND" : " WHERE";
-            $query .= " P.title LIKE ?";
+            $query .= " AND P.title LIKE ?";
             $params[] = "%$title%";
             $types .= 's';
         }

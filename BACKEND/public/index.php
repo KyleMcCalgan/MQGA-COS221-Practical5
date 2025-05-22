@@ -72,6 +72,47 @@ switch ($actionType) {
     
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Kyle Section
+
+
+        case 'AddGenre':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for AddGenre. Use POST.', 405);
+        }   
+        if (file_exists(__DIR__ . '/../src/handlers/add_genre_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/add_genre_handler.php';
+            handleAddGenre($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'AddGenre handler not found.', 500);
+        }
+        break;
+
+
+        case 'UpdateGenreVisibility':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for UpdateGenreVisibility. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/update_genre_visibility_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/update_genre_visibility_handler.php';
+            handleUpdateGenreVisibility($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'UpdateGenreVisibility handler not found.', 500);
+        }
+        break;
+
+        case 'GetGenre':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for GetGenre. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/get_genre_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/get_genre_handler.php';
+            handleGetGenre($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'GetGenre handler not found.', 500);
+        }
+        break;
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
         case 'GetStoreProducts':
         if ($_SERVER['REQUEST_METHOD'] !== 'GET' && $_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for GetStoreProducts. Use GET or POST.', 405);
@@ -263,6 +304,78 @@ switch ($actionType) {
             handleUpdateStore($inputData, $dbConnection);
         } else {
             apiResponse(false, null, 'UpdateStore handler not found.', 500);
+        }
+        break;
+
+    case 'UpdateUserInfo':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for UpdateUserInfo. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/updateuserinfo_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/updateuserinfo_handler.php';
+            handleUpdateUserInfo($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'UpdateUserInfo handler not found.', 500);
+        }
+        break;
+
+    case 'GetUserReviewsRatings':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for GetUserReviewsRatings. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/getuserreviewsratings_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/getuserreviewsratings_handler.php';
+            handleGetUserReviewsRatings($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'GetUserReviewsRatings handler not found.', 500);
+        }
+        break;
+
+    case 'GetAllProductsRR':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for GetAllProductsRR. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/getallproductsrr_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/getallproductsrr_handler.php';
+            handleGetAllProductsRR($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'GetAllProductsRR handler not found.', 500);
+        }
+        break;
+
+    case 'GetBookReviewsRatings':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for GetBookReviewsRatings. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/getbookreviewsratings_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/getbookreviewsratings_handler.php';
+            handleGetBookReviewsRatings($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'GetBookReviewsRatings handler not found.', 500);
+        }
+        break;
+
+    case 'GetUsers':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for GetUsers. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/getusers_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/getusers_handler.php';
+            handleGetUsers($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'GetUsers handler not found.', 500);
+        }
+        break;
+
+    case 'RemoveUsers':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for RemoveUsers. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/removeusers_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/removeusers_handler.php';
+            handleRemoveUsers($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'RemoveUsers handler not found.', 500);
         }
         break;
 
