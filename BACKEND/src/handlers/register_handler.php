@@ -1,5 +1,5 @@
 <?php
-if (!function_exists('handleRegister')) {
+if (!function_exists('handleRegister')) {//marcel
     function handleRegister($data, $db) {
         $email = $data['email'] ?? null;
         $password = $data['password'] ?? null;

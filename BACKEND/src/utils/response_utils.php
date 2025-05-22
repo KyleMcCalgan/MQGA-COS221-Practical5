@@ -1,5 +1,5 @@
 <?php
-if (!function_exists('apiResponse')) {
+if (!function_exists('apiResponse')) {//marcel
     function apiResponse($isSuccess, $data = null, $errorMessage = null, $httpStatusCode = 200) {
         if (!headers_sent()) {
             http_response_code($httpStatusCode);

@@ -1,6 +1,6 @@
 <?php
 
-if (!function_exists('getUserIdUtil')) {
+if (!function_exists('getUserIdUtil')) {//marcel
     function getUserIdUtil(string $apiKey, mysqli $dbConnection): ?int
     {
         if (empty($apiKey)) {
