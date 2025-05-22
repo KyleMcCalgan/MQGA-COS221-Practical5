@@ -266,6 +266,54 @@ switch ($actionType) {
         }
         break;
 
+    case 'UpdateUserInfo':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for UpdateUserInfo. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/updateuserinfo_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/updateuserinfo_handler.php';
+            handleUpdateUserInfo($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'UpdateUserInfo handler not found.', 500);
+        }
+        break;
+
+    case 'GetUserReviewsRatings':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for GetUserReviewsRatings. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/getuserreviewsratings_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/getuserreviewsratings_handler.php';
+            handleGetUserReviewsRatings($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'GetUserReviewsRatings handler not found.', 500);
+        }
+        break;
+
+    case 'GetAllProductsRR':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for GetAllProductsRR. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/getallproductsrr_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/getallproductsrr_handler.php';
+            handleGetAllProductsRR($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'GetAllProductsRR handler not found.', 500);
+        }
+        break;
+
+    case 'GetBookReviewsRatings':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for GetBookReviewsRatings. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/getbookreviewsratings_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/getbookreviewsratings_handler.php';
+            handleGetBookReviewsRatings($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'GetBookReviewsRatings handler not found.', 500);
+        }
+        break;
+
     case null:
         apiResponse(true, ['info' => 'API is operational. Please specify a type.'], null);
         break;
