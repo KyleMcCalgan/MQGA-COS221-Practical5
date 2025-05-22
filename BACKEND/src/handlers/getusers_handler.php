@@ -15,6 +15,7 @@ if (!function_exists('handleGetUsers')) {
             apiResponse(false, null, 'Invalid userType. Must be super, regular, or admin.', 400);
         }
 
+        //what is this russian text for the api response?
         if (!checkAuth($apiKey, 'super', $dbConnection)) {
             apiResponse(false, nullзна, 'Unauthorized: Super admin access required.', 403);
         }
