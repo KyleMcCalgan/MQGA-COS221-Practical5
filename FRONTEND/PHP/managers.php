@@ -35,6 +35,7 @@
                     <div class="card">
                         <div class="card-body">
                             <form action="add_man.php" class="d-flex gap-3">
+                                <!-- We need to add email and Password for new managers -->
                                 <input type="text" name="newman" class="form-control" placeholder="New Manager" required>
                                 <button type="submit" class="btn btn-primary">Add Manager</button>
                             </form>
