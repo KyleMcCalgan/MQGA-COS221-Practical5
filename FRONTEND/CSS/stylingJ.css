@@ -29,7 +29,7 @@ html {
   overflow: hidden;
 }
 
-button::before {
+.blackbutton::before {
   content: '';
   position: absolute;
   inset: 0;

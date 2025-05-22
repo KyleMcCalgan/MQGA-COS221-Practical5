@@ -7,25 +7,47 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 <head>
     <title>View</title>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="../CSS/view.css">
+    <!-- <link rel="stylesheet" type="text/css" href="../CSS/view.css"> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../CSS/stylingJ.css">
+
+    <script src="../JS/view.js"></script>
 </head>
 
+<?php include "header.php" ?>
+
 <body>
-    <?php include "header.php" ?>
-    <div class="content">
+    <div class="viewcontent">
 
         <div class="details">
-            <img class="Vimg" src="../Images/book.jpg" />
+            <img class="Vimg" src="../Images/notfound.png" alt="Book Cover" id="book-image" />
+            <div class="DetialsContainer" id="book-details">
+                <h1 id="book-title">Loading...</h1>
+                <h2 id="book-author"></h2>
+                <p id="book-publisher"></p>
+                <p id="book-categories"></p>
+                <p id="book-pagecount"></p>
+                <p id="book-isbn13"></p>
+                <button class="blackbutton normalbutton viewb" id="details-button">All details</button>
+            </div>
+        </div>
 
-            <div class="DetialsContainer">
-                <h2>Book name</h2>
-                <h3>Author</h3>
-                <p>Genre1, genre2</p>
-                <p>blah blah blah </p>
-                <p>Our rating: 3.5</p>
+        <!-- Modal for all details -->
+        <div class="modal" id="book-details-modal">
+            <div class="modal-content">
+                <span class="close-button" id="close-modal">×</span>
+                <h2 id="modal-title"></h2>
+                <p id="modal-description"></p>
+                <p id="modal-author"></p>
+                <p id="modal-isbn13"></p>
+                <p id="modal-published"></p>
+                <p id="modal-publisher"></p>
+                <p id="modal-pagecount"></p>
+                <p id="modal-maturity"></p>
+                <p id="modal-language"></p>
+                <p id="modal-accessible"></p>
+                <p id="modal-categories"></p>
             </div>
         </div>
 
