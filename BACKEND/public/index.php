@@ -419,8 +419,8 @@ switch ($actionType) {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') { 
             apiResponse(false, null, 'Invalid request method for RemoveStoreAdmin. Use POST.', 405);
         }
-        if (file_exists(__DIR__ . '/../src/handlers/removeStoreAdmin.php')) {
-            require_once __DIR__ . '/../src/handlers/removeStoreAdmin.php';
+        if (file_exists(__DIR__ . '/../src/handlers/removeStoreAdmin_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/removeStoreAdmin_handler.php';
             handleRemoveStoreAdmin($inputData, $dbConnection);
         } else {
             apiResponse(false, null, 'RemoveStoreAdmin handler not found.', 500);
