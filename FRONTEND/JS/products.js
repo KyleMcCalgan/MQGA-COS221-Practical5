@@ -1,40 +1,40 @@
-document.addEventListener('DOMContentLoaded', function(){
+document.addEventListener('DOMContentLoaded', function () {
     const productsContainer = document.querySelector('.range');
-    const apiUrl = '../../BACKEND/public/index.php'; 
+    const apiUrl = '../../BACKEND/public/index.php';
     const apiKey = 'apikey1223432432432';
 
-    function showUserMessage(container, message, isError = false){
+    function showUserMessage(container, message, isError = false) {
         container.innerHTML = '';
         const p = document.createElement('p');
         p.textContent = message;
-        if (isError){
+        if (isError) {
             p.style.color = 'red';
         }
         container.appendChild(p);
     }
 
-    async function fetchProducts(){
+    async function fetchProducts() {
         showUserMessage(productsContainer, 'Loading books...');
 
-        const req ={
+        const req = {
             type: "GetAllProducts",
             api_key: apiKey,
         };
 
-        try{
-            const response = await fetch(apiUrl,{
+        try {
+            const response = await fetch(apiUrl, {
                 method: 'POST',
-                headers:{
+                headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(req)
             });
 
-            if (!response.ok){
+            if (!response.ok) {
                 let errorData;
-                try{
+                try {
                     errorData = await response.json();
-                }catch (e){
+                } catch (e) {
                 }
                 const DerrorMessage = errorData && errorData.message ? errorData.message : `An HTTP error ${response.status}occurred.`;
                 throw new Error(DerrorMessage);
@@ -42,15 +42,15 @@ document.addEventListener('DOMContentLoaded', function(){
 
             const result = await response.json();
 
-            if (result.status === "success" && result.data){
+            if (result.status === "success" && result.data) {
                 displayProducts(result.data);
-            }else{
+            } else {
                 const DerrorMessage = result.message || "Could not retrieve products due to an unknown API response.";
                 showUserMessage(productsContainer, `Error: ${DerrorMessage}`, true);
                 console.error("API Error:", result);
             }
 
-        }catch (error){
+        } catch (error) {
             showUserMessage(productsContainer, `Failed to load books: ${error.message}`, true);
             console.error('Error fetching products:', error);
         }
@@ -61,14 +61,14 @@ document.addEventListener('DOMContentLoaded', function(){
 
         if (!products || products.length === 0) {
             showUserMessage(productsContainer, 'No books found.');
-            return; 
+            return;
         }
 
         const randProducts = [...products].sort(() => 0.5 - Math.random());
 
         const selectedProducts = randProducts.slice(0, 50);
 
-        if (selectedProducts.length === 0){
+        if (selectedProducts.length === 0) {
             showUserMessage(productsContainer, 'No books to display after selection.');
             return;
         }
@@ -77,11 +77,14 @@ document.addEventListener('DOMContentLoaded', function(){
             const card = document.createElement('div');
             card.className = 'card';
 
+            const link = document.createElement('a');
+            link.href = `view.php?id=${encodeURIComponent(product.id || '')}`;
+
             const img = document.createElement('img');
-            img.src = product.thumbnail || product.smallThumbnail || '../Images/notfound.png'; 
+            img.src = product.thumbnail || product.smallThumbnail || '../Images/notfound.png';
             img.alt = product.title || 'Book Cover';
             img.className = 'card-image';
-            img.onerror = function() {
+            img.onerror = function () {
                 this.onerror = null;
                 this.src = '../Images/notfound.jpg';
                 this.alt = 'Image failed to load';
@@ -89,6 +92,10 @@ document.addEventListener('DOMContentLoaded', function(){
 
             const titleElement = document.createElement('h2');
             titleElement.textContent = product.title || 'Untitled';
+
+            link.appendChild(img);
+            link.appendChild(titleElement);
+            card.appendChild(link);
 
             const cardContent = document.createElement('div');
             cardContent.className = 'card-content';
@@ -104,9 +111,9 @@ document.addEventListener('DOMContentLoaded', function(){
                 ratingElement.textContent = 'Not Rated ⭐';
             }
 
-            card.appendChild(img);
-            card.appendChild(titleElement);
-            
+            // card.appendChild(img);
+            // card.appendChild(titleElement);
+
             cardContent.appendChild(authorElement);
             cardContent.appendChild(ratingElement);
 

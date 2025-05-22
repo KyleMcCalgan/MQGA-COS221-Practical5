@@ -1,7 +1,7 @@
-.logcontainer{
-  margin-top: 90px;
+.logcontainer {
   text-align: center;
   justify-content: center;
+  margin: 90px auto 0;
 }
 
 .form-group {
@@ -17,7 +17,7 @@
 }
 
 .form-group input {
-  width: 100%;
+  width: 80%;
   padding: 12px;
   border-radius: 34px;
   border: 1px solid rgb(0, 0, 0);
@@ -65,21 +65,16 @@
 
 
 .smol-card {
-  width: 30%;
-  max-width: 500px;
-  /* margin: 0 auto; */
+  width: 80%;
+  /* max-width: 500px; */
   color: black;
   border-radius: 10px;
-  /* box-shadow: 15px 15px 30px rgb(200, 200, 200), -15px -15px 30px rgb(180, 180, 180); */
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
   text-align: center;
-  /* height: auto; */
-  /* backdrop-filter: blur(10px); */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-self: center;
-  /* gap: 0px; */
   padding: 10px;
   background-color: rgba(255, 255, 255, 0.7);
 
@@ -103,19 +98,38 @@
   text-decoration: underline;
 }
 
-.logcontcontainer{
+.logcontcontainer {
   display: flex;
   flex-direction: row;
   /* margin: 0 auto; */
   margin: 0 200px;
 }
 
-.bookman{
-  height: 500px;
+.bookman {
+  height: 540px;
   width: auto;
-  margin-left: 200px;
+  margin-top: 1%;
+  margin-left: 10%
 }
 
-.loginwelcome{
+.loginwelcome {
   font-size: 20px;
+}
+
+.vertical-line {
+  width: 3px;
+  /* background: linear-gradient(to bottom, #65bac9, #007788, #65bac9); */
+  background: black;
+  margin: 0 40px 0 5px;
+  align-self: stretch;
+  /* box-shadow: 0 0 8px rgba(101, 186, 201, 0.5); */
+  border-radius: 2px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.logright{
+  /* display: flex;
+  flex-direction: column; */
+  /* align-items: flex-start; */
 }

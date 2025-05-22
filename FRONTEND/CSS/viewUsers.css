@@ -1,6 +1,6 @@
-.ribbon{
+.ribbon {
   backdrop-filter: blur(10px);
-  background-color:rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.7);
   color: black;
   text-align: center;
   font-size: 18px;
@@ -20,13 +20,21 @@
   animation: gradientAnimation 5s infinite alternate ease-in-out;
 }
 
-@keyframes gradientAnimation{
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
-.ribbon .logo{
+.ribbon .logo {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -34,7 +42,7 @@
   cursor: pointer;
 }
 
-.ribbon .logo img { 
+.ribbon .logo img {
   max-height: 80%;
   height: auto;
   width: auto;
@@ -46,7 +54,7 @@
   transform: scale(1.1);
 }
 
-.ribbon .logo a{
+.ribbon .logo a {
   max-height: 80%;
   height: auto;
   width: auto;
@@ -54,13 +62,13 @@
   cursor: pointer;
 }
 
-button{
+button {
   cursor: pointer;
   position: relative;
   padding: 10px 24px;
   font-size: 18px;
-  color: rgb(0, 0, 0);
-  border: 1px solid rgb(0, 0, 0);
+  color: rgb(255, 0, 0);
+  border: 1px solid rgb(255, 0, 0);
   border-radius: 10px;
   background-color: transparent;
   font-weight: 600;
@@ -68,6 +76,7 @@ button{
   overflow: hidden;
   margin: 0 15px;
 }
+
 
 button::before {
   content: '';
@@ -79,7 +88,7 @@ button::before {
   border-radius: inherit;
   transform: scale(0);
   z-index: -1;
-  background-color: rgb(0, 0, 0);
+  background-color: rgb(255, 0, 0);
   transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
 }
 
@@ -97,11 +106,11 @@ button:active {
   transform: scale(1);
 }
 
-.ribbon a{
+.ribbon a {
   text-decoration: none;
 }
 
-.content{
+.content {
   font-family: "Inter", sans-serif;
   padding-top: 80px;
   text-align: center;
@@ -112,11 +121,11 @@ button:active {
   padding-bottom: 40px;
 }
 
-.content p{
+.content p {
   font-size: 24px;
 }
 
-body{
+body {
   font-family: "Inter", sans-serif;
   font-weight: 400;
   font-style: normal;
@@ -128,7 +137,7 @@ body{
   animation: gradientAnimation 10s infinite alternate ease-in-out;
 }
 
-a{
+a {
   color: inherit;
   text-decoration: none;
 }
@@ -155,28 +164,62 @@ a{
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 10px;
+  padding: 10px 0;
   margin: 0;
-  border-bottom: 1px solid #eee;
 }
 
-.item p {
-  flex: 1;
-  font-size: 16px;
-  padding-right: 10px;
+.item>p,
+.item>button {
+  box-sizing: border-box;
+  padding: 5px 5px;
+  margin: 0;
   text-align: left;
-  margin: 0; 
+  font-size: 16px;
 }
 
-.item p strong { 
-    font-weight: bold;
+.item>*:nth-child(1) {
+  flex: 0 0 6%;
+  min-width: 45px;
 }
 
-hr{ 
-  display: none;
+.item>*:nth-child(2) {
+  flex: 1 1 20%;
+  min-width: 100px;
 }
 
-.current-tab-btn{
+.item>*:nth-child(3) {
+  flex: 1 1 20%;
+  min-width: 100px;
+}
+
+.item>*:nth-child(4) {
+  flex: 1 1 28%;
+  min-width: 160px;
+}
+
+.item>*:nth-child(5) {
+  flex: 1 1 16%;
+  min-width: 110px;
+}
+
+.item>*:nth-child(6) {
+  flex: 0 0 10%;
+  min-width: 100px;
+  text-align: center;
+}
+
+.item-header>p {
+  font-weight: bold;
+}
+
+.item>button {
+  margin: 0 auto;
+  padding: 8px 5px;
+  font-size: 14px;
+  width: 50%;
+}
+
+.current-tab-btn {
   background-color: #333333;
   color: white;
   transform: scale(1.1);
@@ -208,4 +251,16 @@ hr{
 
 .footer-button:hover {
   background-color: #e0e0e0;
+}
+
+.item+hr {
+  display: block;
+  border: 0;
+  height: 1px;
+  background-color: #eee;
+  margin: 0;
+}
+
+.item:last-of-type+hr {
+  display: none;
 }

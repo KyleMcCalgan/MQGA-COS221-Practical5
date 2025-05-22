@@ -26,7 +26,7 @@
                     buttons.push({
                         id: 'my-store-btn',
                         text: 'My Store',
-                        href: 'stores.php'
+                        href: 'managers.php'
                     },{
                         id: 'add-book-btn',
                         text: 'Add Book',
@@ -40,11 +40,11 @@
                     buttons.push({
                         id: 'stores-btn',
                         text: 'Stores',
-                        href: 'stores.php'
+                        href: 'managers.php'
                     },{
                         id: 'users-btn',
                         text: 'Users',
-                        href: 'users.php'
+                        href: 'viewUsers.php'
                     },{
                         id: 'genres-btn',
                         text: 'Genres',
