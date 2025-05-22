@@ -11,7 +11,7 @@ if (!function_exists('handleUpdateProductAdmin')) {
         }
 
         if (!checkAuth($apiKey, 'super', $db)) {
-            apiResponse(false, null, 'Invalid or unauthorized API key for super admin access.', 401);
+            apiResponse(false, null, 'Invalid or Unauthorised API key for super admin access.', 401);
             return;
         }
 
