@@ -95,7 +95,7 @@ button:hover::before {
 button:hover {
   color: #e0e0e0;
   transform: scale(1.1);
-  box-shadow: 0 0px 70px rgba(100, 100, 100,0.4);
+  box-shadow: 0 0px 0px rgba(100, 100, 100,0.4);
 }
 
 button:active {

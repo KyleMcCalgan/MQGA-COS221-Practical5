@@ -30,6 +30,8 @@ include "config.php";
                                                         echo '../CSS/dashboard.css';
                                                     } elseif ($currentPage == 'view.php') {
                                                         echo '../CSS/view.css';
+                                                    }elseif ($currentPage == 'profile.php') {
+                                                        echo '../CSS/profile.css';
                                                     }
                                                     ?>">
     <script src="../js/logout.js"></script>
@@ -111,6 +113,11 @@ include "config.php";
                         text: 'Control Panel',
                         href: 'SuperMPanel.php',
                         active: '<?php echo ($currentPage == "SuperMPanel.php") ? "current-tab-btn" : ""; ?>'
+                    }, {
+                        id: 'profile-btn',
+                        text: 'Profile',
+                        href: 'profile.php',
+                        active: '<?php echo ($currentPage == "profile.php") ? "current-tab-btn" : ""; ?>'
                     });
                 }
             }
