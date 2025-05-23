@@ -11,6 +11,7 @@ if (! function_exists('handleLogin')) {//marcel
         $email           = isset($inputData['email']) ? sanitiseInput($inputData['email']) : null;
         $passwordAttempt = isset($inputData['password']) ? $inputData['password'] : null;
 
+
         if (empty($email) || empty($passwordAttempt)) {
             apiResponse(false, null, 'Email and password are required.', 400);
             $conn->close();

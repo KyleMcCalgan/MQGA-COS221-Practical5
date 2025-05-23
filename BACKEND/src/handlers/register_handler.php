@@ -1,9 +1,11 @@
 <?php
 
+
 if (! function_exists('handleRegister')) {//marcel
     function handleRegister($data, $db)
     {
         $email    = $data['email'] ?? null;
+
         $password = $data['password'] ?? null;
         $name     = $data['name'] ?? null;
         $surname  = $data['surname'] ?? null;
