@@ -10,7 +10,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../CSS/profile.css">
     <link rel="stylesheet" type="text/css" href="../CSS/stylingJ.css">
 
     <script src="../JS/profile.js"></script>
@@ -18,8 +17,8 @@
 
 <body>
     <div class="container">
-        <h1>Profile</h1>
         <div class="card">
+            <h1>Profile</h1>
             <div class="card-body">
                 <form class="profile-form">
                     <div class="form-group">
@@ -111,9 +110,9 @@
             </div>
         </div>
 
-        <h1>My Reviews</h1>
-
+        
         <div class="card">
+            <h1>My Reviews</h1>
             <div class="card-body">
                 <div class="user-summary">
                     <div class="user-info">

@@ -236,7 +236,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function populateStoreRows(stores) {
-        rowContainer.innerHTML = '';
+        // rowContainer.innerHTML = '';
         if (!stores || stores.length === 0) {
             const noStoresMessage = document.createElement('div');
             noStoresMessage.className = 'storerow';
@@ -262,9 +262,9 @@ document.addEventListener('DOMContentLoaded', function () {
             const storeRow = document.createElement('div');
             storeRow.className = `storerow${cheapestStore && store.price === cheapestStore.price ? ' cheapest' : ''}`;
             storeRow.innerHTML = `
-                <h2 class="store-name">${store.name || 'Unknown Store'}</h2>
-                <h2 class="store-rating">${store.rating ? store.rating + ' ⭐' : 'N/A'}</h2>
-                <h2 class="store-price">${store.price ? 'R' + store.price : 'N/A'}</h2>
+                <h4 class="store-name rowinfo">${store.name || 'Unknown Store'}</h4>
+                <h4 class="store-rating rowinfo">${store.rating ? store.rating + ' ⭐' : 'N/A'}</h4>
+                <h4 class="store-price rowinfo">${store.price ? 'R' + store.price : 'N/A'}</h4>
             `;
             rowContainer.appendChild(storeRow);
         });
@@ -274,7 +274,7 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log('got here');
         console.log(stats);
         statsAvgRating.textContent = `Average rating: ${stats.average_rating ? stats.average_rating + '⭐' : 'N/A'}`;
-        console.log('rating is'+stats);
+        console.log('rating is' + stats);
         console.log('not here');
         statsNumRatings.textContent = `Number of ratings: ${stats.number_of_ratings || 0}`;
         statsNumReviews.textContent = `Number of reviews: ${stats.number_of_reviews || 0}`;
@@ -343,7 +343,7 @@ document.addEventListener('DOMContentLoaded', function () {
             populateReviews(allReviews, page);
             populateReviewStats(reviewData.stats);
             console.log(reviewData.stats);
-        } catch (error) {}
+        } catch (error) { }
     }
 
     async function loadProductDetails() {
@@ -359,7 +359,7 @@ document.addEventListener('DOMContentLoaded', function () {
             populateModalDetails(product);
             populateStoreRows(product.stores);
             await loadReviews(bookId, currentSort, currentPage);
-        } catch (error) {}
+        } catch (error) { }
     }
 
     detailsButton.addEventListener('click', showModal);
@@ -403,7 +403,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (success && (selectedRating || reviewText)) {
             hideReviewModal();
-            currentPage = 0; 
+            currentPage = 0;
             await loadReviews(bookId, currentSort, currentPage);
         } else if (!selectedRating && !reviewText) {
             showUserMessage(reviewMessage, 'Error: Please provide a rating or review.', true);
@@ -411,8 +411,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     sortSelect.addEventListener('change', async function () {
-        currentSort = sortSelect.value; 
-        currentPage = 0; 
+        currentSort = sortSelect.value;
+        currentPage = 0;
         const bookId = getQueryParam('id');
         if (bookId) {
             await loadReviews(bookId, currentSort, currentPage);
@@ -433,5 +433,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    const userType = sessionStorage.getItem('user_type');
+    if (userType !== 'regular' && reviewButton) reviewButton.remove();
     loadProductDetails();
 });
