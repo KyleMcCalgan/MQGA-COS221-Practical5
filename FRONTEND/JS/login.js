@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 //just changed these to be hardcoded for now they can obviously be changed back
                 sessionStorage.setItem('api_key', result.data.api_key);
                 //sessionStorage.setItem('user_type', result.data.user_type);
-                sessionStorage.setItem('user_type','admin');
+                sessionStorage.setItem('user_type','regular');
                 window.location.href = 'launch.php';
             } else document.getElementById('form-message').textContent= result.message;
             

@@ -7,8 +7,8 @@ require_once __DIR__ . '/../utils/response_utils.php';
 
 if (!function_exists('handleRemoveUserReview')) {
     function handleRemoveUserReview($data, $db) {
-        $apiKey = isset($data['apikey']) ? sanitizeInput($data['apikey']) : null;
-        $bookIdInput = isset($data['book_id']) ? sanitizeInput($data['book_id']) : null;
+        $apiKey = isset($data['apikey']) ? sanitiseInput($data['apikey']) : null;
+        $bookIdInput = isset($data['book_id']) ? sanitiseInput($data['book_id']) : null;
 
         if (empty($apiKey) || $bookIdInput === null) {
             apiResponse(false, null, 'API key and book ID are required.', 400);
