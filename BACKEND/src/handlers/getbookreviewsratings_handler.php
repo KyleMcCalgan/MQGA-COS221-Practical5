@@ -95,18 +95,17 @@ if (!function_exists('handleGetBookReviewsRatings')) {
         }
         $stmt->close();
 
-        $query = "SELECT COUNT(R.id) AS number_of_reviews, 
-                         COUNT(RA.rating) AS number_of_ratings, 
-                         AVG(RA.rating) AS average_rating 
-                  FROM REVIEWS R 
-                  LEFT JOIN RATINGS RA ON R.book_id = RA.book_id AND R.user_id = RA.user_id 
-                  WHERE R.book_id = ?";
+        $query = "SELECT (SELECT COUNT(*) FROM REVIEWS WHERE book_id = ?) AS number_of_reviews, 
+                         COUNT(rating) AS number_of_ratings, 
+                         AVG(rating) AS average_rating 
+                  FROM RATINGS 
+                  WHERE book_id = ?";
         $stmt = $db->prepare($query);
         if (!$stmt) {
             error_log("Database prepare statement failed (get book reviews - stats): " . $db->error);
             apiResponse(false, null, 'An internal error occurred. Please try again later.', 500);
         }
-        $stmt->bind_param("i", $bookId);
+        $stmt->bind_param("ii", $bookId, $bookId);
         if (!$stmt->execute()) {
             error_log("Database execute failed (get book reviews - stats): " . $stmt->error);
             apiResponse(false, null, 'An internal error occurred. Please try again later.', 500);
