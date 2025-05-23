@@ -1,21 +1,15 @@
 <?php include "header.php"; ?>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
     <title>Manage Genres</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../CSS/genres.css">
     <link rel="stylesheet" type="text/css" href="../CSS/stylingJ.css">
-</head>
 
-<body>
-
+    </br></br></br></br></br>
     <div class="container">
         <h1 class="mb-4">Manage Genres</h1>
 
-        <!-- Table of Genres -->
+        <div id="genreMsg" style="padding: 10px; margin-top: 20px; border-radius: 5px; display: none;"></div>
+
         <div class="card mb-4">
             <div class="card-body">
                 <table class="table table-bordered table-hover text-center">
@@ -25,7 +19,7 @@
                             <th>Visible?</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="genTable">
                         <tr>
                             <td>Fantasy</td>
                             <td>
@@ -53,23 +47,21 @@
                                 </label>
                             </td>
                         </tr>
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- Add New Genre -->
         <div class="card">
             <div class="card-body">
-                <form action="add_genre.php" method="POST" class="d-flex gap-3">
-                    <input type="text" name="new_genre" class="form-control" placeholder="New Genre" required>
+                <form id="addGenre" class="d-flex gap-3"> <input type="text" id="newGenreName" name="new_genre" class="form-control" placeholder="New Genre" required>
                     <button type="submit" class="btn btn-primary">Add Genre</button>
                 </form>
             </div>
         </div>
     </div>
 
-</body>
-<?php include "footer.php"; ?>
+</br>
 
-</html>
+    <script src="../JS/genres.js"></script>
+<?php include "footer.php"; ?>

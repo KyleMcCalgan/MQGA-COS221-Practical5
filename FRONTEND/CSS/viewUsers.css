@@ -1,6 +1,6 @@
-.ribbon{
+.ribbon {
   backdrop-filter: blur(10px);
-  background-color:rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.7);
   color: black;
   text-align: center;
   font-size: 18px;
@@ -17,13 +17,21 @@
   height: 80px;
   min-width: 50%;
   background-size: 200% 200%;
-  animation: gradientAnimation 10s infinite alternate ease-in-out;
+  animation: gradientAnimation 5s infinite alternate ease-in-out;
 }
 
-@keyframes gradientAnimation{
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .ribbon .logo {
@@ -46,7 +54,7 @@
   transform: scale(1.1);
 }
 
-.ribbon .logo a{
+.ribbon .logo a {
   max-height: 80%;
   height: auto;
   width: auto;
@@ -54,13 +62,13 @@
   cursor: pointer;
 }
 
-button{
+button {
   cursor: pointer;
   position: relative;
   padding: 10px 24px;
   font-size: 18px;
-  color: rgb(0, 0, 0);
-  border: 1px solid rgb(0, 0, 0);
+  color: rgb(255, 0, 0);
+  border: 1px solid rgb(255, 0, 0);
   border-radius: 10px;
   background-color: transparent;
   font-weight: 600;
@@ -69,23 +77,19 @@ button{
   margin: 0 15px;
 }
 
+
 button::before {
   content: '';
   position: absolute;
   inset: 0;
   margin: auto;
-  width: 200px;
+  width: 100px;
   height: 100px;
   border-radius: inherit;
   transform: scale(0);
   z-index: -1;
-  background-color: rgb(0, 0, 0);
+  background-color: rgb(255, 0, 0);
   transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
-}
-
-.card h2 {
-  color: black;
-  font-size: 22px;
 }
 
 button:hover::before {
@@ -95,131 +99,131 @@ button:hover::before {
 button:hover {
   color: #e0e0e0;
   transform: scale(1.1);
-  box-shadow: 0 0px 70px rgba(100, 100, 100,0.4);
+  box-shadow: 0 0px 20px rgba(100, 100, 100, 0.4);
 }
 
 button:active {
   transform: scale(1);
 }
 
-.ribbon a{
+.ribbon a {
   text-decoration: none;
 }
 
-.content{
+.content {
   font-family: "Inter", sans-serif;
   padding-top: 80px;
-  font-size: 30px;
-  color: black;
-  justify-content: center;
-  z-index: -1;
   text-align: center;
-  flex : 1;
+  font-size: 40px;
+  justify-content: center;
+  color: black;
+  z-index: -1;
+  padding-bottom: 40px;
 }
 
-.content p{
-  font-size: 18px;
+.content p {
+  font-size: 24px;
 }
 
-body{
+body {
   font-family: "Inter", sans-serif;
   font-weight: 400;
   font-style: normal;
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  background-color: rgb(221, 221, 221);
+  background: linear-gradient(45deg, rgb(200, 200, 200), rgb(230, 230, 230), rgb(250, 240, 240));
   background-size: 200% 200%;
   animation: gradientAnimation 10s infinite alternate ease-in-out;
 }
 
-a{
+a {
   color: inherit;
   text-decoration: none;
 }
 
-.card{
-  width: 100%;
-  min-width: 200px;
-  max-width: 300px;
-  border-radius: 20px;
-  background: #f0f0f0;
+.card {
+  color: black;
+  width: 95%;
+  margin: 20px auto;
+  border-radius: 10px;
   box-shadow: 15px 15px 30px rgb(200, 200, 200), -15px -15px 30px rgb(180, 180, 180);
-  padding: 10px;
   text-align: center;
-  transition: transform 0.3s ease-in-out;
-  height: auto ;
-  background-color: rgba(255, 255, 255, 0.7);
+  height: auto;
   backdrop-filter: blur(10px);
-  overflow: visible;
-  color: black;
-}
-
-.range{
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 30px;
-  align-items: stretch;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.7);
+  position: relative;
+  min-height: 100px;
 }
 
-.card:hover{
-  cursor: pointer;
-  transform: scale(1.03);
+.item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 10px 0;
+  margin: 0;
 }
 
-.card img {
-  border-radius: 15px;
-  height: 400px;
-  min-width: 250px;
-  width: auto;
-  max-width: 300px;
-  object-fit: contain;
-}
-
-.card-content{
-  color: black;
-  margin-top: 10px;
-}
-
-.card-content p {
-  white-space: normal;
-  word-wrap: break-word;
-  word-break: break-word;
-  overflow: visible;
-}
-
-.card h2{
-  font-size: 22px;
-}
-
-.card p{
-  font-size: 18px;
-}
-
-.search-bar{
-  width: 12%;
-  height: 40px;
-  border-radius: 34px;
+.item>p,
+.item>button {
+  box-sizing: border-box;
+  padding: 5px 5px;
+  margin: 0;
   text-align: left;
-  text-indent: 10px;
-  border: 1px solid rgb(0, 0, 0);
-  transition: width 0.3s ease-out, box-shadow 0.4s ease-in-out, border 0.4s ease-in-out;
-  outline: none;
-  color: black;
+  font-size: 16px;
 }
 
-.search-bar:focus{
-  width: 20%;
-  border: 2px solid #65bac9;
-  box-shadow: 0 0 10px #8ef2ed, 0 0 20px #a0a0a0, 0 0 30px #c0c0c0;
+.item>*:nth-child(1) {
+  flex: 0 0 6%;
+  min-width: 45px;
 }
 
-.current-tab-btn{
+.item>*:nth-child(2) {
+  flex: 1 1 20%;
+  min-width: 100px;
+}
+
+.item>*:nth-child(3) {
+  flex: 1 1 20%;
+  min-width: 100px;
+}
+
+.item>*:nth-child(4) {
+  flex: 1 1 28%;
+  min-width: 160px;
+}
+
+.item>*:nth-child(5) {
+  flex: 1 1 16%;
+  min-width: 110px;
+}
+
+.item>*:nth-child(6) {
+  flex: 0 0 10%;
+  min-width: 100px;
+  text-align: center;
+}
+
+.item-header>p {
+  font-weight: bold;
+}
+
+.item>button {
+  margin: 0 auto;
+  padding: 8px 5px;
+  font-size: 14px;
+  width: 50%;
+}
+
+.current-tab-btn {
   background-color: #333333;
   color: white;
   transform: scale(1.1);
-  box-shadow: 0 0px 20px rgba(100, 100, 100,0.4);
+  box-shadow: 0 0px 20px rgba(100, 100, 100, 0.4);
 }
 
 .footer-content {
@@ -249,22 +253,14 @@ a{
   background-color: #e0e0e0;
 }
 
-.fg {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 20px;
-  width: 100%;
-}
-
-.fg label,
-.fg input {
-  width: 80%;
-  max-width: 400px;
-  text-align: left;
-}
-
-#submit-button {
+.item+hr {
   display: block;
-  margin: 20px auto;
+  border: 0;
+  height: 1px;
+  background-color: #eee;
+  margin: 0;
+}
+
+.item:last-of-type+hr {
+  display: none;
 }

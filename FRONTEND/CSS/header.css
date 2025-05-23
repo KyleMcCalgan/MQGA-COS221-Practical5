@@ -1,0 +1,119 @@
+.ribbon{
+  backdrop-filter: blur(10px);
+  background-color:rgba(255, 255, 255, 0.7);
+  color: black;
+  text-align: center;
+  font-size: 18px;
+  font-family: "Inter", sans-serif;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 11;
+  display: flex;
+  align-items: center;
+  padding: 5px 20px;
+  height: 80px;
+  min-width: 50%;
+  background-size: 200% 200%;
+  margin-bottom: 80px;
+}
+
+@keyframes gradientAnimation{
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.ribbon .logo{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  /* cursor: pointer; */
+  align-self: flex-start;
+  padding-right: 2%;
+}
+
+.ribbon .logo img {
+  max-height: 80%;
+  height: auto;
+  width: auto;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+.ribbon .logo img:hover {
+  transform: scale(1.1);
+}
+
+.ribbon .logo a{
+  max-height: 80%;
+  height: auto;
+  width: auto;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+.ribbon button{
+  cursor: pointer;
+  position: relative;
+  padding: 10px 24px;
+  font-size: 18px;
+  color: rgb(0, 0, 0);
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 10px;
+  background-color: transparent;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(1, 0.5, 0.5, 1);
+  overflow: hidden;
+  /* margin: 0 15px; */
+}
+
+.ribbon .nav-btn {
+  margin: 0 15px; /* Apply margin only to nav-btn buttons */
+}
+
+.ribbon button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 100px;
+  height: 100px;
+  border-radius: inherit;
+  transform: scale(0);
+  z-index: -1;
+  background-color: rgb(0, 0, 0);
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+.ribbon button:hover::before {
+  transform: scale(3);
+}
+
+.ribbon button:hover {
+  color: #e0e0e0;
+  transform: scale(1.1);
+  box-shadow: 0 0px 70px rgba(100, 100, 100,0.4);
+}
+
+.ribbon button:active {
+  transform: scale(1);
+}
+
+.ribbon a{
+  text-decoration: none;
+}
+
+.ribbon .outbtn{
+    margin-left: auto;
+    margin-right: 30px;
+}
+
+.ribbon button.current-tab-btn {
+  background-color: #333333;
+  color: white;
+  transform: scale(1.1);
+  box-shadow: 0 0px 20px rgba(100, 100, 100, 0.4);
+}

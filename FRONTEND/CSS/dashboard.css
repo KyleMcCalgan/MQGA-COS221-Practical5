@@ -1,6 +1,6 @@
-.ribbon{
+.ribbon {
   backdrop-filter: blur(10px);
-  background-color:rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.7);
   color: black;
   text-align: center;
   font-size: 18px;
@@ -20,10 +20,18 @@
   animation: gradientAnimation 10s infinite alternate ease-in-out;
 }
 
-@keyframes gradientAnimation{
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .ribbon .logo {
@@ -46,7 +54,7 @@
   transform: scale(1.1);
 }
 
-.ribbon .logo a{
+.ribbon .logo a {
   max-height: 80%;
   height: auto;
   width: auto;
@@ -54,7 +62,7 @@
   cursor: pointer;
 }
 
-button{
+button {
   cursor: pointer;
   position: relative;
   padding: 10px 24px;
@@ -74,7 +82,7 @@ button::before {
   position: absolute;
   inset: 0;
   margin: auto;
-  width: 200px;
+  width: 100px;
   height: 100px;
   border-radius: inherit;
   transform: scale(0);
@@ -95,18 +103,18 @@ button:hover::before {
 button:hover {
   color: #e0e0e0;
   transform: scale(1.1);
-  box-shadow: 0 0px 70px rgba(100, 100, 100,0.4);
+  box-shadow: 0 0px 70px rgba(100, 100, 100, 0.4);
 }
 
 button:active {
   transform: scale(1);
 }
 
-.ribbon a{
+.ribbon a {
   text-decoration: none;
 }
 
-.content{
+.content {
   font-family: "Inter", sans-serif;
   padding-top: 80px;
   font-size: 30px;
@@ -114,14 +122,10 @@ button:active {
   justify-content: center;
   z-index: -1;
   text-align: center;
-  flex : 1;
+  flex: 1;
 }
 
-.content p{
-  font-size: 18px;
-}
-
-body{
+body {
   font-family: "Inter", sans-serif;
   font-weight: 400;
   font-style: normal;
@@ -133,12 +137,12 @@ body{
   animation: gradientAnimation 10s infinite alternate ease-in-out;
 }
 
-a{
+a {
   color: inherit;
   text-decoration: none;
 }
 
-.card{
+.card {
   width: 100%;
   min-width: 200px;
   max-width: 300px;
@@ -148,22 +152,22 @@ a{
   padding: 10px;
   text-align: center;
   transition: transform 0.3s ease-in-out;
-  height: auto ;
+  height: auto;
   background-color: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(10px);
   overflow: visible;
   color: black;
 }
 
-.range{
+.range {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 30px;
+  gap: 50px;
   align-items: stretch;
 }
 
-.card:hover{
+.card:hover {
   cursor: pointer;
   transform: scale(1.03);
 }
@@ -177,7 +181,7 @@ a{
   object-fit: contain;
 }
 
-.card-content{
+.card-content {
   color: black;
   margin-top: 10px;
 }
@@ -189,37 +193,15 @@ a{
   overflow: visible;
 }
 
-.card h2{
-  font-size: 22px;
-}
-
-.card p{
+.card p {
   font-size: 18px;
 }
 
-.search-bar{
-  width: 12%;
-  height: 40px;
-  border-radius: 34px;
-  text-align: left;
-  text-indent: 10px;
-  border: 1px solid rgb(0, 0, 0);
-  transition: width 0.3s ease-out, box-shadow 0.4s ease-in-out, border 0.4s ease-in-out;
-  outline: none;
-  color: black;
-}
-
-.search-bar:focus{
-  width: 20%;
-  border: 2px solid #65bac9;
-  box-shadow: 0 0 10px #8ef2ed, 0 0 20px #a0a0a0, 0 0 30px #c0c0c0;
-}
-
-.current-tab-btn{
+.current-tab-btn {
   background-color: #333333;
   color: white;
   transform: scale(1.1);
-  box-shadow: 0 0px 20px rgba(100, 100, 100,0.4);
+  box-shadow: 0 0px 20px rgba(100, 100, 100, 0.4);
 }
 
 .footer-content {
@@ -249,22 +231,31 @@ a{
   background-color: #e0e0e0;
 }
 
-.fg {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 20px;
-  width: 100%;
-}
-
-.fg label,
-.fg input {
-  width: 80%;
-  max-width: 400px;
-  text-align: left;
-}
-
-#submit-button {
+.image-wrapper-for-badge {
+  position: relative;
   display: block;
-  margin: 20px auto;
+  line-height: 0;
+}
+
+.image-wrapper-for-badge .card-image {
+  display: block;
+}
+
+.image-number-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 35px;
+  height: 35px;
+  background-color: white;
+  color: black;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: bold;
+  border: 1.5px solid black;
+  z-index: 1;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
 }

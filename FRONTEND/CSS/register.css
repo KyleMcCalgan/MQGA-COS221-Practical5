@@ -1,14 +1,13 @@
 .signup-container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    margin-top: 30px;
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
 }
-
 .fg{
     margin-bottom: 20px;
     width: 100%;
+    align-items: center;
 }
 
 .fg label{
@@ -18,7 +17,7 @@
 }
 
 .fg input{
-    width: 100%;
+    width: 90%;
     padding: 12px;
     border-radius: 34px;
     border: 1px solid rgb(0, 0, 0);
@@ -62,8 +61,8 @@
 .password-requirements {
     margin-top: 10px;
     padding: 10px;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #ccc;
+    background-color: rgba(255, 255, 255, 0);
+    color: #000000;
     border-radius: 5px;
     font-size: 14px;
 }
@@ -88,10 +87,14 @@
     font-size: 18px;
 }
 
-.smol-card {
+#smol-card{
     width: 90%;
-    max-width: 475px;
+    max-width: 600px;
     margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 .login-link {
