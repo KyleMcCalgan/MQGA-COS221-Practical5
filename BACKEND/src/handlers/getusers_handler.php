@@ -16,9 +16,11 @@ if (!function_exists('handleGetUsers')) {
         }
 
 
+
         $requestingUserStmt->bind_param("s", $apiKey);
         if (!$requestingUserStmt->execute()) {
             apiResponse(false, null, 'Database error: User lookup query failed.', 500);
+
         }
 
         $requestingUserResult = $requestingUserStmt->get_result();

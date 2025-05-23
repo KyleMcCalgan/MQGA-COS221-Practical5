@@ -1,6 +1,6 @@
 <?php
 
-function handleLogin($inputData) {
+function handleLogin($inputData) {//marcel
     $conn = getDbConnection();
 
     $email = isset($inputData['email']) ? sanitiseInput($inputData['email']) : null;

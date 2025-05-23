@@ -1,5 +1,5 @@
 <?php
-if (!function_exists('sanitiseInput')) {
+if (!function_exists('sanitiseInput')) {//marcel
     function sanitiseInput($data) {
         if (is_string($data)) {
             $data = trim($data);
