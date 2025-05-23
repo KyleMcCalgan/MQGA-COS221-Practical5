@@ -23,11 +23,32 @@ document.addEventListener('DOMContentLoaded', function () {
     const modalAccessible = document.getElementById('modal-accessible');
     const modalCategories = document.getElementById('modal-categories');
     const rowContainer = document.querySelector('.rowcontainer');
+    const reviewButton = document.getElementById('review-button');
+    const reviewModal = document.getElementById('review-modal');
+    const closeReviewModal = document.getElementById('close-review-modal');
+    const reviewForm = document.getElementById('review-form');
+    const reviewInput = document.getElementById('review-input');
+    const ratingInputs = document.querySelectorAll('input[name="rate"]');
+    const reviewMessage = document.getElementById('review-message');
+    const statsAvgRating = document.querySelector('.statsavgR');
+    const statsNumRatings = document.querySelector('.statsnoR');
+    const statsNumReviews = document.querySelector('.statsnoRe');
+    const reviewAccordion = document.getElementById('reviewAccordion');
+    const sortSelect = document.getElementById('review-sort');
+    const prevPageButton = document.getElementById('prev-page');
+    const nextPageButton = document.getElementById('next-page');
+
+    let currentPage = 0;
+    const reviewsPerPage = 6;
+    let allReviews = [];
+    let currentSort = 'newest';
 
     function showUserMessage(element, message, isError = false) {
         element.textContent = message;
         if (isError) {
             element.style.color = 'red';
+        } else {
+            element.style.color = 'green';
         }
     }
 
@@ -76,6 +97,113 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    async function fetchReviews(bookId, sort) {
+        const payload = {
+            type: 'GetBookReviewsRatings',
+            api_key: apiKey,
+            book_id: bookId,
+            sort: sort
+        };
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                let errorData;
+                try {
+                    errorData = await response.json();
+                } catch (e) { }
+                const errorMessage = errorData && errorData.message ? errorData.message : `An HTTP error ${response.status} occurred.`;
+                throw new Error(errorMessage);
+            }
+
+            const result = await response.json();
+
+            if (result.status === 'success' && result.data) {
+                return result.data;
+            } else {
+                const errorMessage = result.message || 'Could not retrieve reviews and ratings.';
+                throw new Error(errorMessage);
+            }
+        } catch (error) {
+            showUserMessage(bookTitle, `Error: ${error.message}`, true);
+            console.error('Error fetching reviews:', error);
+            throw error;
+        }
+    }
+
+    async function submitRating(bookId, rating) {
+        const payload = {
+            type: 'AddUserRating',
+            api_key: apiKey,
+            book_id: bookId,
+            rating: rating
+        };
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                showUserMessage(reviewMessage, 'Rating submitted successfully!', false);
+                return true;
+            } else {
+                showUserMessage(reviewMessage, `Error: ${result.message || 'Could not submit rating.'}`, true);
+                return false;
+            }
+        } catch (error) {
+            showUserMessage(reviewMessage, `Error: ${error.message}`, true);
+            console.error('Error submitting rating:', error);
+            return false;
+        }
+    }
+
+    async function submitReview(bookId, review) {
+        const payload = {
+            type: 'AddUserReview',
+            api_key: apiKey,
+            book_id: bookId,
+            review: review
+        };
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                showUserMessage(reviewMessage, 'Review submitted successfully!', false);
+                return true;
+            } else {
+                showUserMessage(reviewMessage, `Error: ${result.message || 'Could not submit review.'}`, true);
+                return false;
+            }
+        } catch (error) {
+            showUserMessage(reviewMessage, `Error: ${error.message}`, true);
+            console.error('Error submitting review:', error);
+            return false;
+        }
+    }
+
     function populateBookDetails(product) {
         bookImage.src = product.thumbnail || product.smallThumbnail || '../Images/notfound.png';
         bookImage.alt = product.title;
@@ -108,7 +236,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function populateStoreRows(stores) {
-        rowContainer.innerHTML = ''; // Clear existing rows
+        rowContainer.innerHTML = '';
         if (!stores || stores.length === 0) {
             const noStoresMessage = document.createElement('div');
             noStoresMessage.className = 'storerow';
@@ -128,9 +256,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         const validStores = sortedStores.filter(store => store.price && !isNaN(parseFloat(store.price)));
-        const cheapestStore = validStores.length > 0
-            ? validStores[0] 
-            : null;
+        const cheapestStore = validStores.length > 0 ? validStores[0] : null;
 
         sortedStores.forEach(store => {
             const storeRow = document.createElement('div');
@@ -144,12 +270,75 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    function populateReviewStats(stats) {
+        statsAvgRating.textContent = `Average rating: ${stats.average_rating ? stats.average_rating.toFixed(2) + '⭐' : 'N/A'}`;
+        statsNumRatings.textContent = `Number of ratings: ${stats.number_of_ratings || 0}`;
+        statsNumReviews.textContent = `Number of reviews: ${stats.number_of_reviews || 0}`;
+    }
+
+    function populateReviews(reviews, page) {
+        reviewAccordion.innerHTML = '';
+        if (!reviews || reviews.length === 0) {
+            const noReviewsMessage = document.createElement('p');
+            noReviewsMessage.textContent = 'No reviews available.';
+            noReviewsMessage.style.textAlign = 'center';
+            reviewAccordion.appendChild(noReviewsMessage);
+            prevPageButton.disabled = true;
+            nextPageButton.disabled = true;
+            return;
+        }
+
+        const start = page * reviewsPerPage;
+        const end = start + reviewsPerPage;
+        const paginatedReviews = reviews.slice(start, end);
+
+        paginatedReviews.forEach((review, index) => {
+            const accordionItem = document.createElement('div');
+            accordionItem.className = 'accordion-item';
+            accordionItem.innerHTML = `
+                <h2 class="accordion-header" id="heading${review.review_id}">
+                    <button class="accordion-button${index === 0 ? '' : ' collapsed'}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${review.review_id}" aria-expanded="${index === 0 ? 'true' : 'false'}" aria-controls="collapse${review.review_id}">
+                        ${review.user_name}: ${review.rating ? review.rating + ' ⭐' : 'No rating'}
+                    </button>
+                </h2>
+                <div id="collapse${review.review_id}" class="accordion-collapse collapse${index === 0 ? ' show' : ''}" aria-labelledby="heading${review.review_id}" data-bs-parent="#reviewAccordion">
+                    <div class="accordion-body">
+                        ${review.review || 'No review text provided.'}
+                    </div>
+                </div>
+            `;
+            reviewAccordion.appendChild(accordionItem);
+        });
+        prevPageButton.disabled = page === 0;
+        nextPageButton.disabled = end >= reviews.length;
+    }
+
     function showModal() {
         modal.style.display = 'flex';
     }
 
     function hideModal() {
         modal.style.display = 'none';
+    }
+
+    function showReviewModal() {
+        reviewModal.style.display = 'flex';
+        reviewMessage.textContent = 'If you have an existing rating or review for this book, it will be replaced.';
+    }
+
+    function hideReviewModal() {
+        reviewModal.style.display = 'none';
+        reviewForm.reset();
+        reviewMessage.textContent = '';
+    }
+
+    async function loadReviews(bookId, sort, page = 0) {
+        try {
+            const reviewData = await fetchReviews(bookId, sort);
+            allReviews = reviewData.reviews || [];
+            populateReviews(allReviews, page);
+            populateReviewStats(reviewData.stats);
+        } catch (error) {}
     }
 
     async function loadProductDetails() {
@@ -164,9 +353,8 @@ document.addEventListener('DOMContentLoaded', function () {
             populateBookDetails(product);
             populateModalDetails(product);
             populateStoreRows(product.stores);
-        } catch (error) {
-            // Error message handled in fetchProduct
-        }
+            await loadReviews(bookId, currentSort, currentPage);
+        } catch (error) {}
     }
 
     detailsButton.addEventListener('click', showModal);
@@ -174,6 +362,69 @@ document.addEventListener('DOMContentLoaded', function () {
     modal.addEventListener('click', function (event) {
         if (event.target === modal) {
             hideModal();
+        }
+    });
+
+    reviewButton.addEventListener('click', showReviewModal);
+    closeReviewModal.addEventListener('click', hideReviewModal);
+    reviewModal.addEventListener('click', function (event) {
+        if (event.target === reviewModal) {
+            hideReviewModal();
+        }
+    });
+
+    reviewForm.addEventListener('submit', async function (event) {
+        event.preventDefault();
+        const bookId = getQueryParam('id');
+        if (!bookId) {
+            showUserMessage(reviewMessage, 'Error: No book ID provided.', true);
+            return;
+        }
+
+        const reviewText = reviewInput.value.trim();
+        const selectedRating = Array.from(ratingInputs).find(input => input.checked)?.value;
+
+        let success = true;
+
+        if (selectedRating) {
+            const ratingSuccess = await submitRating(bookId, selectedRating);
+            success = success && ratingSuccess;
+        }
+
+        if (reviewText) {
+            const reviewSuccess = await submitReview(bookId, reviewText);
+            success = success && reviewSuccess;
+        }
+
+        if (success && (selectedRating || reviewText)) {
+            hideReviewModal();
+            currentPage = 0; 
+            await loadReviews(bookId, currentSort, currentPage);
+        } else if (!selectedRating && !reviewText) {
+            showUserMessage(reviewMessage, 'Error: Please provide a rating or review.', true);
+        }
+    });
+
+    sortSelect.addEventListener('change', async function () {
+        currentSort = sortSelect.value; 
+        currentPage = 0; 
+        const bookId = getQueryParam('id');
+        if (bookId) {
+            await loadReviews(bookId, currentSort, currentPage);
+        }
+    });
+
+    prevPageButton.addEventListener('click', function () {
+        if (currentPage > 0) {
+            currentPage--;
+            populateReviews(allReviews, currentPage);
+        }
+    });
+
+    nextPageButton.addEventListener('click', function () {
+        if ((currentPage + 1) * reviewsPerPage < allReviews.length) {
+            currentPage++;
+            populateReviews(allReviews, currentPage);
         }
     });
 

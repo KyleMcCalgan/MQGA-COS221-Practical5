@@ -2,14 +2,11 @@
     padding-top: 8%;
 }
 
-
 /* Table with prices========= */
 .VTableContainer {
     width: 80%;
     margin: 0 auto 3%;
-    /* background-color: #000; */
     border-radius: 15px;
-    /* padding: 2%; */
 }
 
 .storerow {
@@ -62,6 +59,13 @@
     margin-left: 2%;
 }
 
+.rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    gap: 5px;
+    margin: 10px 0;
+}
 
 .rating:not(:checked)>input {
     position: absolute;
@@ -69,22 +73,17 @@
 }
 
 .rating:not(:checked)>label {
-    float: right;
     cursor: pointer;
     font-size: 30px;
-    fill: #666;
 }
 
 .rating:not(:checked)>label>svg {
     fill: #666;
-    /* Set default color for SVG */
     transition: fill 0.3s ease;
-    /* Add a transition effect */
 }
 
 .rating>input:checked+label:hover,
-.rating>input:checked+label:hover~label,
-.rating>input:checked~label:hover,
+.rating>input:checked+label:hover~label .rating>input:checked~label:hover,
 .rating>input:checked~label:hover~label,
 .rating>label:hover~input:checked~label {
     fill: #e58e09;
@@ -97,12 +96,9 @@
 
 .rating>input:checked~label>svg {
     fill: #ffa723;
-    /* Set color for selected stars */
 }
 
-
 /* for table styling============================= */
-
 .Vimg {
     width: auto;
     height: 350px;
@@ -125,7 +121,6 @@
     padding: 2%;
     border-radius: 15px;
     margin: 0 auto 3%;
-
     background-color: white;
 }
 
@@ -134,8 +129,6 @@
     display: flex;
     flex-direction: column;
     text-align: left;
-    /* margin: auto 0; */
-
 }
 
 .storerow.cheapest {
@@ -143,7 +136,6 @@
 }
 
 .reviewcontainer {
-    /* background-color: black; */
     margin: 0 auto 3%;
     border-radius: 15px;
     width: 80%;
@@ -158,19 +150,19 @@
     width: 40%;
 }
 
-.revouterc{
+.revouterc {
     display: flex;
     flex-direction: row;
 }
 
-.revtop{
+.revtop {
     background-color: white;
     padding: 2%;
     border-radius: 15px;
     margin-bottom: 2%;
 }
 
-.revleft{
+.revleft {
     width: 22%;
     background-color: white;
     margin-right: 3%;
@@ -178,25 +170,43 @@
     padding: 2%;
 }
 
-.revright{
+.revright {
     width: 75%;
     background-color: white;
     padding: 2%;
     border-radius: 15px;
 }
 
-.revtop.functions{
+.revtop.functions {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
-.sortheading{
+.sortheading {
     display: flex;
     flex-direction: row;
 }
 
-/* pop up================ */
+select {
+    border: 2px solid transparent;
+    height: 70%;
+    outline: none;
+    overflow: hidden;
+    background-color: #f3f3f3;
+    border-radius: 10px;
+    transition: all 0.5s;
+    color: #333;
+    appearance: none;
+}
+
+select:hover {
+    border: 2px solid black;
+    box-shadow: 0px 0px 0px 5px rgba(105, 107, 114, 0.4);
+    background-color: white;
+}
+
+/* Modal styling =================*/
 .modal {
     display: none;
     position: fixed;
@@ -233,6 +243,40 @@
     font-size: 16px;
 }
 
+.modal-content label {
+    font-size: 16px;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.modal-content textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: vertical;
+}
+
+.modal-content .rating {
+    margin: 10px 0;
+}
+
+.centerbutton{
+    width: 100%;
+    display: flex;
+}
+
+.modal-content .blackbutton {
+    margin: 10px auto;
+    width: 80%;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.blackbutton:hover::before {
+  transform: scale(3);
+}
+
 .close-button {
     position: absolute;
     top: 10px;
@@ -248,11 +292,32 @@
     color: #000;
 }
 
-/* Reviews table============== */
+/* page styling ========= */
+.page-button {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    margin: 0 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.page-button:hover:not(:disabled) {
+    background-color: #555;
+}
+
+.page-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Reviews table ============ */
 .item {
     display: flex;
     flex-direction: row;
-    /* padding: 10px 10px; */
 }
 
 .ribbon {
