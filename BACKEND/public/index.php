@@ -111,7 +111,6 @@ switch ($actionType) {
         }
         break;
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         case 'GetStoreProducts':
         if ($_SERVER['REQUEST_METHOD'] !== 'GET' && $_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -160,8 +159,9 @@ switch ($actionType) {
             apiResponse(false, null, 'AddProduct handler not found.', 500);
         }
         break;
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    case 'GetAllProducts':
+    case 'GetAllProducts': // Cailin
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for getAllProducts. Use POST.', 405);
         }
@@ -173,7 +173,7 @@ switch ($actionType) {
         }
         break;
 
-    case 'GetHighestRatedProducts':
+    case 'GetHighestRatedProducts': // Cailin
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for GetHighestRatedProducts. Use POST.', 405);
         }
@@ -186,7 +186,7 @@ switch ($actionType) {
         break;
 
 
-    case 'GetFeaturedProducts':
+    case 'GetFeaturedProducts': // Cailin
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for GetFeaturedProducts. Use POST.', 405);
         }
@@ -198,7 +198,7 @@ switch ($actionType) {
         }
         break;
 
-    case 'GetProduct':
+    case 'GetProduct': // Cailin
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for GetProduct. Use POST.', 405);
         }
@@ -210,7 +210,7 @@ switch ($actionType) {
         }
         break;
 
-    case 'GetAllListedProducts':
+    case 'GetAllListedProducts': // Cailin
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for GetAllListedProducts. Use POST.', 405);
         }
@@ -221,7 +221,7 @@ switch ($actionType) {
             apiResponse(false, null, 'GetAllListedProducts handler not found.', 500);
         }
         break;
-  case 'UpdateProductSuper':
+  case 'UpdateProductSuper': //marcel
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for UpdateProduct. Use POST.', 405);
         }
@@ -234,7 +234,7 @@ switch ($actionType) {
         break;
 
 
-    case 'GetStores':
+    case 'GetStores': // Cailin
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for GetStores. Use POST.', 405);
         }
@@ -246,7 +246,7 @@ switch ($actionType) {
         }
         break;
 
-    case 'DeleteStore':
+    case 'DeleteStore': // Cailin
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for DeleteStore. Use POST.', 405);
         }
@@ -258,7 +258,7 @@ switch ($actionType) {
         }
         break;
 
-    case 'AddStore':
+    case 'AddStore': // Cailin
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for AddStore. Use POST.', 405);
         }
@@ -270,7 +270,7 @@ switch ($actionType) {
         }
         break;
 
-    case 'AddStoreAdmin':
+    case 'AddStoreAdmin': // Cailin
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for AddStoreAdmin. Use POST.', 405);
         }
@@ -295,7 +295,7 @@ switch ($actionType) {
         }
         break;
 
-    case 'UpdateStore':
+    case 'UpdateStore': // Cailin
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for UpdateStore. Use POST.', 405);
         }
@@ -307,7 +307,7 @@ switch ($actionType) {
         }
         break;
 
-    case 'UpdateUserInfo':
+    case 'UpdateUserInfo': // Cailin
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for UpdateUserInfo. Use POST.', 405);
         }
@@ -319,7 +319,7 @@ switch ($actionType) {
         }
         break;
 
-    case 'GetUserReviewsRatings':
+    case 'GetUserReviewsRatings': // Cailin
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for GetUserReviewsRatings. Use POST.', 405);
         }
@@ -331,7 +331,7 @@ switch ($actionType) {
         }
         break;
 
-    case 'GetAllProductsRR':
+    case 'GetAllProductsRR': // Cailin
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for GetAllProductsRR. Use POST.', 405);
         }
@@ -343,7 +343,7 @@ switch ($actionType) {
         }
         break;
 
-    case 'GetBookReviewsRatings':
+    case 'GetBookReviewsRatings': // Cailin
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for GetBookReviewsRatings. Use POST.', 405);
         }
@@ -355,7 +355,7 @@ switch ($actionType) {
         }
         break;
 
-    case 'GetUsers':
+    case 'GetUsers': // Cailin
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for GetUsers. Use POST.', 405);
         }
@@ -367,7 +367,7 @@ switch ($actionType) {
         }
         break;
 
-    case 'RemoveUsers':
+    case 'RemoveUsers': // Cailin
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for RemoveUsers. Use POST.', 405);
         }
