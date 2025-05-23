@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 20, 2025 at 08:56 AM
+-- Generation Time: May 23, 2025 at 12:26 PM
 -- Server version: 10.3.39-MariaDB-0+deb10u2
 -- PHP Version: 7.3.31-1~deb10u7
 
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `u24566552_MQGA`
 --
-CREATE DATABASE IF NOT EXISTS `u24566552_MQGA` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `u24566552_MQGA`;
 
 -- --------------------------------------------------------
 
@@ -32,7 +30,7 @@ USE `u24566552_MQGA`;
 CREATE TABLE `ADMINS` (
   `id` int(11) NOT NULL,
   `store_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+);
 
 -- --------------------------------------------------------
 
@@ -43,7 +41,7 @@ CREATE TABLE `ADMINS` (
 CREATE TABLE `BOOK_CATS` (
   `book_id` int(11) NOT NULL,
   `category_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+);
 
 -- --------------------------------------------------------
 
@@ -55,7 +53,7 @@ CREATE TABLE `CATEGORIES` (
   `category_id` int(11) NOT NULL,
   `searchable` tinyint(1) DEFAULT NULL,
   `genre` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+);
 
 -- --------------------------------------------------------
 
@@ -92,7 +90,7 @@ CREATE TABLE `RATINGS` (
   `book_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `rating` smallint(6) NOT NULL CHECK (`rating` >= 1 and `rating` <= 5)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+);
 
 -- --------------------------------------------------------
 
@@ -105,7 +103,7 @@ CREATE TABLE `REVIEWS` (
   `book_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `review` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+);
 
 -- --------------------------------------------------------
 
@@ -119,7 +117,7 @@ CREATE TABLE `STORES` (
   `logo` varchar(512) DEFAULT NULL,
   `domain` varchar(255) DEFAULT NULL,
   `type` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+);
 
 -- --------------------------------------------------------
 
@@ -132,7 +130,7 @@ CREATE TABLE `STORE_INFO` (
   `store_id` int(11) NOT NULL,
   `price` decimal(10,2) DEFAULT NULL,
   `rating` decimal(3,2) DEFAULT NULL CHECK (`rating` is null or `rating` >= 1.00 and `rating` <= 5.00)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+);
 
 -- --------------------------------------------------------
 
@@ -149,11 +147,8 @@ CREATE TABLE `USERS` (
   `password` varchar(255) NOT NULL,
   `salt` varchar(64) NOT NULL,
   `user_type` enum('super','regular','admin') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+);
 
---
--- Indexes for dumped tables
---
 
 --
 -- Indexes for table `ADMINS`
@@ -229,10 +224,6 @@ ALTER TABLE `USERS`
   ADD UNIQUE KEY `apikey` (`apikey`);
 
 --
--- AUTO_INCREMENT for dumped tables
---
-
---
 -- AUTO_INCREMENT for table `CATEGORIES`
 --
 ALTER TABLE `CATEGORIES`
@@ -267,10 +258,6 @@ ALTER TABLE `STORES`
 --
 ALTER TABLE `USERS`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- Constraints for dumped tables
---
 
 --
 -- Constraints for table `ADMINS`
