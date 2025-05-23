@@ -15,6 +15,7 @@ if (!function_exists('handleGetUsers')) {
             apiResponse(false, null, 'Database error: Unable to prepare user lookup query.', 500);
         }
 
+
         $requestingUserStmt->bind_param("s", $apiKey);
         if (!$requestingUserStmt->execute()) {
             apiResponse(false, null, 'Database error: User lookup query failed.', 500);

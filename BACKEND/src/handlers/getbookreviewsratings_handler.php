@@ -6,7 +6,7 @@ if (!function_exists('handleGetBookReviewsRatings')) {
     function handleGetBookReviewsRatings($data, $db) {
         $apiKey = $data['api_key'] ?? null;
         $bookId = $data['book_id'] ?? null;
-        $sort = isset($data['sort']) ? strtolower(sanitizeInput($data['sort'])) : 'newest';
+        $sort = isset($data['sort']) ? strtolower(sanitiseInput($data['sort'])) : 'newest';
 
         if (empty($apiKey)) {
             apiResponse(false, null, 'API key is required.', 401);
@@ -25,7 +25,7 @@ if (!function_exists('handleGetBookReviewsRatings')) {
         }
         $result = $stmt->get_result();
         if ($result->num_rows === 0) {
-            apiResponse(false, null, 'Invalid or unauthorized API key.', 401);
+            apiResponse(false, null, 'Invalid or Unauthorised API key.', 401);
         }
         $stmt->close();
 
@@ -67,7 +67,7 @@ if (!function_exists('handleGetBookReviewsRatings')) {
             'highest rating' => 'RA.rating DESC, R.id DESC',
             'lowest rating' => 'RA.rating ASC, R.id DESC'
         ];
-        $sortOrder = $sortOptions['newest']; // Default
+        $sortOrder = $sortOptions['newest'];
         if (array_key_exists($sort, $sortOptions)) {
             $sortOrder = $sortOptions[$sort];
         }

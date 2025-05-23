@@ -26,7 +26,7 @@ if (!function_exists('handleGetAllListedProducts')) {
         }
         $result = $stmt->get_result();
         if ($result->num_rows === 0) {
-            apiResponse(false, null, 'Invalid or unauthorized API key.', 401);
+            apiResponse(false, null, 'Invalid or Unauthorised API key.', 401);
         }
         $stmt->close();
 
