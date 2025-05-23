@@ -141,9 +141,9 @@ document.addEventListener('DOMContentLoaded', function () {
     async function submitRating(bookId, rating) {
         const payload = {
             type: 'AddUserRating',
-            api_key: apiKey,
-            book_id: bookId,
-            rating: rating
+            apikey: apiKey,
+            book_id: 181,
+            rating: 4
         };
 
         try {
@@ -174,7 +174,7 @@ document.addEventListener('DOMContentLoaded', function () {
     async function submitReview(bookId, review) {
         const payload = {
             type: 'AddUserReview',
-            api_key: apiKey,
+            apikey: apiKey,
             book_id: bookId,
             review: review
         };
@@ -271,7 +271,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function populateReviewStats(stats) {
-        statsAvgRating.textContent = `Average rating: ${stats.average_rating ? stats.average_rating.toFixed(2) + '⭐' : 'N/A'}`;
+        console.log('got here');
+        console.log(stats);
+        statsAvgRating.textContent = `Average rating: ${stats.average_rating ? stats.average_rating + '⭐' : 'N/A'}`;
+        console.log('rating is'+stats);
+        console.log('not here');
         statsNumRatings.textContent = `Number of ratings: ${stats.number_of_ratings || 0}`;
         statsNumReviews.textContent = `Number of reviews: ${stats.number_of_reviews || 0}`;
     }
@@ -338,6 +342,7 @@ document.addEventListener('DOMContentLoaded', function () {
             allReviews = reviewData.reviews || [];
             populateReviews(allReviews, page);
             populateReviewStats(reviewData.stats);
+            console.log(reviewData.stats);
         } catch (error) {}
     }
 
