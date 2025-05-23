@@ -5,11 +5,11 @@ require_once __DIR__ . '/../utils/userid_utils.php';
 require_once __DIR__ . '/../utils/sanitise_utils.php';
 require_once __DIR__ . '/../utils/response_utils.php';
 
-if (!function_exists('handleAddUserReview')) {
+if (!function_exists('handleAddUserReview')) {//marcel
     function handleAddUserReview($data, $db) {
-        $apiKey = isset($data['apikey']) ? sanitizeInput($data['apikey']) : null;
-        $bookIdInput = isset($data['book_id']) ? sanitizeInput($data['book_id']) : null;
-        $reviewText = isset($data['review']) ? sanitizeInput($data['review']) : null;
+        $apiKey = isset($data['apikey']) ? sanitiseInput($data['apikey']) : null;
+        $bookIdInput = isset($data['book_id']) ? sanitiseInput($data['book_id']) : null;
+        $reviewText = isset($data['review']) ? sanitiseInput($data['review']) : null;
 
         if (empty($apiKey) || $bookIdInput === null || $reviewText === null) {
             apiResponse(false, null, 'API key, book ID, and review text are required.', 400);

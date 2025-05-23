@@ -1,5 +1,5 @@
 <?php
-function getDbConnection() {
+function getDbConnection() {//marcel
     $host = $_ENV['DB_HOST'] ?? 'localhost';
     $name = $_ENV['DB_NAME'] ?? die('DB_NAME not set.');
     $user = $_ENV['DB_USER'] ?? die('DB_USER not set.');

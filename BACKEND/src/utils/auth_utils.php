@@ -1,5 +1,5 @@
 <?php
-if (!function_exists('checkAuth')) {
+if (!function_exists('checkAuth')) {//marcel
     function checkAuth($apiKey, $expectedType, $dbConnection = null) {
         if (empty($apiKey) || empty($expectedType)) {
             return false;

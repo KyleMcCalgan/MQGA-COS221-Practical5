@@ -2,7 +2,7 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-if (!function_exists('loadEnv')) {
+if (!function_exists('loadEnv')) {//marcel
     function loadEnv($file) {
         if (!file_exists($file)) return;
         foreach (file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {

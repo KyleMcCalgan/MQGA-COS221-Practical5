@@ -44,7 +44,7 @@ if ($actionType) {
 }
 
 switch ($actionType) {
-    case 'Register':
+    case 'Register'://marcel
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for Register. Use POST.', 405);
         }
@@ -56,7 +56,7 @@ switch ($actionType) {
         }
         break;
 
-    case 'Login':
+    case 'Login'://marcel
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for Login. Use POST.', 405);
             exit;
@@ -282,7 +282,7 @@ switch ($actionType) {
         }
         break;
     
-     case 'AddInfoForStore': 
+     case 'AddInfoForStore': //marcel
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for AddInfoForStore. Use POST.', 405);
         }
@@ -379,7 +379,7 @@ switch ($actionType) {
         }
         break;
     
-      case 'RemoveUserReview':
+      case 'RemoveUserReview'://marcel
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') { 
             apiResponse(false, null, 'Invalid request method for RemoveUserReview. Use POST.', 405);
         }
@@ -391,7 +391,7 @@ switch ($actionType) {
         }
         break;
 
-    case 'AddUserRating':
+    case 'AddUserRating'://marcel
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for AddUserRating. Use POST.', 405);
         }
@@ -403,7 +403,7 @@ switch ($actionType) {
         }
         break;
 
-    case 'AddUserReview': 
+    case 'AddUserReview': //marcel
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for AddUserReview. Use POST.', 405);
         }
@@ -414,6 +414,18 @@ switch ($actionType) {
             apiResponse(false, null, 'AddUserReview handler not found.', 500);
         }
      break;
+
+     case 'RemoveStoreAdmin'://marcel
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') { 
+            apiResponse(false, null, 'Invalid request method for RemoveStoreAdmin. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/removeStoreAdmin_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/removeStoreAdmin_handler.php';
+            handleRemoveStoreAdmin($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'RemoveStoreAdmin handler not found.', 500);
+        }
+        break;
     
 
     case null:
