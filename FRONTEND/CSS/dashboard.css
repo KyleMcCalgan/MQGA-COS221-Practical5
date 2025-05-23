@@ -1,6 +1,6 @@
-.ribbon{
+.ribbon {
   backdrop-filter: blur(10px);
-  background-color:rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.7);
   color: black;
   text-align: center;
   font-size: 18px;
@@ -20,10 +20,18 @@
   animation: gradientAnimation 10s infinite alternate ease-in-out;
 }
 
-@keyframes gradientAnimation{
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .ribbon .logo {
@@ -46,7 +54,7 @@
   transform: scale(1.1);
 }
 
-.ribbon .logo a{
+.ribbon .logo a {
   max-height: 80%;
   height: auto;
   width: auto;
@@ -54,7 +62,7 @@
   cursor: pointer;
 }
 
-button{
+button {
   cursor: pointer;
   position: relative;
   padding: 10px 24px;
@@ -95,18 +103,18 @@ button:hover::before {
 button:hover {
   color: #e0e0e0;
   transform: scale(1.1);
-  box-shadow: 0 0px 70px rgba(100, 100, 100,0.4);
+  box-shadow: 0 0px 70px rgba(100, 100, 100, 0.4);
 }
 
 button:active {
   transform: scale(1);
 }
 
-.ribbon a{
+.ribbon a {
   text-decoration: none;
 }
 
-.content{
+.content {
   font-family: "Inter", sans-serif;
   padding-top: 80px;
   font-size: 30px;
@@ -114,10 +122,10 @@ button:active {
   justify-content: center;
   z-index: -1;
   text-align: center;
-  flex : 1;
+  flex: 1;
 }
 
-body{
+body {
   font-family: "Inter", sans-serif;
   font-weight: 400;
   font-style: normal;
@@ -129,29 +137,29 @@ body{
   animation: gradientAnimation 10s infinite alternate ease-in-out;
 }
 
-a{
+a {
   color: inherit;
   text-decoration: none;
 }
 
-.card{
+.card {
   width: 100%;
-  min-width: 350px;
-  max-width: 350px;
+  min-width: 200px;
+  max-width: 300px;
   border-radius: 20px;
   background: #f0f0f0;
   box-shadow: 15px 15px 30px rgb(200, 200, 200), -15px -15px 30px rgb(180, 180, 180);
-  padding: 20px;
+  padding: 10px;
   text-align: center;
   transition: transform 0.3s ease-in-out;
-  height: auto ;
+  height: auto;
   background-color: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(10px);
   overflow: visible;
   color: black;
 }
 
-.range{
+.range {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -159,20 +167,21 @@ a{
   align-items: stretch;
 }
 
-.card:hover{
+.card:hover {
   cursor: pointer;
   transform: scale(1.03);
 }
 
 .card img {
   border-radius: 15px;
-  width: 100%;
-  height: auto;
-  max-height: 600px;
+  height: 400px;
+  min-width: 250px;
+  width: auto;
+  max-width: 300px;
   object-fit: contain;
 }
 
-.card-content{
+.card-content {
   color: black;
   margin-top: 10px;
 }
@@ -184,15 +193,15 @@ a{
   overflow: visible;
 }
 
-.card p{
+.card p {
   font-size: 18px;
 }
 
-.current-tab-btn{
+.current-tab-btn {
   background-color: #333333;
   color: white;
   transform: scale(1.1);
-  box-shadow: 0 0px 20px rgba(100, 100, 100,0.4);
+  box-shadow: 0 0px 20px rgba(100, 100, 100, 0.4);
 }
 
 .footer-content {
@@ -248,5 +257,5 @@ a{
   font-weight: bold;
   border: 1.5px solid black;
   z-index: 1;
-  box-shadow: 0px 1px 3px rgba(0,0,0,0.3);
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
 }

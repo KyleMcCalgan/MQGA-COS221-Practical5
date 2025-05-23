@@ -56,36 +56,6 @@
   transform: scale(1.1);
 }
 
-.headerb{
-  
-}
-
-
-
-
-/* Changed footer=========== */
-.bottom-ribbon{
-  /* position: fixed;
-  bottom: 0; */
-  width: 100%;
-  height:25px;
-  background-color: rgba(0, 0, 0, 0.6);
-  color: white;
-  padding: 5px 0;
-  font-size: 12px;
-  z-index: 1000;
-
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  text-align: center;
-  align-items: center;
-
-  margin-top: auto;
-
-}
-
-.footertext {
-  margin: 0;
-  margin-left: 10px;
+.ribbon button{
+  margin: 0 15px;
 }

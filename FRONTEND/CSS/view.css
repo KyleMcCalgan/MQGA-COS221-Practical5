@@ -1,26 +1,89 @@
-/* For the rating stars======================== */
+.viewcontent {
+    padding-top: 8%;
+}
+
+/* Table with prices========= */
+.VTableContainer {
+    width: 80%;
+    margin: 0 auto 3%;
+    border-radius: 15px;
+}
+
+.storerow {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: center;
+    background-color: white;
+    border-radius: 10px;
+    padding: 1%;
+    margin-bottom: 2%;
+}
+
+.store-name,
+.store-rating,
+.store-price {
+    flex: 1;
+    text-align: center;
+    padding: 0 10px;
+}
+
+.store-name {
+    flex: 2;
+    text-align: left;
+}
+
+.pricestopcontainer {
+    width: 100%;
+    background-color: white;
+    padding: 2%;
+    border-radius: 15px;
+    margin-bottom: 2%;
+}
+
+.rowcontainer {
+    width: 70%;
+}
+
+.comparesides {
+    display: flex;
+    flex-direction: row;
+}
+
+.priceguy {
+    height: 40%;
+    background-color: white;
+    border-radius: 15px;
+    padding: 2%;
+    margin-left: 2%;
+}
+
+.rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    gap: 5px;
+    margin: 10px 0;
+}
+
 .rating:not(:checked)>input {
     position: absolute;
     appearance: none;
 }
 
 .rating:not(:checked)>label {
-    float: right;
     cursor: pointer;
     font-size: 30px;
-    fill: #666;
 }
 
 .rating:not(:checked)>label>svg {
     fill: #666;
-    /* Set default color for SVG */
     transition: fill 0.3s ease;
-    /* Add a transition effect */
 }
 
 .rating>input:checked+label:hover,
-.rating>input:checked+label:hover~label,
-.rating>input:checked~label:hover,
+.rating>input:checked+label:hover~label .rating>input:checked~label:hover,
 .rating>input:checked~label:hover~label,
 .rating>label:hover~input:checked~label {
     fill: #e58e09;
@@ -33,17 +96,14 @@
 
 .rating>input:checked~label>svg {
     fill: #ffa723;
-    /* Set color for selected stars */
 }
 
-
 /* for table styling============================= */
-
 .Vimg {
     width: auto;
     height: 350px;
-    object-fit: cover;
     border-radius: 10px;
+    object-fit: contain;
 }
 
 .tableimg img {
@@ -53,195 +113,273 @@
     border-radius: 10px;
 }
 
-.VStoresTable {
-    width: 75%;
-    border-collapse: separate;
-    margin: auto;
-    border-spacing: 0 20px;
-}
-
-tr {
-    padding: 15px;
-}
-
-.vStoreRow {
-    height: 40%;
-    background-color: white;
-    box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.3);
-}
-
 .details {
     display: flex;
     flex-direction: row;
     justify-content: left;
-    /* justify-content: space-around; */
-    margin-left: 13%;
+    width: 80%;
+    padding: 2%;
+    border-radius: 15px;
+    margin: 0 auto 3%;
+    background-color: white;
 }
 
 .DetialsContainer {
-    margin-left: 10%;
+    margin-left: 6%;
+    display: flex;
+    flex-direction: column;
     text-align: left;
 }
 
+.storerow.cheapest {
+    box-shadow: 0 0 8px 2px rgba(0, 255, 0, 0.3);
+}
 
-/* review box=========== */
-.Revcard {
-    /* visibility: hidden; */
-    background-color: #fff;
+.reviewcontainer {
+    margin: 0 auto 3%;
+    border-radius: 15px;
+    width: 80%;
+}
+
+.blackbutton:hover::before {
+    transform: scale(2);
+}
+
+.viewb {
+    font-size: 14px;
+    width: 40%;
+}
+
+.revouterc {
+    display: flex;
+    flex-direction: row;
+}
+
+.revtop {
+    background-color: white;
+    padding: 2%;
+    border-radius: 15px;
+    margin-bottom: 2%;
+}
+
+.revleft {
+    width: 22%;
+    background-color: white;
+    margin-right: 3%;
+    border-radius: 15px;
+    padding: 2%;
+}
+
+.revright {
+    width: 75%;
+    background-color: white;
+    padding: 2%;
+    border-radius: 15px;
+}
+
+.revtop.functions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.sortheading {
+    display: flex;
+    flex-direction: row;
+}
+
+select {
+    border: 2px solid transparent;
+    height: 70%;
+    outline: none;
+    overflow: hidden;
+    background-color: #f3f3f3;
     border-radius: 10px;
+    transition: all 0.5s;
+    color: #333;
+    appearance: none;
+}
+
+select:hover {
+    border: 2px solid black;
+    box-shadow: 0px 0px 0px 5px rgba(105, 107, 114, 0.4);
+    background-color: white;
+}
+
+/* Modal styling =================*/
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
     padding: 20px;
-    width: 350px;
-    display: flex;
-    flex-direction: column;
-}
-
-.title {
-    font-size: 24px;
-    font-weight: 600;
-    text-align: center;
-}
-
-.form {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-}
-
-.group {
+    border-radius: 10px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+    font-family: "Inter", sans-serif;
     position: relative;
 }
 
-.form .group label {
-    font-size: 14px;
-    color: rgb(99, 102, 102);
-    position: absolute;
-    top: -10px;
-    left: 10px;
-    background-color: #fff;
-    transition: all .3s ease;
+.modal-content h2 {
+    margin-top: 0;
+    font-size: 24px;
 }
 
-.form .group input,
-.form .group textarea {
+.modal-content p {
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+.modal-content label {
+    font-size: 16px;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.modal-content textarea {
+    width: 100%;
     padding: 10px;
+    border: 1px solid #ccc;
     border-radius: 5px;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    margin-bottom: 20px;
-    outline: 0;
-    width: 88%;
-    background-color: transparent;
+    resize: vertical;
 }
 
-.form .group input:placeholder-shown+label,
-.form .group textarea:placeholder-shown+label {
-    top: 10px;
-    padding-left: 10px;
-    background-color: transparent;
+.modal-content .rating {
+    margin: 10px 0;
 }
 
-.form .group input:focus,
-.form .group textarea:focus {
-    border-color: #3366cc;
+.centerbutton{
+    width: 100%;
+    display: flex;
 }
 
-.form .group input:focus+label,
-.form .group textarea:focus+label {
-    top: -10px;
-    left: 10px;
-    background-color: #fff;
-    color: #3366cc;
-    font-weight: 600;
-    font-size: 14px;
-}
-
-.form .group textarea {
-    resize: none;
-    height: 100px;
-}
-
-.form button {
-    background-color: #3366cc;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
+.modal-content .blackbutton {
+    margin: 10px auto;
+    width: 80%;
     padding: 10px;
     font-size: 16px;
+}
+
+.blackbutton:hover::before {
+  transform: scale(3);
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    color: #333;
+    line-height: 1;
+    padding: 5px;
 }
 
-.form button:hover {
-    background-color: #27408b;
+.close-button:hover {
+    color: #000;
 }
 
-
-.reviewcontainer{
-    background-color: white;
-    margin: 0 auto;
-    border-radius: 10px;
-    width: 75%;
+/* page styling ========= */
+.page-button {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    margin: 0 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
 }
 
+.page-button:hover:not(:disabled) {
+    background-color: #555;
+}
 
-/* Reviews table============== */
-.item{
+.page-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Reviews table ============ */
+.item {
     display: flex;
     flex-direction: row;
-    padding: 10px 10px;
 }
 
-.ribbon{
-  backdrop-filter: blur(10px);
-  background-color:rgba(255, 255, 255, 0.7);
-  color: black;
-  text-align: center;
-  font-size: 18px;
-  font-family: "Inter", sans-serif;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 10;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 5px 20px;
-  height: 80px;
-  min-width: 50%;
-  background-size: 200% 200%;
-  animation: gradientAnimation 10s infinite alternate ease-in-out;
+.ribbon {
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.7);
+    color: black;
+    text-align: center;
+    font-size: 18px;
+    font-family: "Inter", sans-serif;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 20px;
+    height: 80px;
+    min-width: 50%;
+    background-size: 200% 200%;
+    animation: gradientAnimation 10s infinite alternate ease-in-out;
 }
 
-@keyframes gradientAnimation{
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 .ribbon .logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    cursor: pointer;
 }
 
 .ribbon .logo img {
-  max-height: 80%;
-  height: auto;
-  width: auto;
-  object-fit: contain;
-  cursor: pointer;
+    max-height: 80%;
+    height: auto;
+    width: auto;
+    object-fit: contain;
+    cursor: pointer;
 }
 
 .ribbon .logo img:hover {
-  transform: scale(1.1);
+    transform: scale(1.1);
 }
 
-.ribbon .logo a{
-  max-height: 80%;
-  height: auto;
-  width: auto;
-  object-fit: contain;
-  cursor: pointer;
+.ribbon .logo a {
+    max-height: 80%;
+    height: auto;
+    width: auto;
+    object-fit: contain;
+    cursor: pointer;
 }

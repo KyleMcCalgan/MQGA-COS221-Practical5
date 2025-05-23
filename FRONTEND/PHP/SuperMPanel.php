@@ -8,21 +8,70 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../CSS/superMPanel.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" type="text/css" href="../CSS/superMPanel.css"> -->
     <link rel="stylesheet" type="text/css" href="../CSS/stylingJ.css">
+    <!-- <link rel="stylesheet" type="text/css" href="../CSS/footer_header.css"> -->
+    <link rel="stylesheet" type="text/css" href="../CSS/header.css">
 </head>
 
+<?php include "header.php" ?>
 <body>
-    <?php include "header.php" ?>
     <div class="container">
         <h1>Control panel</h1>
         <div class="buttonsContainer">
-            <button type="button" class="btn btn-outline-dark d-block mx-auto" style="width: 50%;" onclick="location.href='managers.php'">Stores</button>
-            <button type="button" class="btn btn-outline-dark d-block mx-auto" style="width: 50%;" onclick="location.href='viewUsers.php'">Users</button>
-            <button type="button" class="btn btn-outline-dark d-block mx-auto" style="width: 50%;" onclick="location.href='genres.php'">Genres</button>
-            <button type="button" class="btn btn-outline-dark d-block mx-auto" style="width: 50%;" onclick="location.href='addProducts.php'">Add book</button>
-             <button type="button" class="btn btn-outline-dark d-block mx-auto" style="width: 50%;" onclick="location.href='editProducts.php'">Edit books</button>
+            <script>
+                const buttons = [];
+
+                if (userType === 'admin') {
+                    buttons.push({
+                        id: 'my-store-btn',
+                        text: 'My Store',
+                        href: 'managers.php'
+                    },{
+                        id: 'add-book-btn',
+                        text: 'Add Book',
+                        href: 'addProducts.php'
+                    },{
+                        id: 'edit-books-btn',
+                        text: 'Edit Book',
+                        href: 'editProducts.php'
+                    });
+                } else if (userType === 'super') {
+                    buttons.push({
+                        id: 'stores-btn',
+                        text: 'Stores',
+                        href: 'managers.php'
+                    },{
+                        id: 'users-btn',
+                        text: 'Users',
+                        href: 'viewUsers.php'
+                    },{
+                        id: 'genres-btn',
+                        text: 'Genres',
+                        href: 'genres.php'
+                    },{
+                        id: 'add-book-btn',
+                        text: 'Add Book',
+                        href: 'addProducts.php'
+                    },{
+                        id: 'edit-books-btn',
+                        text: 'Edit Books',
+                        href: 'editProducts.php'
+                    });
+                }
+
+                buttons.forEach(btn => {
+                    const button = document.createElement('button');
+                    button.id = btn.id;
+                    button.className='mbtn blackbutton normalbutton'
+                    button.textContent = btn.text;
+                    button.onclick = function() {
+                        location.href = btn.href;
+                    };
+                    document.currentScript.parentElement.appendChild(button);
+                });
+            </script>
+
 
         </div>
 
