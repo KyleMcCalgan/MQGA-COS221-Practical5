@@ -21,44 +21,34 @@ $book_ids = [
     468, 473, 474, 475, 476, 477, 478, 479, 480, 481, 482, 483, 484, 485, 486, 487, 
     488, 489, 491, 492, 493, 494, 495, 496, 497, 498, 499, 505, 506, 507, 508
 ];
-$book_ids = array_unique($book_ids); 
-sort($book_ids);
-if (count($book_ids) !== 326) {
-    die("Error: Expected 326 book IDs, got " . count($book_ids));
+
+$user_ids = [26, 27, 28, 29, 31, 32, 33, 34, 35, 36, 39, 40, 43, 47];
+
+if (count($book_ids) !== 330) {
+    die("Error: Expected 330 book IDs, got " . count($book_ids));
+}
+if (count($user_ids) !== 14) {
+    die("Error: Expected 14 user IDs, got " . count($user_ids));
 }
 
-$all_store_ids = [1, 2, 3, 4, 5, 6, 7];
-$price_multipliers = [0.93, 0.97, 1.03, 1.07]; 
-$rating_offsets = [-0.3, 0.2, -0.1, 0.4]; 
-
-$sql = "INSERT INTO `STORE_INFO` (`book_id`, `store_id`, `price`, `rating`) VALUES\n";
+$sql = "INSERT INTO `RATINGS` (`book_id`, `user_id`, `rating`) VALUES\n";
 $rows = [];
 
-foreach ($book_ids as $book_id) {
-    $selected_store_ids = array_rand(array_flip($all_store_ids), 4);
+foreach ($user_ids as $user_id) {
+    $selected_book_ids = array_rand(array_flip($book_ids), 100);
     
-    $base_price = 150 + ($book_id * 7 % 600);
-    $base_price = round($base_price, 2);
-    
-    $base_rating = 2.5 + (($book_id * 3 % 25) / 10);
-    $base_rating = round($base_rating, 2);
-    
-    foreach ($selected_store_ids as $index => $store_id) {
-        $price = $base_price * $price_multipliers[$index];
-        $price = round($price, 2);
+    foreach ($selected_book_ids as $book_id) {
+        $rating = rand(1, 5);
         
-        $rating = $base_rating + $rating_offsets[$index];
-        $rating = max(2.50, min(5.00, round($rating, 2)));
-        
-        $rows[] = "($book_id, $store_id, $price, $rating)";
+        $rows[] = "($book_id, $user_id, $rating)";
     }
 }
 
-if (count($rows) !== 1304) {
-    die("Error: Expected 1304 rows, got " . count($rows));
+if (count($rows) !== 1400) {
+    die("Error: Expected 1400 rows, got " . count($rows));
 }
 
 $sql .= implode(",\n", $rows) . ";";
-file_put_contents('store_info_full.sql', $sql);
-echo "SQL file generated: store_info_full.sql with " . count($rows) . " rows\n";
+file_put_contents('ratings.sql', $sql);
+echo "SQL file generated: ratings.sql with " . count($rows) . " rows\n";
 ?>

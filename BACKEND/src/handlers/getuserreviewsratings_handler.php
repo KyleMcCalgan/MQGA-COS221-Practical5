@@ -31,7 +31,7 @@ if (!function_exists('handleGetUserReviewsRatings')) {
         $userId = $user['id'];
         $stmt->close();
 
-        $query = "SELECT R.id AS review_id, P.title AS book_name, P.author, R.review, RA.rating 
+        $query = "SELECT R.id AS review_id, P.id AS book_id, P.title AS book_name, P.author, R.review, RA.rating 
                   FROM REVIEWS R 
                   JOIN PRODUCTS P ON R.book_id = P.id 
                   LEFT JOIN RATINGS RA ON R.book_id = RA.book_id AND RA.user_id = R.user_id 
@@ -51,7 +51,7 @@ if (!function_exists('handleGetUserReviewsRatings')) {
             'highest rating' => 'RA.rating DESC, R.id DESC',
             'lowest rating' => 'RA.rating ASC, R.id DESC'
         ];
-        $sortOrder = $sortOptions['newest']; 
+        $sortOrder = $sortOptions['newest'];
         if (array_key_exists($sort, $sortOptions)) {
             $sortOrder = $sortOptions[$sort];
         }
@@ -71,6 +71,7 @@ if (!function_exists('handleGetUserReviewsRatings')) {
         $reviews = [];
         while ($row = $result->fetch_assoc()) {
             $reviews[] = [
+                'book_id' => $row['book_id'],
                 'book_name' => $row['book_name'],
                 'author' => $row['author'],
                 'review' => $row['review'],
@@ -80,16 +81,17 @@ if (!function_exists('handleGetUserReviewsRatings')) {
         }
         $stmt->close();
 
-        $query = "SELECT COUNT(*) AS number_of_reviews, COUNT(RA.rating) AS number_of_ratings, AVG(RA.rating) AS average_rating 
-                  FROM REVIEWS R 
-                  LEFT JOIN RATINGS RA ON R.book_id = RA.book_id AND RA.user_id = R.user_id 
-                  WHERE R.user_id = ?";
+        $query = "SELECT (SELECT COUNT(*) FROM REVIEWS WHERE user_id = ?) AS number_of_reviews, 
+                         COUNT(rating) AS number_of_ratings, 
+                         AVG(rating) AS average_rating 
+                  FROM RATINGS 
+                  WHERE user_id = ?";
         $stmt = $db->prepare($query);
         if (!$stmt) {
             error_log("Database prepare statement failed (get user reviews - stats): " . $db->error);
             apiResponse(false, null, 'An internal error occurred. Please try again later.', 500);
         }
-        $stmt->bind_param("i", $userId);
+        $stmt->bind_param("ii", $userId, $userId);
         if (!$stmt->execute()) {
             error_log("Database execute failed (get user reviews - stats): " . $stmt->error);
             apiResponse(false, null, 'An internal error occurred. Please try again later.', 500);
