@@ -17,6 +17,8 @@
   min-width: 50%;
   background-size: 200% 200%;
   margin-bottom: 80px;
+
+  box-sizing: content-box
 }
 
 @keyframes gradientAnimation{

@@ -99,18 +99,19 @@ $currentPage = basename($_SERVER['PHP_SELF']);
         </div>
 
         <div class="VTableContainer">
-            <div class="pricestopcontainer">
-                <h1>Price Comparison</h1>
-                <h3>Compare the prices at various stores!</h3>
-            </div>
 
             <div class="comparesides">
                 <div class="rowcontainer">
-                    <div class="storerow">
+                    <div class="pricestopcontainer">
+                        <h1>Price Comparison</h1>
+                        <h3>Compare the prices at various stores!</h3>
+                    </div>
+
+                    <!-- <div class="storerow">
                         <h2>Store name</h2>
                         <h2>Rating⭐</h2>
                         <h2>Price</h2>
-                    </div>
+                    </div> -->
                 </div>
                 <img class="priceguy" src="../Images/cheapoakfinal.png">
             </div>
