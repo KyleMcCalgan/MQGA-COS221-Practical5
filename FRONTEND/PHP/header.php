@@ -28,6 +28,8 @@ include "config.php";
                                                         echo '../CSS/superMPanel.css';
                                                     } elseif ($currentPage == 'dashboard.php') {
                                                         echo '../CSS/dashboard.css';
+                                                    } elseif ($currentPage == 'view.php') {
+                                                        echo '../CSS/view.css';
                                                     }
                                                     ?>">
     <script src="../js/logout.js"></script>
