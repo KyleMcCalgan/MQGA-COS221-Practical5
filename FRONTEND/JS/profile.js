@@ -13,9 +13,16 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
     
-    initializeStarRating();
+    // Check user type for functionality
+    const userType = sessionStorage.getItem('user_type');
+    
+    // Initialize star rating and load reviews only for regular users
+    if (userType === 'regular') {
+        initializeStarRating();
+        loadUserReviews();
+    }
+    
     loadUserProfile();
-    loadUserReviews();
     setupEventDelegation();
 });
 
@@ -99,10 +106,12 @@ function openPasswordModal() {
     openModal('passwordModal');
 }
 
-// Star Rating System
+// Star Rating System - Only initialize for regular users
 function initializeStarRating() {
     const stars = document.querySelectorAll('.star-rating-input .star');
     const ratingText = document.getElementById('rating-text');
+    
+    if (!stars.length) return; // Exit if stars don't exist
     
     stars.forEach((star, index) => {
         const rating = parseInt(star.dataset.rating);
@@ -161,6 +170,8 @@ function highlightStars(rating, isHover) {
 
 function updateRatingText(rating) {
     const ratingText = document.getElementById('rating-text');
+    if (!ratingText) return; // Exit if element doesn't exist
+    
     const ratingLabels = {
         1: '1 star - Poor',
         2: '2 stars - Fair', 
@@ -215,18 +226,42 @@ async function loadUserProfile() {
 function displayUserProfile(userData) {
     document.getElementById('display-name').textContent = `${userData.name} ${userData.surname}`;
     document.getElementById('display-email').textContent = userData.email;
-    document.getElementById('user-name-display').textContent = `${userData.name} ${userData.surname}`;
+    
+    // Only update user name display if element exists (regular users only)
+    const userNameDisplay = document.getElementById('user-name-display');
+    if (userNameDisplay) {
+        userNameDisplay.textContent = `${userData.name} ${userData.surname}`;
+    }
 }
 
-// Load user reviews and ratings with book images
+// Load user reviews and ratings with book images - Only for regular users
 async function loadUserReviews() {
+    // Check if user is regular, if not, skip loading reviews
+    const userType = sessionStorage.getItem('user_type');
+    if (userType !== 'regular') {
+        return;
+    }
+    
     const apiKey = sessionStorage.getItem('api_key');
-    const sortBy = document.getElementById('sort-dropdown').value;
+    const sortDropdown = document.getElementById('sort-dropdown');
+    
+    // Check if sort dropdown exists before trying to access its value
+    const sortBy = sortDropdown ? sortDropdown.value : 'newest';
     
     // Show loading state
-    document.getElementById('loading-reviews').style.display = 'block';
-    document.getElementById('reviews-container').innerHTML = '';
-    document.getElementById('no-reviews-message').style.display = 'none';
+    const loadingElement = document.getElementById('loading-reviews');
+    const reviewsContainer = document.getElementById('reviews-container');
+    const noReviewsMessage = document.getElementById('no-reviews-message');
+    
+    // Only proceed if the required elements exist (they won't for admin/super users)
+    if (!loadingElement || !reviewsContainer || !noReviewsMessage) {
+        console.log('Reviews elements not found - user is not regular type');
+        return;
+    }
+    
+    if (loadingElement) loadingElement.style.display = 'block';
+    if (reviewsContainer) reviewsContainer.innerHTML = '';
+    if (noReviewsMessage) noReviewsMessage.style.display = 'none';
     
     try {
         const response = await fetch(apiUrl, {
@@ -252,13 +287,13 @@ async function loadUserReviews() {
             displayUserReviews(reviewsWithImages, result.data.stats);
         } else {
             showMessage('Failed to load reviews: ' + (result.message || 'Unknown error'), 'error');
-            document.getElementById('no-reviews-message').style.display = 'block';
+            if (noReviewsMessage) noReviewsMessage.style.display = 'block';
         }
     } catch (error) {
         showMessage('Error loading reviews: ' + error.message, 'error');
-        document.getElementById('no-reviews-message').style.display = 'block';
+        if (noReviewsMessage) noReviewsMessage.style.display = 'block';
     } finally {
-        document.getElementById('loading-reviews').style.display = 'none';
+        if (loadingElement) loadingElement.style.display = 'none';
     }
 }
 
@@ -328,15 +363,24 @@ async function fetchBookImagesForReviews(reviews) {
 function displayUserReviews(reviews, stats) {
     const container = document.getElementById('reviews-container');
     
-    // Update stats
-    document.getElementById('review-count').textContent = `${stats.number_of_reviews} Reviews`;
-    document.getElementById('rating-count').textContent = `${stats.number_of_ratings} Ratings`;
-    document.getElementById('average-rating').textContent = stats.average_rating || '0.0';
-    document.getElementById('total-reviews').textContent = stats.number_of_reviews;
-    document.getElementById('total-ratings').textContent = stats.number_of_ratings;
+    // Update stats - only if elements exist
+    const reviewCount = document.getElementById('review-count');
+    const ratingCount = document.getElementById('rating-count');
+    const averageRating = document.getElementById('average-rating');
+    const totalReviews = document.getElementById('total-reviews');
+    const totalRatings = document.getElementById('total-ratings');
+    
+    if (reviewCount) reviewCount.textContent = `${stats.number_of_reviews} Reviews`;
+    if (ratingCount) ratingCount.textContent = `${stats.number_of_ratings} Ratings`;
+    if (averageRating) averageRating.textContent = stats.average_rating || '0.0';
+    if (totalReviews) totalReviews.textContent = stats.number_of_reviews;
+    if (totalRatings) totalRatings.textContent = stats.number_of_ratings;
+    
+    if (!container) return; // Exit if container doesn't exist
     
     if (!reviews || reviews.length === 0) {
-        document.getElementById('no-reviews-message').style.display = 'block';
+        const noReviewsMessage = document.getElementById('no-reviews-message');
+        if (noReviewsMessage) noReviewsMessage.style.display = 'block';
         return;
     }
     
@@ -400,14 +444,16 @@ function editReview(bookName, reviewText, rating) {
     editingReviewData = reviewData;
     
     // Set the review text
-    document.getElementById('edit-review-text').value = reviewText;
+    const editReviewText = document.getElementById('edit-review-text');
+    if (editReviewText) editReviewText.value = reviewText;
     
     // Set the rating using our star system
     const currentRating = rating && rating > 0 ? Math.floor(parseFloat(rating)) : 0;
     setInitialRating(currentRating);
     
     // Clear any previous status messages
-    document.getElementById('review-edit-status').innerHTML = '';
+    const editStatus = document.getElementById('review-edit-status');
+    if (editStatus) editStatus.innerHTML = '';
     
     openModal('reviewEditModal');
 }
@@ -473,7 +519,8 @@ async function deleteReview(bookName) {
 
 // Enhanced save review changes with new star rating system
 async function saveReviewChanges() {
-    const reviewText = document.getElementById('edit-review-text').value.trim();
+    const editReviewText = document.getElementById('edit-review-text');
+    const reviewText = editReviewText ? editReviewText.value.trim() : '';
     const rating = selectedRating > 0 ? selectedRating : null;
     
     if (!reviewText) {
@@ -490,8 +537,10 @@ async function saveReviewChanges() {
     const saveButton = document.getElementById('save-review-btn');
     
     // Show loading state
-    saveButton.disabled = true;
-    saveButton.textContent = 'Saving...';
+    if (saveButton) {
+        saveButton.disabled = true;
+        saveButton.textContent = 'Saving...';
+    }
     showModalStatus('Updating review...', 'info');
     
     try {
@@ -625,8 +674,10 @@ async function saveReviewChanges() {
         console.error('Error updating review:', error);
         showModalStatus('Error: ' + error.message, 'error');
     } finally {
-        saveButton.disabled = false;
-        saveButton.textContent = 'Save';
+        if (saveButton) {
+            saveButton.disabled = false;
+            saveButton.textContent = 'Save';
+        }
     }
 }
 
@@ -687,8 +738,10 @@ async function findBookIdByName(bookName) {
 
 // Save profile changes functions
 async function saveNameChanges() {
-    const name = document.getElementById('edit-name').value.trim();
-    const surname = document.getElementById('edit-surname').value.trim();
+    const editName = document.getElementById('edit-name');
+    const editSurname = document.getElementById('edit-surname');
+    const name = editName ? editName.value.trim() : '';
+    const surname = editSurname ? editSurname.value.trim() : '';
     
     if (!name || !surname) {
         showMessage('Both name and surname are required', 'error');
@@ -700,7 +753,8 @@ async function saveNameChanges() {
 }
 
 async function saveEmailChanges() {
-    const email = document.getElementById('edit-email').value.trim();
+    const editEmail = document.getElementById('edit-email');
+    const email = editEmail ? editEmail.value.trim() : '';
     
     if (!email || !isValidEmail(email)) {
         showMessage('Please enter a valid email address', 'error');
@@ -712,8 +766,10 @@ async function saveEmailChanges() {
 }
 
 async function savePasswordChanges() {
-    const oldPassword = document.getElementById('old-password').value;
-    const newPassword = document.getElementById('new-password').value;
+    const oldPasswordElement = document.getElementById('old-password');
+    const newPasswordElement = document.getElementById('new-password');
+    const oldPassword = oldPasswordElement ? oldPasswordElement.value : '';
+    const newPassword = newPasswordElement ? newPasswordElement.value : '';
     
     if (!oldPassword || !newPassword) {
         showMessage('Both current and new passwords are required', 'error');
@@ -762,9 +818,11 @@ async function updateUserInfo(updateData) {
 // Helper functions
 function showModalStatus(message, type) {
     const statusDiv = document.getElementById('review-edit-status');
-    statusDiv.textContent = message;
-    statusDiv.className = `modal-status ${type}`;
-    statusDiv.style.display = 'block';
+    if (statusDiv) {
+        statusDiv.textContent = message;
+        statusDiv.className = `modal-status ${type}`;
+        statusDiv.style.display = 'block';
+    }
 }
 
 function escapeHtml(text) {
@@ -781,12 +839,14 @@ function isValidEmail(email) {
 
 function showMessage(message, type) {
     const messageDiv = document.getElementById('profile-message');
-    messageDiv.textContent = message;
-    messageDiv.className = `profile-message ${type}`;
-    messageDiv.style.display = 'block';
-    
-    // Hide message after 5 seconds
-    setTimeout(() => {
-        messageDiv.style.display = 'none';
-    }, 5000);
+    if (messageDiv) {
+        messageDiv.textContent = message;
+        messageDiv.className = `profile-message ${type}`;
+        messageDiv.style.display = 'block';
+        
+        // Hide message after 5 seconds
+        setTimeout(() => {
+            messageDiv.style.display = 'none';
+        }, 5000);
+    }
 }
