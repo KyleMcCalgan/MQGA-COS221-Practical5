@@ -118,7 +118,7 @@ button:active {
   justify-content: center;
   color: black;
   z-index: -1;
-  padding-bottom: 40px;
+  padding-bottom: 0px;
 }
 
 .content p {
@@ -147,7 +147,7 @@ a {
   width: 95%;
   margin: 20px auto;
   border-radius: 10px;
-  box-shadow: 15px 15px 30px rgb(200, 200, 200), -15px -15px 30px rgb(180, 180, 180);
+  box-shadow: 15px 15px 30px rgb(200, 200, 200);
   text-align: center;
   height: auto;
   backdrop-filter: blur(10px);
@@ -198,14 +198,8 @@ a {
 }
 
 .item>*:nth-child(5) {
-  flex: 1 1 16%;
+  flex: 1 1 0.5%;
   min-width: 110px;
-}
-
-.item>*:nth-child(6) {
-  flex: 0 0 10%;
-  min-width: 100px;
-  text-align: center;
 }
 
 .item-header>p {
@@ -216,7 +210,8 @@ a {
   margin: 0 auto;
   padding: 8px 5px;
   font-size: 14px;
-  width: 50%;
+  width: 100%;
+  text-align: center;
 }
 
 .current-tab-btn {
@@ -263,4 +258,8 @@ a {
 
 .item:last-of-type+hr {
   display: none;
+}
+
+.card .item + hr{
+  background-color: #c9c9c9bd;
 }

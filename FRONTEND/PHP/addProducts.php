@@ -6,14 +6,10 @@
         <title>MTQGA - Add Book</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" type="text/css" href="../CSS/addBook.css"> 
+        <link rel="stylesheet" type="text/css" href="../CSS/addBook.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
-        <style>
-            /* Just the styles needed for improving the select dropdown */
-
-        </style>
         <script src="../JS/addProducts.js"></script>
     </head>
     <body>
@@ -21,7 +17,7 @@
             <h1>Add Books</h1>
 
             <div class="main-form-card">
-                <form id="addProduct-form" method="POST" onsubmit="return false;"><!-- Ensure no normal form submission -->
+                <form id="addProduct-form" method="POST" onsubmit="return false;">
                     <div class="form-columns">
                         <div class="smol-card">
                             <div class="fg">
@@ -70,7 +66,6 @@
                                 <label for="imageUpload">Image (Coming Soon)</label>
                                 <input type="file" id="imageUpload" name="imageUpload" style="display: none;" disabled>
                                 <button type="button" class="upload-btn" style="opacity: 0.6; cursor: not-allowed;" disabled>Image Upload Unavailable</button>
-                                <!--  <small style="display: block; margin-top: 5px; color: #666;">Image uploads will be supported in a future update.</small>  -->
                             </div>
                             <div class="fg">
                                 <label for="accessibleIn">Accessible In (Optional)</label>
@@ -86,14 +81,14 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="add-book-button-container">
-                        <button type="submit" id="submit-button">Add book</button>
-                    </div>
-                    
-                    <div id="frmMsg" style="margin-top: 20px; padding: 15px; display: none; text-align: center; font-weight: bold; border-radius: 5px;"></div>
                 </form>
             </div>
+
+            <div class="add-book-button-container">
+                <button type="submit" id="submit-button">Add book</button>
+            </div>
+
+            <div id="frmMsg" style="margin-top: 20px; padding: 15px; display: none; text-align: center; font-weight: bold; border-radius: 5px;"></div>
         </div>
 
 <?php include "footer.php"; ?>

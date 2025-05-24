@@ -135,7 +135,7 @@ include "config.php";
                 ribbon.appendChild(button);
             });
 
-            <?php if ($currentPage == 'products.php') : ?>
+            <?php if ($currentPage == 'products.php' || $currentPage == 'editProducts.php') : ?>
                 const searchBar = document.createElement('input');
                 searchBar.type = 'text';
                 searchBar.className = 'search-bar';
