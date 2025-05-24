@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     const addProductForm = document.getElementById('addProduct-form');
-    const submitButton = document.getElementById('submit-button');
     const formMessage = document.getElementById('frmMsg');
     const apiUrl = '../../BACKEND/public/index.php';
 
@@ -17,6 +16,21 @@ document.addEventListener('DOMContentLoaded', function() {
         formMessage.style.marginTop = '20px';
         formMessage.style.borderRadius = '5px';
         formMessage.style.display = 'none';
+    }
+
+    function isValidImageUrl(url) {
+        try {
+            new URL(url);
+            // Check if URL looks like an image (optional - removes this check if you want to allow any URL)
+            const imageExtensions = /\.(jpg|jpeg|png|gif|bmp|webp|svg)(\?.*)?$/i;
+            const hasImageExtension = imageExtensions.test(url);
+            const hasImageParam = url.toLowerCase().includes('image') || url.toLowerCase().includes('img');
+            
+            // Allow URLs that either have image extensions OR contain image-related parameters (for dynamic image URLs)
+            return hasImageExtension || hasImageParam || url.includes('googleusercontent.com') || url.includes('books.google.com');
+        } catch (e) {
+            return false;
+        }
     }
 
     function showLoading() {
@@ -38,23 +52,24 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function showMessage(message, isError) {
+        formMessage.textContent = message;
+        formMessage.style.display = 'block';
         if (isError) {
-            alert('Error: ' + message);
-            formMessage.style.display = 'none';
+            formMessage.className = 'error';
+            formMessage.style.backgroundColor = 'rgba(255, 0, 0, 0.2)';
+            formMessage.style.color = '#d32f2f';
         } else {
-            formMessage.textContent = message;
-            formMessage.style.display = 'block';
             formMessage.className = 'success';
             formMessage.style.backgroundColor = 'rgba(0, 255, 0, 0.2)';
             formMessage.style.color = '#008000';
         }
     }
 
-    if (!addProductForm || !submitButton) {
+    if (!addProductForm) {
         return;
     }
 
-    submitButton.addEventListener('click', function(e) {
+    addProductForm.addEventListener('submit', function(e) {
         e.preventDefault();
         formMessage.textContent = '';
         formMessage.style.display = 'none';
@@ -71,6 +86,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const accessibleIn = document.getElementById('accessibleIn').value.trim();
         const ratingsCount = document.getElementById('ratingsCount').value ? parseInt(document.getElementById('ratingsCount').value) : 0;
         const isbn13 = document.getElementById('isbn13').value.trim();
+        
+        // Get image URL
+        const thumbnail = document.getElementById('thumbnail').value.trim();
 
         if (!title) {
             showMessage('Title is required', true);
@@ -113,6 +131,18 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+        // Validate image URL if provided
+        if (thumbnail && !isValidImageUrl(thumbnail)) {
+            showMessage('Please enter a valid URL for the book cover image', true);
+            return;
+        }
+
+        // Check URL length limit (common database limit for URLs)
+        if (thumbnail && thumbnail.length > 512) {
+            showMessage('Book cover image URL is too long (max 512 characters)', true);
+            return;
+        }
+
         const requestPayload = {
             type: 'AddProduct',
             apikey: apiKey,
@@ -128,8 +158,8 @@ document.addEventListener('DOMContentLoaded', function() {
             accessibleIn: accessibleIn || null,
             ratingsCount: ratingsCount,
             isbn13: isbn13 || null,
-            thumbnail: null,
-            smallThumbnail: null
+            thumbnail: thumbnail || null,
+            smallThumbnail: thumbnail || null
         };
 
         showLoading();
@@ -175,8 +205,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             if (result.status === 'success') {
-                const successMessage = result.data && result.data.message
-                    ? result.data.message
+                const successMessage = result.data && result.data.message 
+                    ? result.data.message 
                     : 'Book added successfully!';
                 showMessage(successMessage, false);
                 addProductForm.reset();
