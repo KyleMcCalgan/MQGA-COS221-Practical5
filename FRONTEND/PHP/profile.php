@@ -50,7 +50,7 @@
                         <button type="button" class="save-btn" onclick="openPasswordModal()">Change Password</button>
                     </div>
 
-                    <!-- Modals -->
+                
                     <div id="nameModal" class="modal">
                         <div class="modal-content">
                             <h3>Edit Name</h3>
@@ -80,7 +80,7 @@
                         </div>
                     </div>
 
-                    <!-- Review Edit Modal -->
+                  
                     <div id="reviewEditModal" class="modal">
                         <div class="modal-content">
                             <h3>Edit Review</h3>
@@ -151,7 +151,7 @@
                 </div>
 
                 <div id="reviews-container">
-                    <!-- Reviews will be loaded here dynamically -->
+                  
                 </div>
 
                 <div id="no-reviews-message" style="display: none;" class="empty-reviews">
@@ -165,7 +165,6 @@
         </div>
     </div>
 
-    <!-- Profile Update Status Messages -->
     <div id="profile-message" class="profile-message" style="display: none;"></div>
 
 </body>
