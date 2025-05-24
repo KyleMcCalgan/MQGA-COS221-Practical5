@@ -142,8 +142,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const payload = {
             type: 'AddUserRating',
             apikey: apiKey,
-            book_id: 181,
-            rating: 4
+            book_id: bookId,
+            rating: rating
         };
 
         try {
