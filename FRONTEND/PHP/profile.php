@@ -80,7 +80,7 @@
                         </div>
                     </div>
 
-                    <!-- Review Edit Modal -->
+                    <!-- Review Edit Modal - Only shown for regular users -->
                     <div id="reviewEditModal" class="modal">
                         <div class="modal-content">
                             <h3>Edit Review</h3>
@@ -110,59 +110,67 @@
             </div>
         </div>
 
-        
-        <div class="card">
-            <h1>My Reviews</h1>
-            <div class="card-body">
-                <div class="user-summary">
-                    <div class="user-info">
-                        <h2 id="user-name-display">Loading...</h2>
-                        <div class="user-stats">
-                            <span id="review-count">0 Reviews</span>
-                            <span>•</span>
-                            <span id="rating-count">0 Ratings</span>
+        <!-- Reviews section - Only shown for regular users -->
+        <script>
+            // Check user type and conditionally render reviews section
+            const profileUserType = sessionStorage.getItem('user_type');
+            if (profileUserType === 'regular') {
+                document.write(`
+                    <div class="card" id="reviews-section">
+                        <h1>My Reviews</h1>
+                        <div class="card-body">
+                            <div class="user-summary">
+                                <div class="user-info">
+                                    <h2 id="user-name-display">Loading...</h2>
+                                    <div class="user-stats">
+                                        <span id="review-count">0 Reviews</span>
+                                        <span>•</span>
+                                        <span id="rating-count">0 Ratings</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="review-stats">
+                                <div class="stat-item">
+                                    <div class="stat-value" id="average-rating">0.0</div>
+                                    <div class="stat-label">Average Rating</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="total-reviews">0</div>
+                                    <div class="stat-label">Total Reviews</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="total-ratings">0</div>
+                                    <div class="stat-label">Total Ratings</div>
+                                </div>
+                            </div>
+
+                            <div class="reviews-header">
+                                <h3>Reviews</h3>
+                                <select class="filter-dropdown" id="sort-dropdown" onchange="loadUserReviews()">
+                                    <option value="newest">Most Recent</option>
+                                    <option value="oldest">Oldest First</option>
+                                    <option value="highest rating">Highest Rating</option>
+                                    <option value="lowest rating">Lowest Rating</option>
+                                </select>
+                            </div>
+
+                            <div id="reviews-container">
+                                <!-- Reviews will be loaded here dynamically -->
+                            </div>
+
+                            <div id="no-reviews-message" style="display: none;" class="empty-reviews">
+                                <p>You haven't written any reviews yet.</p>
+                            </div>
+
+                            <div id="loading-reviews" class="loading-reviews">
+                                <p>Loading your reviews...</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="review-stats">
-                    <div class="stat-item">
-                        <div class="stat-value" id="average-rating">0.0</div>
-                        <div class="stat-label">Average Rating</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" id="total-reviews">0</div>
-                        <div class="stat-label">Total Reviews</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" id="total-ratings">0</div>
-                        <div class="stat-label">Total Ratings</div>
-                    </div>
-                </div>
-
-                <div class="reviews-header">
-                    <h3>Reviews</h3>
-                    <select class="filter-dropdown" id="sort-dropdown" onchange="loadUserReviews()">
-                        <option value="newest">Most Recent</option>
-                        <option value="oldest">Oldest First</option>
-                        <option value="highest rating">Highest Rating</option>
-                        <option value="lowest rating">Lowest Rating</option>
-                    </select>
-                </div>
-
-                <div id="reviews-container">
-                    <!-- Reviews will be loaded here dynamically -->
-                </div>
-
-                <div id="no-reviews-message" style="display: none;" class="empty-reviews">
-                    <p>You haven't written any reviews yet.</p>
-                </div>
-
-                <div id="loading-reviews" class="loading-reviews">
-                    <p>Loading your reviews...</p>
-                </div>
-            </div>
-        </div>
+                `);
+            }
+        </script>
     </div>
 
     <!-- Profile Update Status Messages -->
