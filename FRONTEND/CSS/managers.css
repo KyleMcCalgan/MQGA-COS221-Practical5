@@ -5,15 +5,15 @@ h4 {
     margin: 0;
 }
 
-.mainheader{
+.mainheader {
     margin-bottom: 1%;
 }
 
-.subheader{
+.subheader {
     margin-bottom: 1%;
 }
 
-.mantopfunc{
+.mantopfunc {
     margin-bottom: 1%;
     display: flex;
     flex-direction: row;
@@ -35,16 +35,16 @@ h4 {
     margin-bottom: 2%;
 }
 
-.topinnercont{
+.topinnercont {
     /* display: flex;
     flex-direction: row; */
 }
 
-.left{
+.left {
     margin-right: 15%;
 }
 
-.leftselect{
+.leftselect {
     display: flex;
     flex-direction: row;
     margin: auto 0;
@@ -127,7 +127,7 @@ select {
     padding: 1%;
 }
 
-.adminscont{
+.adminscont {
     width: 50%;
     border-radius: 15px;
     padding: 1%;
@@ -149,19 +149,105 @@ select {
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
 }
 
-.adrow{
+.adrow {
     padding: 2%;
 }
 
-.outerrow{
+.outerrow {
     display: flex;
     flex-direction: row;
     width: 100%;
 }
 
-.rowid{
+.rowid {
     margin-right: 20%;
 }
 
+/* Modal====== */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
 
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+    font-family: "Inter", sans-serif;
+    position: relative;
+}
 
+.modal-content h2 {
+    margin-top: 0;
+    font-size: 24px;
+}
+
+.modal-content label {
+    font-size: 16px;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.modal-content input,
+.modal-content select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.modal-content .centerbutton {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.modal-content .blackbutton {
+    margin: 10px 0;
+    width: 40%;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+    line-height: 1;
+    padding: 5px;
+}
+
+.close-button:hover {
+    color: #000;
+}
+
+/* Message styling=============== */
+#mantop-message,
+#edit-name-message,
+#edit-logo-message,
+#edit-domain-message,
+#edit-type-message {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    margin-top: 10px;
+    margin-bottom: 0;
+    display: none;
+}
