@@ -440,6 +440,7 @@ switch ($actionType) {
         }
         break;
 
+
     case 'GetUserBookRating': // Cailin
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for GetUserBookRating. Use POST.', 405);

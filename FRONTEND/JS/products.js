@@ -167,8 +167,8 @@ document.addEventListener('DOMContentLoaded', function (){
         renderProductCards(sortedSubsetToDisplay);
     }
 
-    function renderProductCards(productsToDisplay){ 
-        rangeContainer.innerHTML = ''; 
+    function renderProductCards(productsToDisplay){
+        rangeContainer.innerHTML = '';
 
         if (!productsToDisplay || productsToDisplay.length === 0){
             if (allProductsArr.length === 0 && !currSearchInput && currGenre === 'default' && currSortName === 'default' && currSortAuth === 'default' && currSortRating === 'default'){
@@ -187,21 +187,25 @@ document.addEventListener('DOMContentLoaded', function (){
             link.href = `view.php?id=${encodeURIComponent(product.id || '')}`;
 
             const img = document.createElement('img');
-            img.src = product.thumbnail || product.smallThumbnail || '../Images/notfound.png'; 
+            img.src = product.thumbnail || product.smallThumbnail || '../Images/notfound.png';
             img.alt = product.title || 'Book Cover';
             img.className = 'card-image';
             img.onerror = function (){
                 this.onerror = null;
-                this.src = '../Images/notfound.jpg'; 
+                this.src = '../Images/notfound.jpg';
                 this.alt = 'Image failed to load';
             };
 
             const titleElement = document.createElement('h2');
-            titleElement.textContent = product.title || 'Untitled';
+        // let displayTitle = product.title || 'Untitled';
+        // if (displayTitle.length > 42) {
+        //     displayTitle = displayTitle.substring(0, 42) + '...';
+        // }
+        titleElement.textContent = product.title || 'Untitled';
 
-            link.appendChild(img);
-            link.appendChild(titleElement);
-            card.appendChild(link);
+        link.appendChild(img);
+        link.appendChild(titleElement);
+        card.appendChild(link);
 
             const cardContent = document.createElement('div');
             cardContent.className = 'card-content';
