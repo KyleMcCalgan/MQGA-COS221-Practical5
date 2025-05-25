@@ -1,4 +1,5 @@
 <?php
+
 if (!function_exists('handleGetStoreProducts')) {
     function handleGetStoreProducts($inputData, $dbConnection) {
         if (empty($inputData['api_key'])) {
@@ -8,18 +9,24 @@ if (!function_exists('handleGetStoreProducts')) {
 
         $apiKey = $inputData['api_key'];
         $storeName = $inputData['store_name'] ?? null;
+        $searchTitle = $inputData['title'] ?? null;
 
-        $stmt = $dbConnection->prepare("SELECT id, user_type FROM USERS WHERE apikey = ? LIMIT 1");
-        if (!$stmt) {
-            apiResponse(false, null, 'Database query preparation failed: ' . $dbConnection->error, 500);
+        $userAuthStmt = $dbConnection->prepare("SELECT id, user_type FROM USERS WHERE apikey = ? LIMIT 1");
+        if (!$userAuthStmt) {
+            error_log("GetStoreProducts - DB Prepare Error (User Auth): " . $dbConnection->error);
+            apiResponse(false, null, 'Database query preparation failed', 500);
             return;
         }
-
-        $stmt->bind_param("s", $apiKey);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $user = $result->fetch_assoc();
-        $stmt->close();
+        $userAuthStmt->bind_param("s", $apiKey);
+        if (!$userAuthStmt->execute()) {
+             error_log("GetStoreProducts - DB Execute Error (User Auth): " . $userAuthStmt->error);
+             $userAuthStmt->close();
+             apiResponse(false, null, 'Database query execution failed', 500);
+             return;
+        }
+        $userResult = $userAuthStmt->get_result();
+        $user = $userResult->fetch_assoc();
+        $userAuthStmt->close();
 
         if (!$user) {
             apiResponse(false, null, 'Invalid API key', 401);
@@ -30,7 +37,17 @@ if (!function_exists('handleGetStoreProducts')) {
         $userType = $user['user_type'];
 
         $products = [];
-        $stmt = null;
+        
+        $baseQuery = "SELECT
+                            p.id, p.title, p.author, p.smallThumbnail, p.thumbnail,
+                            si.price, si.rating, s.name as store_name, s.store_id
+                          FROM PRODUCTS p
+                          JOIN STORE_INFO si ON p.id = si.book_id
+                          JOIN STORES s ON si.store_id = s.store_id";
+        
+        $whereClauses = [];
+        $params = [];
+        $paramTypes = "";
 
         if ($userType === 'super') {
             if (empty($storeName)) {
@@ -40,12 +57,17 @@ if (!function_exists('handleGetStoreProducts')) {
 
             $storeCheckStmt = $dbConnection->prepare("SELECT store_id FROM STORES WHERE name = ? LIMIT 1");
             if (!$storeCheckStmt) {
-                apiResponse(false, null, 'Database query preparation failed: ' . $dbConnection->error, 500);
+                error_log("GetStoreProducts - DB Prepare Error (Store Check): " . $dbConnection->error);
+                apiResponse(false, null, 'Database query preparation failed', 500);
                 return;
             }
-
             $storeCheckStmt->bind_param("s", $storeName);
-            $storeCheckStmt->execute();
+            if(!$storeCheckStmt->execute()){
+                 error_log("GetStoreProducts - DB Execute Error (Store Check): " . $storeCheckStmt->error);
+                 $storeCheckStmt->close();
+                 apiResponse(false, null, 'Database query execution failed', 500);
+                 return;
+            }
             $storeResult = $storeCheckStmt->get_result();
             $storeExists = $storeResult->fetch_assoc();
             $storeCheckStmt->close();
@@ -54,36 +76,27 @@ if (!function_exists('handleGetStoreProducts')) {
                 apiResponse(false, null, 'Store not found: ' . htmlspecialchars($storeName), 404);
                 return;
             }
+            $whereClauses[] = "s.name = ?";
+            $params[] = $storeName;
+            $paramTypes .= "s";
 
-            $query = "SELECT
-                                p.id, p.title, p.author, p.smallThumbnail, p.thumbnail,
-                                si.price, si.rating, s.name as store_name, s.store_id
-                            FROM PRODUCTS p
-                            JOIN STORE_INFO si ON p.id = si.book_id
-                            JOIN STORES s ON si.store_id = s.store_id
-                            WHERE s.name = ?";
-
-            $stmt = $dbConnection->prepare($query);
-            if (!$stmt) {
-                apiResponse(false, null, 'Database query preparation failed: ' . $dbConnection->error, 500);
-                return;
-            }
-            $stmt->bind_param("s", $storeName);
-        }
-
-        elseif ($userType === 'admin') {
+        } elseif ($userType === 'admin') {
             $adminStoreQuery = "SELECT s.store_id, s.name FROM ADMINS a
-                                     JOIN STORES s ON a.store_id = s.store_id
-                                     WHERE a.id = ?";
-
+                                 JOIN STORES s ON a.store_id = s.store_id
+                                 WHERE a.id = ?";
             $adminStmt = $dbConnection->prepare($adminStoreQuery);
             if (!$adminStmt) {
-                apiResponse(false, null, 'Database query preparation failed: ' . $dbConnection->error, 500);
+                 error_log("GetStoreProducts - DB Prepare Error (Admin Store Lookup): " . $dbConnection->error);
+                apiResponse(false, null, 'Database query preparation failed', 500);
                 return;
             }
-
             $adminStmt->bind_param("i", $userId);
-            $adminStmt->execute();
+            if(!$adminStmt->execute()){
+                error_log("GetStoreProducts - DB Execute Error (Admin Store Lookup): " . $adminStmt->error);
+                $adminStmt->close();
+                apiResponse(false, null, 'Database query execution failed', 500);
+                return;
+            }
             $adminResult = $adminStmt->get_result();
             $adminStore = $adminResult->fetch_assoc();
             $adminStmt->close();
@@ -92,34 +105,53 @@ if (!function_exists('handleGetStoreProducts')) {
                 apiResponse(false, null, 'Admin is not associated with any store', 403);
                 return;
             }
-
+            
             if (!empty($storeName) && $storeName !== $adminStore['name']) {
-                apiResponse(false, null, 'Admin can only access products for their own store.', 403);
+                apiResponse(false, null, 'Admin can only access products for their own store (name mismatch).', 403);
                 return;
             }
 
-            $query = "SELECT
-                                p.id, p.title, p.author, p.smallThumbnail, p.thumbnail,
-                                si.price, si.rating, s.name as store_name, s.store_id
-                            FROM PRODUCTS p
-                            JOIN STORE_INFO si ON p.id = si.book_id
-                            JOIN STORES s ON si.store_id = s.store_id
-                            WHERE s.store_id = ?";
-
-            $stmt = $dbConnection->prepare($query);
-            if (!$stmt) {
-                apiResponse(false, null, 'Database query preparation failed: ' . $dbConnection->error, 500);
-                return;
-            }
-            $stmt->bind_param("i", $adminStore['store_id']);
+            $whereClauses[] = "s.store_id = ?";
+            $params[] = $adminStore['store_id'];
+            $paramTypes .= "i";
         } else {
             apiResponse(false, null, 'Unauthorised access. Only super admins and admins can use this endpoint', 403);
             return;
         }
 
-        $stmt->execute();
-        $result = $stmt->get_result();
+        if (!empty($searchTitle)) {
+            $whereClauses[] = "p.title LIKE ?";
+            $params[] = "%" . $searchTitle . "%";
+            $paramTypes .= "s";
+        }
 
+        $finalQuery = $baseQuery;
+        if (!empty($whereClauses)) {
+            $finalQuery .= " WHERE " . implode(" AND ", $whereClauses);
+        } else {
+            apiResponse(false, null, 'Store context is required to fetch products.', 400);
+            return;
+        }
+        
+        $productQueryStmt = $dbConnection->prepare($finalQuery);
+        if (!$productQueryStmt) {
+            error_log("GetStoreProducts - DB Prepare Error (Final Product Query): " . $dbConnection->error . " Query: " . $finalQuery);
+            apiResponse(false, null, 'Database query preparation failed', 500);
+            return;
+        }
+
+        if (!empty($params)) {
+            $productQueryStmt->bind_param($paramTypes, ...$params);
+        }
+        
+        if (!$productQueryStmt->execute()) {
+            error_log("GetStoreProducts - DB Execute Error (Final Product Query): " . $productQueryStmt->error);
+            $productQueryStmt->close();
+            apiResponse(false, null, 'Database query execution failed.', 500);
+            return;
+        }
+        
+        $result = $productQueryStmt->get_result();
         while ($row = $result->fetch_assoc()) {
             $products[] = [
                 'id' => $row['id'],
@@ -135,16 +167,21 @@ if (!function_exists('handleGetStoreProducts')) {
                 ]
             ];
         }
-
-        $stmt->close();
+        $productQueryStmt->close();
 
         if (empty($products)) {
-            $message = ($userType === 'super' && !empty($storeName))
-                ? 'No books found for the specified store.'
-                : 'No books found for your store.';
+            $message = 'No books found matching your criteria.';
+            if (empty($searchTitle)) {
+                if ($userType === 'super' && !empty($storeName)) {
+                    $message = 'No books found for the specified store: ' . htmlspecialchars($storeName);
+                } elseif ($userType === 'admin') {
+                    $message = 'No books found for your store.';
+                }
+            }
             apiResponse(true, [], $message);
         } else {
             apiResponse(true, $products, 'Products retrieved successfully.');
         }
     }
 }
+?>
