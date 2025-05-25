@@ -299,7 +299,6 @@ header {
     font-size: 14px;
 }
 
-/* Modal Styles - FIXED VERSION */
 .modal {
     display: none;
     position: fixed;
@@ -311,7 +310,7 @@ header {
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    overflow: hidden; /* Prevent scrolling on the modal backdrop */
+    overflow: hidden; 
 }
 
 .modal-content {
@@ -326,7 +325,7 @@ header {
     font-family: 'Inter', sans-serif;
     position: relative;
     margin: auto;
-    box-sizing: border-box; /* Ensure padding is included in width/height calculations */
+    box-sizing: border-box; 
 }
 
 .modal-content h3 {
@@ -337,11 +336,11 @@ header {
 }
 
 .modal-input {
-    width: 100%;
-    padding: 12px 15px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    width: 80%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
     font-size: 16px;
     font-family: 'Inter', sans-serif;
     box-sizing: border-box;
@@ -372,13 +371,12 @@ header {
     font-size: 14px;
 }
 
-/* Star Rating Styles - FIXED VERSION */
 .star-rating-input {
     display: flex;
     gap: 8px;
     justify-content: center;
     margin: 15px 0;
-    flex-wrap: nowrap; /* Prevent wrapping */
+    flex-wrap: nowrap; 
 }
 
 .star-rating-input .star {
@@ -388,7 +386,7 @@ header {
     transition: color 0.2s ease;
     user-select: none;
     line-height: 1;
-    flex-shrink: 0; /* Prevent shrinking */
+    flex-shrink: 0; 
 }
 
 .star-rating-input .star.active {
@@ -485,7 +483,6 @@ header {
     color: #666;
 }
 
-/* Button container for modal actions */
 .modal-actions {
     display: flex;
     justify-content: center;
@@ -494,7 +491,6 @@ header {
     flex-wrap: wrap;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .container {
         width: 95%;

@@ -203,7 +203,7 @@
     gap: 5px;
 }
 
-select {
+/* select {
     border: 2px solid transparent;
     height: 70%;
     outline: none;
@@ -213,13 +213,27 @@ select {
     transition: all 0.5s;
     color: #333;
     appearance: none;
+    padding-left: 5px;
 }
 
 select:hover {
     border: 2px solid black;
     box-shadow: 0px 0px 0px 5px rgba(105, 107, 114, 0.4);
     background-color: white;
+} */
+.sorth4{
+    margin-bottom: 0;
 }
+select {
+    padding: 8px 12px;
+    border: 1px solid #f8f9fa;
+    border-radius: 4px;
+    background-color: white;
+    color: #333;
+    font-size: 18px;
+}
+
+
 
 /* Modal styling =================*/
 .modal {

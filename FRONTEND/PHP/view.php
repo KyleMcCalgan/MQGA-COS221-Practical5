@@ -126,7 +126,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             <div class="revtop functions">
                 <button class="blackbutton normalbutton" id="review-button">Rate/Review book</button>
                 <div class="sortheading">
-                    <h4>Sort by: </h4>
+                    <h3 class="sorth4">Sort by: </h3>
                     <select class="revsort" id="review-sort">
                         <option value="newest">Newest</option>
                         <option value="oldest">Oldest</option>

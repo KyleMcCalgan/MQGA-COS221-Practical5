@@ -271,11 +271,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function populateReviewStats(stats) {
-        console.log('got here');
-        console.log(stats);
         statsAvgRating.textContent = `Average rating: ${stats.average_rating ? stats.average_rating + '⭐' : 'N/A'}`;
-        console.log('rating is' + stats);
-        console.log('not here');
         statsNumRatings.textContent = `Number of ratings: ${stats.number_of_ratings || 0}`;
         statsNumReviews.textContent = `Number of reviews: ${stats.number_of_reviews || 0}`;
     }
