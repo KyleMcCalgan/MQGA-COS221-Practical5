@@ -22,4 +22,4 @@ include "header.php";
 
     <?php include "footer.php";?>
 
-    <script src="../js/store_stats.js" defer></script> 
+    <script src="../JS/store_stats.js" defer></script> 

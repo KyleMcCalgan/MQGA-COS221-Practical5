@@ -34,8 +34,8 @@ include "config.php";
                                                         echo '../CSS/profile.css';
                                                     }
                                                     ?>">
-    <script src="../js/launch_summary.js" defer></script>
-    <script src="../js/logout.js"></script>
+    <script src="../JS/launch_summary.js" defer></script>
+    <script src="../JS/logout.js"></script>
 
 </head>
 

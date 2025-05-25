@@ -128,7 +128,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../js/editProducts.js"></script> </body>
+    <script src="../JS/editProducts.js"></script> </body>
 
 </html>
 <?php include "footer.php"; ?>
