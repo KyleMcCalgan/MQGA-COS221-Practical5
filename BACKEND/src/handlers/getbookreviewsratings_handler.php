@@ -6,7 +6,7 @@ if (!function_exists('handleGetBookReviewsRatings')) {
     function handleGetBookReviewsRatings($data, $db) {
         $apiKey = $data['api_key'] ?? null;
         $bookId = $data['book_id'] ?? null;
-        $sort = isset($data['sort']) ? strtolower(sanitizeInput($data['sort'])) : 'newest';
+        $sort = isset($data['sort']) ? strtolower(sanitiseInput($data['sort'])) : 'newest';
 
         if (empty($apiKey)) {
             apiResponse(false, null, 'API key is required.', 401);
@@ -25,7 +25,7 @@ if (!function_exists('handleGetBookReviewsRatings')) {
         }
         $result = $stmt->get_result();
         if ($result->num_rows === 0) {
-            apiResponse(false, null, 'Invalid or unauthorized API key.', 401);
+            apiResponse(false, null, 'Invalid or Unauthorised API key.', 401);
         }
         $stmt->close();
 
@@ -67,7 +67,7 @@ if (!function_exists('handleGetBookReviewsRatings')) {
             'highest rating' => 'RA.rating DESC, R.id DESC',
             'lowest rating' => 'RA.rating ASC, R.id DESC'
         ];
-        $sortOrder = $sortOptions['newest']; // Default
+        $sortOrder = $sortOptions['newest'];
         if (array_key_exists($sort, $sortOptions)) {
             $sortOrder = $sortOptions[$sort];
         }
@@ -95,18 +95,17 @@ if (!function_exists('handleGetBookReviewsRatings')) {
         }
         $stmt->close();
 
-        $query = "SELECT COUNT(R.id) AS number_of_reviews, 
-                         COUNT(RA.rating) AS number_of_ratings, 
-                         AVG(RA.rating) AS average_rating 
-                  FROM REVIEWS R 
-                  LEFT JOIN RATINGS RA ON R.book_id = RA.book_id AND R.user_id = RA.user_id 
-                  WHERE R.book_id = ?";
+        $query = "SELECT (SELECT COUNT(*) FROM REVIEWS WHERE book_id = ?) AS number_of_reviews, 
+                         COUNT(rating) AS number_of_ratings, 
+                         AVG(rating) AS average_rating 
+                  FROM RATINGS 
+                  WHERE book_id = ?";
         $stmt = $db->prepare($query);
         if (!$stmt) {
             error_log("Database prepare statement failed (get book reviews - stats): " . $db->error);
             apiResponse(false, null, 'An internal error occurred. Please try again later.', 500);
         }
-        $stmt->bind_param("i", $bookId);
+        $stmt->bind_param("ii", $bookId, $bookId);
         if (!$stmt->execute()) {
             error_log("Database execute failed (get book reviews - stats): " . $stmt->error);
             apiResponse(false, null, 'An internal error occurred. Please try again later.', 500);

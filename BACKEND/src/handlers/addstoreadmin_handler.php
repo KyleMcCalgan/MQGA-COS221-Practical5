@@ -21,8 +21,20 @@ if (!function_exists('handleAddStoreAdmin')) {
             apiResponse(false, null, 'Email is required.', 400);
         }
 
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            apiResponse(false, null, 'Invalid email format.', 400);
+        }
+
         if (empty($password)) {
             apiResponse(false, null, 'Password is required.', 400);
+        }
+
+        if (strlen($password) < 8 ||
+            !preg_match('/[A-Z]/', $password) ||
+            !preg_match('/[a-z]/', $password) ||
+            !preg_match('/[0-9]/', $password) ||
+            !preg_match('/[\W_]/', $password)) {
+            apiResponse(false, null, 'Password does not meet complexity requirements. It must be at least 8 characters long, and include an uppercase letter, a lowercase letter, a digit, and a symbol.', 400);
         }
 
         if (empty($storeId) || !is_numeric($storeId)) {
@@ -59,13 +71,13 @@ if (!function_exists('handleAddStoreAdmin')) {
         }
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
-            apiResponse(false, null, 'Email already in use.', 400);
+            apiResponse(false, null, 'This email address is already registered.', 409);
         }
         $stmt->close();
 
         $userSalt = bin2hex(random_bytes(32));
-        $passwordWithSalt = $userSalt . $password;
-        $hashedPassword = password_hash($passwordWithSalt, PASSWORD_DEFAULT);
+        $intermediatePassword = hash_hmac('sha256', $password, $userSalt, false);
+        $hashedPassword = password_hash($intermediatePassword, PASSWORD_DEFAULT);
         $newApiKey = bin2hex(random_bytes(32));
         $userType = 'admin';
         $name = "Default";

@@ -1,0 +1,261 @@
+.ribbon {
+  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.7);
+  color: black;
+  text-align: center;
+  font-size: 18px;
+  font-family: "Inter", sans-serif;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 20px;
+  height: 80px;
+  min-width: 50%;
+  background-size: 200% 200%;
+  animation: gradientAnimation 10s infinite alternate ease-in-out;
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.ribbon .logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  cursor: pointer;
+}
+
+.ribbon .logo img {
+  max-height: 80%;
+  height: auto;
+  width: auto;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+.ribbon .logo img:hover {
+  transform: scale(1.1);
+}
+
+.ribbon .logo a {
+  max-height: 80%;
+  height: auto;
+  width: auto;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+button {
+  cursor: pointer;
+  position: relative;
+  padding: 10px 24px;
+  font-size: 18px;
+  color: rgb(0, 0, 0);
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 10px;
+  background-color: transparent;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(1, 0.5, 0.5, 1);
+  overflow: hidden;
+  margin: 0 15px;
+}
+
+button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 100px;
+  height: 100px;
+  border-radius: inherit;
+  transform: scale(0);
+  z-index: -1;
+  background-color: rgb(0, 0, 0);
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+.card h2 {
+  color: black;
+  font-size: 22px;
+}
+
+button:hover::before {
+  transform: scale(3);
+}
+
+button:hover {
+  color: #e0e0e0;
+  transform: scale(1.1);
+  box-shadow: 0 0px 70px rgba(100, 100, 100, 0.4);
+}
+
+button:active {
+  transform: scale(1);
+}
+
+.ribbon a {
+  text-decoration: none;
+}
+
+.content {
+  font-family: "Inter", sans-serif;
+  padding-top: 80px;
+  font-size: 30px;
+  color: black;
+  justify-content: center;
+  z-index: -1;
+  text-align: center;
+  flex: 1;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: rgb(221, 221, 221);
+  background-size: 200% 200%;
+  animation: gradientAnimation 10s infinite alternate ease-in-out;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.card {
+  width: 100%;
+  min-width: 200px;
+  max-width: 300px;
+  border-radius: 20px;
+  background: #f0f0f0;
+  box-shadow: 15px 15px 30px rgb(200, 200, 200), -15px -15px 30px rgb(180, 180, 180);
+  padding: 10px;
+  text-align: center;
+  transition: transform 0.3s ease-in-out;
+  height: auto;
+  background-color: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  overflow: visible;
+  color: black;
+}
+
+.range {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 50px;
+  align-items: stretch;
+}
+
+.card:hover {
+  cursor: pointer;
+  transform: scale(1.03);
+}
+
+.card img {
+  border-radius: 15px;
+  height: 400px;
+  min-width: 250px;
+  width: auto;
+  max-width: 300px;
+  object-fit: contain;
+}
+
+.card-content {
+  color: black;
+  margin-top: 10px;
+}
+
+.card-content p {
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow: visible;
+}
+
+.card p {
+  font-size: 18px;
+}
+
+.current-tab-btn {
+  background-color: #333333;
+  color: white;
+  transform: scale(1.1);
+  box-shadow: 0 0px 20px rgba(100, 100, 100, 0.4);
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 20px;
+}
+
+.footer-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.footer-button {
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.footer-button:hover {
+  background-color: #e0e0e0;
+}
+
+.image-wrapper-for-badge {
+  position: relative;
+  display: block;
+  line-height: 0;
+}
+
+.image-wrapper-for-badge .card-image {
+  display: block;
+}
+
+.image-number-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 35px;
+  height: 35px;
+  background-color: white;
+  color: black;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: bold;
+  border: 1.5px solid black;
+  z-index: 1;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+}

@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' || $_SERVER['REQUEST_METHOD'] === 'PUT
 }
 
 if (! empty($inputData)) {
-    $inputData = sanitizeInput($inputData);
+    $inputData =sanitiseInput($inputData);
 }
 
 $actionType   = $inputData['type'] ?? null;
@@ -44,7 +44,7 @@ if ($actionType) {
 }
 
 switch ($actionType) {
-    case 'Register':
+    case 'Register'://marcel
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for Register. Use POST.', 405);
         }
@@ -56,7 +56,7 @@ switch ($actionType) {
         }
         break;
 
-    case 'Login':
+    case 'Login'://marcel
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for Login. Use POST.', 405);
             exit;
@@ -72,6 +72,46 @@ switch ($actionType) {
     
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Kyle Section
+
+
+        case 'AddGenre':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for AddGenre. Use POST.', 405);
+        }   
+        if (file_exists(__DIR__ . '/../src/handlers/add_genre_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/add_genre_handler.php';
+            handleAddGenre($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'AddGenre handler not found.', 500);
+        }
+        break;
+
+
+        case 'UpdateGenreVisibility':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for UpdateGenreVisibility. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/update_genre_visibility_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/update_genre_visibility_handler.php';
+            handleUpdateGenreVisibility($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'UpdateGenreVisibility handler not found.', 500);
+        }
+        break;
+
+        case 'GetGenre':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for GetGenre. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/get_genre_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/get_genre_handler.php';
+            handleGetGenre($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'GetGenre handler not found.', 500);
+        }
+        break;
+
+
         case 'GetStoreProducts':
         if ($_SERVER['REQUEST_METHOD'] !== 'GET' && $_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for GetStoreProducts. Use GET or POST.', 405);
@@ -119,8 +159,9 @@ switch ($actionType) {
             apiResponse(false, null, 'AddProduct handler not found.', 500);
         }
         break;
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    case 'GetAllProducts':
+    case 'GetAllProducts': // Cailin
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for getAllProducts. Use POST.', 405);
         }
@@ -132,7 +173,7 @@ switch ($actionType) {
         }
         break;
 
-    case 'GetHighestRatedProducts':
+    case 'GetHighestRatedProducts': // Cailin
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for GetHighestRatedProducts. Use POST.', 405);
         }
@@ -145,7 +186,7 @@ switch ($actionType) {
         break;
 
 
-    case 'GetFeaturedProducts':
+    case 'GetFeaturedProducts': // Cailin
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for GetFeaturedProducts. Use POST.', 405);
         }
@@ -157,7 +198,7 @@ switch ($actionType) {
         }
         break;
 
-    case 'GetProduct':
+    case 'GetProduct': // Cailin
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for GetProduct. Use POST.', 405);
         }
@@ -169,7 +210,7 @@ switch ($actionType) {
         }
         break;
 
-    case 'GetAllListedProducts':
+    case 'GetAllListedProducts': // Cailin
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for GetAllListedProducts. Use POST.', 405);
         }
@@ -180,7 +221,7 @@ switch ($actionType) {
             apiResponse(false, null, 'GetAllListedProducts handler not found.', 500);
         }
         break;
-  case 'UpdateProductSuper':
+  case 'UpdateProductSuper': //marcel
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for UpdateProduct. Use POST.', 405);
         }
@@ -193,7 +234,7 @@ switch ($actionType) {
         break;
 
 
-    case 'GetStores':
+    case 'GetStores': // Cailin
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for GetStores. Use POST.', 405);
         }
@@ -205,7 +246,7 @@ switch ($actionType) {
         }
         break;
 
-    case 'DeleteStore':
+    case 'DeleteStore': // Cailin
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for DeleteStore. Use POST.', 405);
         }
@@ -217,7 +258,7 @@ switch ($actionType) {
         }
         break;
 
-    case 'AddStore':
+    case 'AddStore': // Cailin
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for AddStore. Use POST.', 405);
         }
@@ -229,7 +270,7 @@ switch ($actionType) {
         }
         break;
 
-    case 'AddStoreAdmin':
+    case 'AddStoreAdmin': // Cailin
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for AddStoreAdmin. Use POST.', 405);
         }
@@ -241,7 +282,7 @@ switch ($actionType) {
         }
         break;
     
-     case 'AddInfoForStore': 
+     case 'AddInfoForStore': //marcel
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for AddInfoForStore. Use POST.', 405);
         }
@@ -254,7 +295,7 @@ switch ($actionType) {
         }
         break;
 
-    case 'UpdateStore':
+    case 'UpdateStore': // Cailin
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for UpdateStore. Use POST.', 405);
         }
@@ -266,7 +307,7 @@ switch ($actionType) {
         }
         break;
 
-    case 'UpdateUserInfo':
+    case 'UpdateUserInfo': // Cailin
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for UpdateUserInfo. Use POST.', 405);
         }
@@ -278,7 +319,7 @@ switch ($actionType) {
         }
         break;
 
-    case 'GetUserReviewsRatings':
+    case 'GetUserReviewsRatings': // Cailin
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for GetUserReviewsRatings. Use POST.', 405);
         }
@@ -290,7 +331,7 @@ switch ($actionType) {
         }
         break;
 
-    case 'GetAllProductsRR':
+    case 'GetAllProductsRR': // Cailin
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for GetAllProductsRR. Use POST.', 405);
         }
@@ -302,7 +343,7 @@ switch ($actionType) {
         }
         break;
 
-    case 'GetBookReviewsRatings':
+    case 'GetBookReviewsRatings': // Cailin
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for GetBookReviewsRatings. Use POST.', 405);
         }
@@ -314,7 +355,7 @@ switch ($actionType) {
         }
         break;
 
-    case 'GetUsers':
+    case 'GetUsers': // Cailin
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for GetUsers. Use POST.', 405);
         }
@@ -326,7 +367,7 @@ switch ($actionType) {
         }
         break;
 
-    case 'RemoveUsers':
+    case 'RemoveUsers': // Cailin
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             apiResponse(false, null, 'Invalid request method for RemoveUsers. Use POST.', 405);
         }
@@ -337,6 +378,55 @@ switch ($actionType) {
             apiResponse(false, null, 'RemoveUsers handler not found.', 500);
         }
         break;
+    
+      case 'RemoveUserReview'://marcel
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') { 
+            apiResponse(false, null, 'Invalid request method for RemoveUserReview. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/removeUserReview_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/removeUserReview_handler.php';
+            handleRemoveUserReview($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'RemoveUserReview handler not found.', 500);
+        }
+        break;
+
+    case 'AddUserRating'://marcel
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for AddUserRating. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/addUserRating_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/addUserRating_handler.php';
+            handleAddUserRating($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'AddUserRating handler not found.', 500);
+        }
+        break;
+
+    case 'AddUserReview': //marcel
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for AddUserReview. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/addUserReview_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/addUserReview_handler.php';
+            handleAddUserReview($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'AddUserReview handler not found.', 500);
+        }
+     break;
+
+     case 'RemoveStoreAdmin'://marcel
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') { 
+            apiResponse(false, null, 'Invalid request method for RemoveStoreAdmin. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/removeStoreAdmin_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/removeStoreAdmin_handler.php';
+            handleRemoveStoreAdmin($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'RemoveStoreAdmin handler not found.', 500);
+        }
+        break;
+    
 
     case 'WebsiteSummary': // Cailin
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

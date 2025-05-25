@@ -15,7 +15,7 @@ if (!function_exists('handleRemoveUsers')) {
         }
 
         if (!checkAuth($apiKey, 'super', $dbConnection)) {
-            apiResponse(false, null, 'Unauthorized: Super admin access required.', 403);
+            apiResponse(false, null, 'Unauthorised: Super admin access required.', 403);
         }
 
         $stmt = $dbConnection->prepare("DELETE FROM USERS WHERE id = ?");

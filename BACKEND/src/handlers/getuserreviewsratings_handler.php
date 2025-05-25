@@ -5,8 +5,8 @@ require_once __DIR__ . '/../utils/sanitise_utils.php';
 if (!function_exists('handleGetUserReviewsRatings')) {
     function handleGetUserReviewsRatings($data, $db) {
         $apiKey = $data['api_key'] ?? null;
-        $bookName = isset($data['book_name']) ? sanitizeInput($data['book_name']) : null;
-        $sort = isset($data['sort']) ? strtolower(sanitizeInput($data['sort'])) : 'newest';
+        $bookName = isset($data['book_name']) ? sanitiseInput($data['book_name']) : null;
+        $sort = isset($data['sort']) ? strtolower(sanitiseInput($data['sort'])) : 'newest';
 
         if (empty($apiKey)) {
             apiResponse(false, null, 'API key is required.', 401);
