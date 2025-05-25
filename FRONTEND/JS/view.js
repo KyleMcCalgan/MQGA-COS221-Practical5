@@ -204,6 +204,56 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    async function fetchUserRating(bookId) {
+        const payload = {
+            type: 'GetUserBookRating',
+            api_key: apiKey,
+            book_id: bookId
+        };
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                let errorData;
+                try {
+                    errorData = await response.json();
+                } catch (e) { }
+                const errorMessage = errorData && errorData.message ? errorData.message : `An HTTP error ${response.status} occurred.`;
+                throw new Error(errorMessage);
+            }
+
+            const result = await response.json();
+
+            if (result.status === 'success' && result.data) {
+                const rating = result.data.rating;
+                const yourRating = document.getElementById('your-rating');
+                const yourRatingStats = document.querySelector('.your-ratingstats');
+                if (rating !== null) {
+                    yourRating.textContent = `Your rating: ${rating} ⭐`;
+                    yourRatingStats.textContent = `Your rating: ${rating} ⭐`;
+                } else {
+                    yourRating.textContent = 'Your rating: N/A';
+                    yourRatingStats.textContent = 'Your rating: N/A';
+                }
+            } else {
+                throw new Error(result.message || 'Could not retrieve user rating.');
+            }
+        } catch (error) {
+            console.error('Error fetching user rating:', error);
+            const yourRating = document.getElementById('your-rating');
+            const yourRatingStats = document.querySelector('.your-ratingstats');
+            yourRating.textContent = 'N/A';
+            yourRatingStats.textContent = 'Your rating: N/A';
+        }
+    }
+
     function populateBookDetails(product) {
         bookImage.src = product.thumbnail || product.smallThumbnail || '../Images/notfound.png';
         bookImage.alt = product.title;
@@ -258,11 +308,17 @@ document.addEventListener('DOMContentLoaded', function () {
         const validStores = sortedStores.filter(store => store.price && !isNaN(parseFloat(store.price)));
         const cheapestStore = validStores.length > 0 ? validStores[0] : null;
 
+        console.log(sortedStores);
         sortedStores.forEach(store => {
             const storeRow = document.createElement('div');
             storeRow.className = `storerow${cheapestStore && store.price === cheapestStore.price ? ' cheapest' : ''}`;
             storeRow.innerHTML = `
-                <h4 class="store-name rowinfo">${store.name || 'Unknown Store'}</h4>
+                <div class="store-name rowinfo">
+                    <a href="${store.domain || '#'}" target="_blank">
+                        <img src="${store.logo || '../Images/notfound.png'}" alt="${store.name || 'Store'} Logo" class="store-logo">
+                    </a>
+                    <h4>${store.name || 'Unknown Store'}</h4>
+                </div>
                 <h4 class="store-rating rowinfo">${store.rating ? store.rating + ' ⭐' : 'N/A'}</h4>
                 <h4 class="store-price rowinfo">${store.price ? 'R' + store.price : 'N/A'}</h4>
             `;
@@ -288,6 +344,19 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
+        function decodeReviewText(text) {
+            if (!text) return text;
+            return text
+                .replace(/\\'/g, "'")
+                .replace(/\\"/g, '"')
+                .replace(/\\\\/g, '\\')
+                .replace(/&amp;/g, '&')
+                .replace(/&lt;/g, '<')
+                .replace(/&gt;/g, '>')
+                .replace(/&quot;/g, '"')
+                .replace(/&#39;/g, "'");
+        }
+
         const start = page * reviewsPerPage;
         const end = start + reviewsPerPage;
         const paginatedReviews = reviews.slice(start, end);
@@ -296,17 +365,17 @@ document.addEventListener('DOMContentLoaded', function () {
             const accordionItem = document.createElement('div');
             accordionItem.className = 'accordion-item';
             accordionItem.innerHTML = `
-                <h2 class="accordion-header" id="heading${review.review_id}">
-                    <button class="accordion-button${index === 0 ? '' : ' collapsed'}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${review.review_id}" aria-expanded="${index === 0 ? 'true' : 'false'}" aria-controls="collapse${review.review_id}">
-                        ${review.user_name}: ${review.rating ? review.rating + ' ⭐' : 'No rating'}
-                    </button>
-                </h2>
-                <div id="collapse${review.review_id}" class="accordion-collapse collapse${index === 0 ? ' show' : ''}" aria-labelledby="heading${review.review_id}" data-bs-parent="#reviewAccordion">
-                    <div class="accordion-body">
-                        ${review.review || 'No review text provided.'}
-                    </div>
+            <h2 class="accordion-header" id="heading${review.review_id}">
+                <button class="accordion-button${index === 0 ? '' : ' collapsed'}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${review.review_id}" aria-expanded="${index === 0 ? 'true' : 'false'}" aria-controls="collapse${review.review_id}">
+                    ${review.user_name}: ${review.rating ? review.rating + ' ⭐' : 'No rating'}
+                </button>
+            </h2>
+            <div id="collapse${review.review_id}" class="accordion-collapse collapse${index === 0 ? ' show' : ''}" aria-labelledby="heading${review.review_id}" data-bs-parent="#reviewAccordion">
+                <div class="accordion-body">
+                    ${decodeReviewText(review.review) || 'No review text provided.'}
                 </div>
-            `;
+            </div>
+        `;
             reviewAccordion.appendChild(accordionItem);
         });
         prevPageButton.disabled = page === 0;
@@ -338,7 +407,6 @@ document.addEventListener('DOMContentLoaded', function () {
             allReviews = reviewData.reviews || [];
             populateReviews(allReviews, page);
             populateReviewStats(reviewData.stats);
-            console.log(reviewData.stats);
         } catch (error) { }
     }
 
@@ -354,6 +422,7 @@ document.addEventListener('DOMContentLoaded', function () {
             populateBookDetails(product);
             populateModalDetails(product);
             populateStoreRows(product.stores);
+            await fetchUserRating(bookId);
             await loadReviews(bookId, currentSort, currentPage);
         } catch (error) { }
     }

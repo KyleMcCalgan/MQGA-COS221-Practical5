@@ -32,6 +32,16 @@
 .store-name {
     flex: 2;
     text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 10px; 
+}
+
+.store-logo {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    border-radius: 5px;
 }
 
 .rowinfo {
@@ -203,27 +213,10 @@
     gap: 5px;
 }
 
-/* select {
-    border: 2px solid transparent;
-    height: 70%;
-    outline: none;
-    overflow: hidden;
-    background-color: #f3f3f3;
-    border-radius: 10px;
-    transition: all 0.5s;
-    color: #333;
-    appearance: none;
-    padding-left: 5px;
-}
-
-select:hover {
-    border: 2px solid black;
-    box-shadow: 0px 0px 0px 5px rgba(105, 107, 114, 0.4);
-    background-color: white;
-} */
-.sorth4{
+.sorth4 {
     margin-bottom: 0;
 }
+
 select {
     padding: 8px 12px;
     border: 1px solid #f8f9fa;
@@ -232,8 +225,6 @@ select {
     color: #333;
     font-size: 18px;
 }
-
-
 
 /* Modal styling =================*/
 .modal {
