@@ -212,15 +212,9 @@
             <h2>Admins</h2>
             <div class="adminscont">
                 <div class="storerow">
-                    <h3>1</h3>
-                    <h3>Name</h3>
-                    <h3>Email</h3>
-                    <button class="normalbutton blackbutton adrow deletebtn">delete</button>
-                </div>
-                <div class="storerow">
-                    <h3>2</h3>
-                    <h3>Name</h3>
-                    <h3>Email</h3>
+                    <h3 class="amount">1</h3>
+                    <h3 class="adname">Name</h3>
+                    <h3 class="ademail">Email</h3>
                     <button class="normalbutton blackbutton adrow deletebtn">delete</button>
                 </div>
 
