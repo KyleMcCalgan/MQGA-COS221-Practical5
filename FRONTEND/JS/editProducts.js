@@ -600,8 +600,6 @@ document.addEventListener('DOMContentLoaded', function(){
         if (existingOverlay) existingOverlay.remove();
 
         const loadingDiv = document.createElement('div');
-        loadingDiv.className = 'loading-overlay-custom';
-        loadingDiv.innerHTML = '<div class="spinner"></div><p>Processing...</p>';
         const currentPosition = window.getComputedStyle(container).position;
         if (currentPosition === 'static'){
             container.style.position = 'relative';
