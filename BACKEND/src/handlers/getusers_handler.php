@@ -15,12 +15,9 @@ if (!function_exists('handleGetUsers')) {
             apiResponse(false, null, 'Database error: Unable to prepare user lookup query.', 500);
         }
 
-
-
         $requestingUserStmt->bind_param("s", $apiKey);
         if (!$requestingUserStmt->execute()) {
             apiResponse(false, null, 'Database error: User lookup query failed.', 500);
-
         }
 
         $requestingUserResult = $requestingUserStmt->get_result();
@@ -33,7 +30,8 @@ if (!function_exists('handleGetUsers')) {
         $requestingUserType = $requestingUser['user_type'];
         $requestingUserStmt->close();
 
-        if ($requestingUserType === 'regular') {
+        // If userType is not provided, return requesting user's information regardless of their type
+        if (empty($userType)) {
             $stmt = $dbConnection->prepare("SELECT id, name, surname, email, user_type FROM USERS WHERE id = ?");
             if (!$stmt) {
                 apiResponse(false, null, 'Database error: Unable to prepare query.', 500);
@@ -54,12 +52,14 @@ if (!function_exists('handleGetUsers')) {
             } else {
                 apiResponse(false, null, 'User information not found.', 404);
             }
+            return;
+        }
+
+        if ($requestingUserType === 'regular') {
+
+            apiResponse(false, null, 'Regular users cannot access other users\' information. Omit userType to get your own information.', 403);
 
         } elseif ($requestingUserType === 'admin' || $requestingUserType === 'super') {
-            if (empty($userType)) {
-                apiResponse(false, null, 'userType is required for admin and super users.', 400);
-            }
-
             $validUserTypes = ['super', 'regular', 'admin'];
             if (!in_array($userType, $validUserTypes)) {
                 apiResponse(false, null, 'Invalid userType. Must be super, regular, or admin.', 400);
