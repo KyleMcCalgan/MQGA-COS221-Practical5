@@ -50,7 +50,7 @@
                         <button type="button" class="save-btn" onclick="openPasswordModal()">Change Password</button>
                     </div>
 
-                
+                    <!-- Modals -->
                     <div id="nameModal" class="modal">
                         <div class="modal-content">
                             <h3>Edit Name</h3>
@@ -79,8 +79,8 @@
                             <button class="save-btn" onclick="closeModal('passwordModal')">Cancel</button>
                         </div>
                     </div>
-                  
 
+                    <!-- Review Edit Modal - Only shown for regular users -->
                     <div id="reviewEditModal" class="modal">
                         <div class="modal-content">
                             <h3>Edit Review</h3>
@@ -168,35 +168,12 @@
                             </div>
                         </div>
                     </div>
-
-                </div>
-
-                <div class="reviews-header">
-                    <h3>Reviews</h3>
-                    <select class="filter-dropdown" id="sort-dropdown" onchange="loadUserReviews()">
-                        <option value="newest">Most Recent</option>
-                        <option value="oldest">Oldest First</option>
-                        <option value="highest rating">Highest Rating</option>
-                        <option value="lowest rating">Lowest Rating</option>
-                    </select>
-                </div>
-
-                <div id="reviews-container">
-                  
-                </div>
-
-                <div id="no-reviews-message" style="display: none;" class="empty-reviews">
-                    <p>You haven't written any reviews yet.</p>
-                </div>
-
-                <div id="loading-reviews" class="loading-reviews">
-                    <p>Loading your reviews...</p>
-                </div>
-            </div>
-        </div>
-
+                `);
+            }
+        </script>
     </div>
 
+    <!-- Profile Update Status Messages -->
     <div id="profile-message" class="profile-message" style="display: none;"></div>
 
 </body>
