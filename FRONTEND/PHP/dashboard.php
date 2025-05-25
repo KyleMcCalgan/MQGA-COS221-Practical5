@@ -1,7 +1,7 @@
 <?php include "header.php"?>
 
         <div class="content">
-            <h1>Featured Books</h1>
+            <h1>Featured Action Books</h1>
         </div>
 
         <div class="range">   
