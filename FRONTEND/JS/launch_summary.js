@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', function(){
     const apiPath = '../../BACKEND/public/index.php'; 
 
     if (!summaryContainer){
-        console.error('Summary container gone bro');
         return;
     }
 
