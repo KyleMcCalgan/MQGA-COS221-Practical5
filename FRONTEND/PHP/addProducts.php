@@ -17,7 +17,7 @@
             <h1>Add Books</h1>
 
             <div class="main-form-card">
-                <form id="addProduct-form" method="POST" onsubmit="return false;"><!-- Ensure no normal form submission -->
+                <form id="addProduct-form" method="POST" onsubmit="return false;">
                     <div class="form-columns">
                         <div class="smol-card">
                             <div class="fg">

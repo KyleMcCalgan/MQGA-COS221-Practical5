@@ -50,7 +50,6 @@
                         <button type="button" class="save-btn" onclick="openPasswordModal()">Change Password</button>
                     </div>
 
-                    <!-- Modals -->
                     <div id="nameModal" class="modal">
                         <div class="modal-content">
                             <h3>Edit Name</h3>
@@ -80,7 +79,6 @@
                         </div>
                     </div>
 
-                    <!-- Review Edit Modal - Only shown for regular users -->
                     <div id="reviewEditModal" class="modal">
                         <div class="modal-content">
                             <h3>Edit Review</h3>
@@ -110,9 +108,7 @@
             </div>
         </div>
 
-        <!-- Reviews section - Only shown for regular users -->
         <script>
-            // Check user type and conditionally render reviews section
             const profileUserType = sessionStorage.getItem('user_type');
             if (profileUserType === 'regular') {
                 document.write(`
@@ -172,8 +168,6 @@
             }
         </script>
     </div>
-
-    <!-- Profile Update Status Messages -->
     <div id="profile-message" class="profile-message" style="display: none;"></div>
 
 </body>

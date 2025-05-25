@@ -21,12 +21,10 @@ document.addEventListener('DOMContentLoaded', function() {
     function isValidImageUrl(url) {
         try {
             new URL(url);
-            // Check if URL looks like an image (optional - removes this check if you want to allow any URL)
             const imageExtensions = /\.(jpg|jpeg|png|gif|bmp|webp|svg)(\?.*)?$/i;
             const hasImageExtension = imageExtensions.test(url);
             const hasImageParam = url.toLowerCase().includes('image') || url.toLowerCase().includes('img');
             
-            // Allow URLs that either have image extensions OR contain image-related parameters (for dynamic image URLs)
             return hasImageExtension || hasImageParam || url.includes('googleusercontent.com') || url.includes('books.google.com');
         } catch (e) {
             return false;
@@ -86,8 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const accessibleIn = document.getElementById('accessibleIn').value.trim();
         const ratingsCount = document.getElementById('ratingsCount').value ? parseInt(document.getElementById('ratingsCount').value) : 0;
         const isbn13 = document.getElementById('isbn13').value.trim();
-        
-        // Get image URL
+
         const thumbnail = document.getElementById('thumbnail').value.trim();
 
         if (!title) {
@@ -131,13 +128,12 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Validate image URL if provided
         if (thumbnail && !isValidImageUrl(thumbnail)) {
             showMessage('Please enter a valid URL for the book cover image', true);
             return;
         }
 
-        // Check URL length limit (common database limit for URLs)
+
         if (thumbnail && thumbnail.length > 512) {
             showMessage('Book cover image URL is too long (max 512 characters)', true);
             return;
