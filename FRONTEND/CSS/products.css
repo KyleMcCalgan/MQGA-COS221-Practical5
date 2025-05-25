@@ -1,6 +1,6 @@
-.ribbon{
+.ribbon {
   backdrop-filter: blur(10px);
-  background-color:rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.7);
   color: black;
   text-align: center;
   font-size: 18px;
@@ -20,10 +20,18 @@
   animation: gradientAnimation 10s infinite alternate ease-in-out;
 }
 
-@keyframes gradientAnimation{
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .ribbon .logo {
@@ -46,7 +54,7 @@
   transform: scale(1.1);
 }
 
-.ribbon .logo a{
+.ribbon .logo a {
   max-height: 80%;
   height: auto;
   width: auto;
@@ -54,7 +62,7 @@
   cursor: pointer;
 }
 
-button{
+button {
   cursor: pointer;
   position: relative;
   padding: 10px 24px;
@@ -86,6 +94,14 @@ button::before {
 .card h2 {
   color: black;
   font-size: 22px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 2.4em;
+  line-height: 1.2em;
+  margin-bottom: 5px;
 }
 
 button:hover::before {
@@ -95,18 +111,18 @@ button:hover::before {
 button:hover {
   color: #e0e0e0;
   transform: scale(1.1);
-  box-shadow: 0 0px 0px rgba(100, 100, 100,0.4);
+  box-shadow: 0 0px 0px rgba(100, 100, 100, 0.4);
 }
 
 button:active {
   transform: scale(1);
 }
 
-.ribbon a{
+.ribbon a {
   text-decoration: none;
 }
 
-.content{
+.content {
   font-family: "Inter", sans-serif;
   padding-top: 80px;
   font-size: 30px;
@@ -114,14 +130,14 @@ button:active {
   justify-content: center;
   z-index: -1;
   text-align: center;
-  flex : 1;
+  flex: 1;
 }
 
-.content p{
+.content p {
   font-size: 18px;
 }
 
-body{
+body {
   font-family: "Inter", sans-serif;
   font-weight: 400;
   font-style: normal;
@@ -133,29 +149,39 @@ body{
   animation: gradientAnimation 10s infinite alternate ease-in-out;
 }
 
-a{
+a {
   color: inherit;
   text-decoration: none;
 }
 
-.card{
+.card {
   width: 100%;
-  min-width: 200px;
-  max-width: 300px;
+  min-width: 180px;
+  max-width: 250px;
   border-radius: 20px;
   background: #f0f0f0;
   box-shadow: 15px 15px 30px rgb(200, 200, 200), -15px -15px 30px rgb(180, 180, 180);
   padding: 10px;
   text-align: center;
   transition: transform 0.3s ease-in-out;
-  height: auto ;
+  height: auto;
   background-color: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(10px);
   overflow: visible;
   color: black;
+  position: relative;
 }
 
-.range{
+.card-content {
+  color: black;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.range {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -163,21 +189,20 @@ a{
   align-items: stretch;
 }
 
-.card:hover{
+.card:hover {
   cursor: pointer;
   transform: scale(1.03);
 }
 
 .card img {
   border-radius: 15px;
-  height: 400px;
-  min-width: 250px;
-  width: auto;
-  max-width: 300px;
-  object-fit: contain;
+  height: 300px;
+  min-width: 100%;
+  max-width: 100%;
+  object-fit: cover; 
 }
 
-.card-content{
+.card-content {
   color: black;
   margin-top: 10px;
 }
@@ -187,17 +212,20 @@ a{
   word-wrap: break-word;
   word-break: break-word;
   overflow: visible;
+  margin: 5px 0;
+  width: 100%;
+  text-align: center; 
 }
 
-.card h2{
+.card h2 {
   font-size: 22px;
 }
 
-.card p{
+.card p {
   font-size: 18px;
 }
 
-.search-bar{
+.search-bar {
   width: 12%;
   height: 40px;
   border-radius: 34px;
@@ -209,17 +237,17 @@ a{
   color: black;
 }
 
-.search-bar:focus{
+.search-bar:focus {
   width: 20%;
   border: 2px solid #65bac9;
   box-shadow: 0 0 10px #8ef2ed, 0 0 20px #a0a0a0, 0 0 30px #c0c0c0;
 }
 
-.current-tab-btn{
+.current-tab-btn {
   background-color: #333333;
   color: white;
   transform: scale(1.1);
-  box-shadow: 0 0px 20px rgba(100, 100, 100,0.4);
+  box-shadow: 0 0px 20px rgba(100, 100, 100, 0.4);
 }
 
 .footer-content {
