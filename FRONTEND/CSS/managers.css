@@ -35,10 +35,6 @@ h4 {
     margin-bottom: 2%;
 }
 
-.topinnercont {
-    /* display: flex;
-    flex-direction: row; */
-}
 
 .left {
     margin-right: 15%;
@@ -98,7 +94,8 @@ select {
     border: 1px solid black;
     border-radius: 6px;
     background-color: #f9f9f9;
-    width: 40%;
+    width: 60%;
+    overflow:hidden;
 }
 
 .editBtn {
@@ -137,7 +134,7 @@ select {
 }
 
 .storerow {
-    width: 70%;
+    width: 100%;
     display: flex;
     flex-direction: row;
     text-align: center;
@@ -203,11 +200,12 @@ select {
 
 .modal-content input,
 .modal-content select {
-    width: 100%;
+    width: 85%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
+    margin: 0 auto 10px;
 }
 
 .modal-content .centerbutton {
@@ -237,6 +235,12 @@ select {
 
 .close-button:hover {
     color: #000;
+}
+
+#add-admin-form, #add-store-form{
+    /* display: flex;
+    flex-direction: column;
+    align-items: center; */
 }
 
 /* Message styling=============== */

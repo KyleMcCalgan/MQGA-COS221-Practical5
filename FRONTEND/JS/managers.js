@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const addAdminModal = document.getElementById('add-admin-modal');
     const addStoreModal = document.getElementById('add-store-modal');
     const deleteStoreModal = document.getElementById('delete-store-modal');
+    const deleteAdminModal = document.getElementById('delete-admin-modal');
     const editNameModal = document.getElementById('edit-name-modal');
     const editLogoModal = document.getElementById('edit-logo-modal');
     const editDomainModal = document.getElementById('edit-domain-modal');
@@ -17,13 +18,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeAddAdminModal = document.getElementById('close-add-admin-modal');
     const closeAddStoreModal = document.getElementById('close-add-store-modal');
     const closeDeleteStoreModal = document.getElementById('close-delete-store-modal');
+    const closeDeleteAdminModal = document.getElementById('close-delete-admin-modal');
     const closeEditNameModal = document.getElementById('close-edit-name-modal');
     const closeEditLogoModal = document.getElementById('close-edit-logo-modal');
     const closeEditDomainModal = document.getElementById('close-edit-domain-modal');
     const closeEditTypeModal = document.getElementById('close-edit-type-modal');
     const cancelDeleteStore = document.getElementById('cancel-delete-store');
     const confirmDeleteStore = document.getElementById('confirm-delete-store');
+    const cancelDeleteAdmin = document.getElementById('cancel-delete-admin');
+    const confirmDeleteAdmin = document.getElementById('confirm-delete-admin');
     const deleteStoreMessage = document.getElementById('delete-store-message');
+    const deleteAdminMessage = document.getElementById('delete-admin-message');
     const addAdminForm = document.getElementById('add-admin-form');
     const addStoreForm = document.getElementById('add-store-form');
     const editNameForm = document.getElementById('edit-name-form');
@@ -35,12 +40,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const editNameMessage = document.getElementById('edit-name-message');
     const editLogoMessage = document.getElementById('edit-logo-message');
     const editDomainMessage = document.getElementById('edit-domain-message');
-    const editTypeMessage = document.getElementById('edit-type-message');
+    const editTypeMessage = document.getElementById('edit-storetype-message');
+    const adminsContainer = document.querySelector('.adminscont');
 
-    let stores = []; 
-    let storeIdToDelete = null; 
+    let stores = []; // Store full GetStores data
+    let storeIdToDelete = null; // Track store to delete
+    let adminIdToDelete = null; // Track admin to delete
 
     function showUserMessage(element, message, isError = false) {
+        if (!element) {
+            console.error('Message element is undefined');
+            return;
+        }
         element.textContent = message;
         element.style.color = isError ? 'red' : 'green';
         element.style.fontSize = '14px';
@@ -49,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             element.textContent = '';
             element.style.display = 'none';
-        }, 1000); 
+        }, 3000); // Hide after 3s
     }
 
     async function fetchStores() {
@@ -72,12 +83,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const result = await response.json();
-            console.log('GetStores response:', result);  
-
             if (result.status === 'success' && result.data) {
-               
                 stores = Array.isArray(result.data) ? result.data : [result.data];
-                console.log('Normalized stores:', stores);
                 populateStoreDropdown();
             } else {
                 throw new Error(result.message || 'Could not retrieve stores.');
@@ -86,6 +93,98 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error fetching stores:', error);
             showUserMessage(mantopMessage, `Error: ${error.message}`, true);
         }
+    }
+
+    function populateAdminsContainer(admins) {
+        if (!adminsContainer) {
+            console.warn('Admins container not found');
+            return;
+        }
+
+        adminsContainer.innerHTML = ''; 
+
+        if (!admins || admins.length === 0) {
+            const noAdmins = document.createElement('p');
+            noAdmins.textContent = 'No admins found for this store.';
+            noAdmins.classList.add('no-admins');
+            adminsContainer.appendChild(noAdmins);
+            return;
+        }
+
+        admins.forEach((admin, index) => {
+            const storeRow = document.createElement('div');
+            storeRow.classList.add('storerow');
+
+            const amount = document.createElement('h3');
+            amount.classList.add('amount');
+            amount.textContent = index + 1;
+            storeRow.appendChild(amount);
+
+            const adName = document.createElement('h3');
+            adName.classList.add('adname');
+            adName.textContent = admin.name;
+            storeRow.appendChild(adName);
+
+            const adEmail = document.createElement('h3');
+            adEmail.classList.add('ademail');
+            adEmail.textContent = admin.email;
+            storeRow.appendChild(adEmail);
+
+            if (userType === 'super') {
+                const deleteButton = document.createElement('button');
+                deleteButton.classList.add('normalbutton', 'blackbutton', 'adrow', 'delete-admin-btn');
+                deleteButton.textContent = 'delete';
+                deleteButton.dataset.userId = admin.id;
+                deleteButton.addEventListener('click', () => {
+                    showDeleteAdminModal(admin.id, admin.name);
+                });
+                storeRow.appendChild(deleteButton);
+            }
+
+            adminsContainer.appendChild(storeRow);
+        });
+    }
+
+    async function removeStoreAdmin(userId) {
+        const payload = {
+            type: 'RemoveStoreAdmin',
+            api_key: apiKey,
+            user_id: parseInt(userId)
+        };
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                showUserMessage(mantopMessage, 'Admin removed successfully.', false);
+                await fetchStores();
+            } else {
+                throw new Error(result.message || 'Could not remove admin.');
+            }
+        } catch (error) {
+            console.error('Error removing admin:', error);
+            showUserMessage(mantopMessage, `Error: ${error.message}`, true);
+        }
+    }
+
+    function showDeleteAdminModal(userId, adminName) {
+        adminIdToDelete = userId;
+        deleteAdminMessage.textContent = `Are you sure you want to delete ${adminName}?`;
+        deleteAdminModal.style.display = 'flex';
+    }
+
+    function hideDeleteAdminModal() {
+        deleteAdminModal.style.display = 'none';
+        deleteAdminMessage.textContent = '';
+        adminIdToDelete = null;
     }
 
     function populateStoreDropdown() {
@@ -98,21 +197,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 storeSelector.appendChild(option);
             });
             if (userType === 'admin' && stores.length > 0) {
-                storeSelector.value = stores[0].store_id; 
-                console.log('Admin store selected:', storeSelector.value);
+                storeSelector.value = stores[0].store_id;
                 const changeEvent = new Event('change');
                 storeSelector.dispatchEvent(changeEvent);
             }
         } else {
             console.warn('No valid stores to populate dropdown');
         }
-        updateStoreInfo(); 
+        updateStoreInfo();
     }
 
     function updateStoreInfo() {
         const storeId = storeSelector.value;
         const store = stores.find(s => s.store_id == storeId);
-        console.log('updateStoreInfo - storeId:', storeId, 'store:', store); 
         const fields = {
             'display-name': store ? store.name : 'Select a store',
             'display-logo': store ? store.logo : 'N/A',
@@ -135,6 +232,8 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             console.warn('Heading with class booknameheading not found');
         }
+
+        populateAdminsContainer(store ? store.admins : []);
     }
 
     async function updateStore(storeId, field, value) {
@@ -143,7 +242,10 @@ document.addEventListener('DOMContentLoaded', () => {
             api_key: apiKey,
             store_id: parseInt(storeId)
         };
-        payload[field] = value; 
+        payload[field] = value;
+
+        const messageField = field === 'storetype' ? 'type' : field;
+        const messageElement = window[`edit-${messageField}-message`];
 
         try {
             const response = await fetch(apiUrl, {
@@ -157,15 +259,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const result = await response.json();
 
             if (result.status === 'success') {
-                showUserMessage(window[`edit-${field}-message`], result.data.message, false);
-                await fetchStores(); 
-                setTimeout(window[`hideEdit${field.charAt(0).toUpperCase() + field.slice(1)}Modal`], 1500);
+                showUserMessage(messageElement, result.data.message, false);
+                await fetchStores();
+                setTimeout(window[`hideEdit${messageField.charAt(0).toUpperCase() + messageField.slice(1)}Modal`], 1500);
             } else {
                 throw new Error(result.message || `Could not update ${field}.`);
             }
         } catch (error) {
             console.error(`Error updating ${field}:`, error);
-            showUserMessage(window[`edit-${field}-message`], `Error: ${error.message}`, true);
+            showUserMessage(messageElement, `Error: ${error.message}`, true);
         }
     }
 
@@ -224,6 +326,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (result.status === 'success') {
                 showUserMessage(adminMessage, result.data.message, false);
                 setTimeout(hideAddAdminModal, 1500);
+                await fetchStores();
             } else {
                 throw new Error(result.message || 'Could not add admin.');
             }
@@ -400,8 +503,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 button.style.display = 'none';
             });
             fetchStores();
-        } 
+        } else {
+            const mantopContainer = document.querySelector('.mantop');
+            if (mantopContainer) {
+                mantopContainer.style.display = 'none';
+            }
+        }
     }
+
     if (userType === 'super' || userType === 'admin') {
         storeSelector.addEventListener('change', updateStoreInfo);
 
@@ -525,6 +634,21 @@ document.addEventListener('DOMContentLoaded', () => {
         deleteStoreModal.addEventListener('click', (event) => {
             if (event.target === deleteStoreModal) {
                 hideDeleteStoreModal();
+            }
+        });
+
+        closeDeleteAdminModal.addEventListener('click', hideDeleteAdminModal);
+        cancelDeleteAdmin.addEventListener('click', hideDeleteAdminModal);
+        deleteAdminModal.addEventListener('click', (event) => {
+            if (event.target === deleteAdminModal) {
+                hideDeleteAdminModal();
+            }
+        });
+
+        confirmDeleteAdmin.addEventListener('click', async () => {
+            if (adminIdToDelete) {
+                await removeStoreAdmin(adminIdToDelete);
+                hideDeleteAdminModal();
             }
         });
 
