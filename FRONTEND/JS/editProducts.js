@@ -21,24 +21,12 @@ document.addEventListener('DOMContentLoaded', function () {
     let allGenres = [];
     let adminStoreID = null;
     let adminStoreName = null;
-    let currentView = 'current'; // Track current view: 'current' or 'new'
+    let currentView = 'current';
 
     if (!apiKey || (userType !== 'admin' && userType !== 'super')) {
         showMessage('Access Denied. Please log in. Redirecting...', true, true);
         setTimeout(() => { window.location.href = 'login.php'; }, 2000);
         return;
-    }
-
-    if (tableHeaders && !tableHeaders.querySelector('.col-price')) {
-        const actionsHeader = tableHeaders.querySelector('th:last-child');
-        const priceHeader = document.createElement('th');
-        priceHeader.className = 'col-price';
-        priceHeader.textContent = 'Price';
-        if (actionsHeader) {
-            tableHeaders.insertBefore(priceHeader, actionsHeader);
-        } else {
-            tableHeaders.appendChild(priceHeader);
-        }
     }
 
     if (prodTable) prodTable.innerHTML = '';
@@ -52,7 +40,8 @@ document.addEventListener('DOMContentLoaded', function () {
             companySelect.addEventListener('change', handleSuperAdminStoreSelection);
         }
         if (bookViewSelect) {
-            bookViewSelect.disabled = false;
+            bookViewSelect.disabled = true;
+            bookViewSelect.style.display = 'none';
             bookViewSelect.addEventListener('change', handleBookViewChange);
         }
         fetchStoresForSuperAdmin();
@@ -248,7 +237,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let payload = { type: '', api_key: apiKey };
         if (searchTerm) payload.title = searchTerm;
 
-        if (storeNameToUse && storeNameToUse !== "") {
+        if (storeNameToUse && storeNameToUse) {
             payload.type = 'GetStoreProducts';
             payload.store_name = storeNameToUse;
         } else {
@@ -398,7 +387,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 isErrorState = true;
                 messageToShow = messageToShow || 'Failed to fetch missing books.';
             } else if (!result.data || result.data.length === 0) {
-                messageToShow = messageToShow || 'No missing books found for your store.';
+                messageToShow = messageToShow || 'No missing books found for this store.';
             }
 
             if (isErrorState) {
@@ -439,16 +428,28 @@ document.addEventListener('DOMContentLoaded', function () {
             row.insertCell().textContent = book.author || 'N/A';
 
             let ratingDisplay = 'N/A';
-            if (isAllCompaniesView && book.book_rating !== undefined) {
-                ratingDisplay = parseFloat(book.book_rating).toFixed(2);
-            } else if (!isAllCompaniesView && book.rating !== undefined) {
-                ratingDisplay = parseFloat(book.rating).toFixed(2);
+            let numericRating;
+            if (isAllCompaniesView && book.book_rating !== null && book.book_rating !== undefined) {
+                numericRating = parseFloat(book.book_rating);
+                if (!isNaN(numericRating)) {
+                    ratingDisplay = numericRating.toFixed(2);
+                }
+            } else if (!isAllCompaniesView && book.rating !== null && book.rating !== undefined) {
+                numericRating = parseFloat(book.rating);
+                if (!isNaN(numericRating)) {
+                    ratingDisplay = numericRating.toFixed(2);
+                }
             }
+
             row.insertCell().textContent = ratingDisplay;
 
             let priceDisplay = 'N/A';
-            if (!isAllCompaniesView && book.price !== undefined) {
-                priceDisplay = parseFloat(book.price).toFixed(2);
+            let numericPrice;
+            if (!isAllCompaniesView && book.price !== null && book.price !== undefined) {
+                numericPrice = parseFloat(book.price);
+                if (!isNaN(numericPrice)) {
+                    priceDisplay = numericPrice.toFixed(2);
+                }
             }
             row.insertCell().textContent = priceDisplay;
 
@@ -495,8 +496,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
             row.insertCell().textContent = book.title || 'N/A';
             row.insertCell().textContent = book.author || 'N/A';
-            row.insertCell().textContent = 'N/A'; // No rating for missing books
-            row.insertCell().textContent = 'N/A'; // No price for missing books
+            row.insertCell().textContent = 'N/A';
+            row.insertCell().textContent = 'N/A';
 
             const actionsCell = row.insertCell();
             actionsCell.style.whiteSpace = 'nowrap';
@@ -562,13 +563,24 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         const formData = new FormData(addBookForm);
+        const price = document.getElementById('add_store_price').value;
+        const rating = document.getElementById('add_store_rating').value;
+        if (isNaN(price) || price < 0) {
+            showMessage('Price must be a valid number greater than or equal to 0.', true, false, 'modal');
+            return;
+        }
+        if (isNaN(rating) || rating < 0 || rating > 5) {
+            showMessage('Rating must be a valid number between 0.0 and 5.0.', true, false, 'modal');
+            return;
+        }
+
         const payload = {
             type: 'AddInfoForStore',
             api_key: apiKey,
             book_id: currBookDataMod.id.toString(),
             store_id: currBookDataMod.adminContextStoreId.toString(),
-            Price: formData.get('store_price'),
-            Rating: formData.get('store_rating')
+            Price: price,
+            Rating: rating
         };
 
         showLoading('modal');
@@ -678,11 +690,21 @@ document.addEventListener('DOMContentLoaded', function () {
             payload.type = 'AddInfoForStore';
             payload.book_id = currBookDataMod.id;
             payload.store_id = adminStoreID;
-            payload.Price = formData.get('store_price');
-            payload.Rating = formData.get('store_rating');
+            payload.Price = parseFloat(formData.get('store_price'));
+            payload.Rating = parseFloat(formData.get('store_rating'));
             if (!adminStoreID) {
                 hideLoading('modal');
                 showMessage('Your store ID is not identified. Cannot update price/rating.', true, false, 'modal');
+                return;
+            }
+            if (isNaN(payload.Price) || payload.Price < 0) {
+                hideLoading('modal');
+                showMessage('Price must be a valid number greater than or equal to 0.', true, false, 'modal');
+                return;
+            }
+            if (isNaN(payload.Rating) || payload.Rating < 0 || payload.Rating > 5) {
+                hideLoading('modal');
+                showMessage('Rating must be a valid number between 0.0 and 5.0.', true, false, 'modal');
                 return;
             }
         } else {
