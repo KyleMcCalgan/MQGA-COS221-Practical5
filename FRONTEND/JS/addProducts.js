@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     const addProductForm = document.getElementById('addProduct-form');
+    const submitButton = document.getElementById('submit-button');
     const formMessage = document.getElementById('frmMsg');
     const apiUrl = '../../BACKEND/public/index.php';
 
@@ -63,11 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    if (!addProductForm) {
-        return;
-    }
-
-    addProductForm.addEventListener('submit', function(e) {
+    function handleFormSubmission(e) {
         e.preventDefault();
         formMessage.textContent = '';
         formMessage.style.display = 'none';
@@ -133,7 +130,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-
         if (thumbnail && thumbnail.length > 512) {
             showMessage('Book cover image URL is too long (max 512 characters)', true);
             return;
@@ -160,7 +156,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
         showLoading();
         submitForm(requestPayload);
-    });
+    }
+
+    if (addProductForm) {
+        addProductForm.addEventListener('submit', handleFormSubmission);
+    }
+    
+    if (submitButton) {
+        submitButton.addEventListener('click', handleFormSubmission);
+    }
 
     async function submitForm(requestPayload) {
         try {

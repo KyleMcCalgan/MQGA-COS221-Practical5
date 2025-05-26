@@ -90,14 +90,15 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="add-book-button-container">
-                        <button type="submit" id="submit-button">Add book</button>
-                    </div>
-                    
-                    <div id="frmMsg" style="margin-top: 20px; padding: 15px; display: none; text-align: center; font-weight: bold; border-radius: 5px;"></div>
                 </form>
             </div>
+
+            <!-- Button moved outside the form card -->
+            <div class="add-book-button-container">
+                <button type="button" id="submit-button">Add book</button>
+            </div>
+            
+            <div id="frmMsg" style="margin-top: 20px; padding: 15px; display: none; text-align: center; font-weight: bold; border-radius: 5px;"></div>
         </div>
 
 <?php include "footer.php"; ?>
