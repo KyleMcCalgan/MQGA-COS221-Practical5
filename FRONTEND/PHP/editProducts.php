@@ -124,7 +124,7 @@
                             <input type="number" step="0.01" name="store_price" id="modal_store_price" class="form-control">
                         </div>
                         <div class="col-md-6 admin-specific-field" style="display:none;">
-                            <label现行 modal_store_rating" class="form-label">Your Store's Rating (0.0-5.0)</label>
+                            <label for= "modal_store_rating" class="form-label">Your Store's Rating (0.0-5.0)</label>
                                 <input type="number" step="0.1" min="0" max="5" name="store_rating" id="modal_store_rating" class="form-control">
                         </div>
                     </div>

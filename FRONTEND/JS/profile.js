@@ -793,6 +793,6 @@ function showMessage(message, type) {
         
         setTimeout(() => {
             messageDiv.style.display = 'none';
-        }, 5000);
+        }, 3000);
     }
 }
