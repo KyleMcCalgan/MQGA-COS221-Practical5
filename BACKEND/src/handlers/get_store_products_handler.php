@@ -7,7 +7,7 @@ if (!function_exists('handleGetStoreProducts')) {
         }
 
         $apiKey = $inputData['apikey'];
-        $storeName = $inputData['store_name'] ?? null;
+        $storeName = isset($inputData['store_name']) ? html_entity_decode($inputData['store_name'], ENT_QUOTES | ENT_HTML5, 'UTF-8') : null;
         
         $stmt = $dbConnection->prepare("SELECT id, user_type FROM USERS WHERE apikey = ? LIMIT 1");
         if (!$stmt) {
@@ -48,7 +48,8 @@ if (!function_exists('handleGetStoreProducts')) {
             $storeCheckStmt->close();
             
             if (!$storeExists) {
-                apiResponse(false, null, 'Store not found: ' . htmlspecialchars($storeName), 404);
+                
+                apiResponse(false, null, 'Store not found: ' . $storeName, 404);
                 return;
             }
             
