@@ -428,6 +428,7 @@ document.addEventListener('DOMContentLoaded', function () {
             row.insertCell().textContent = book.author || 'N/A';
 
             let ratingDisplay = 'N/A';
+
             let numericRating;
             if (isAllCompaniesView && book.book_rating !== null && book.book_rating !== undefined) {
                 numericRating = parseFloat(book.book_rating);
@@ -439,17 +440,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (!isNaN(numericRating)) {
                     ratingDisplay = numericRating.toFixed(2);
                 }
+
             }
 
             row.insertCell().textContent = ratingDisplay;
 
             let priceDisplay = 'N/A';
+
             let numericPrice;
             if (!isAllCompaniesView && book.price !== null && book.price !== undefined) {
                 numericPrice = parseFloat(book.price);
                 if (!isNaN(numericPrice)) {
                     priceDisplay = numericPrice.toFixed(2);
                 }
+
             }
             row.insertCell().textContent = priceDisplay;
 
