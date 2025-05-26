@@ -33,7 +33,7 @@
                         href: 'addProducts.php'
                     },{
                         id: 'edit-books-btn',
-                        text: 'Edit Book',
+                        text: 'Manage Books',
                         href: 'editProducts.php'
                     });
                 } else if (userType === 'super') {
@@ -55,7 +55,7 @@
                         href: 'addProducts.php'
                     },{
                         id: 'edit-books-btn',
-                        text: 'Edit Books',
+                        text: 'Manage books',
                         href: 'editProducts.php'
                     });
                 }
