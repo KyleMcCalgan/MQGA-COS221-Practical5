@@ -439,6 +439,7 @@ document.addEventListener('DOMContentLoaded', function () {
             row.insertCell().textContent = book.author || 'N/A';
 
             let ratingDisplay = 'N/A';
+
             if (isAllCompaniesView && book.book_rating !== undefined) {
                 ratingDisplay = parseFloat(book.book_rating).toFixed(2);
             } else if (!isAllCompaniesView && book.rating !== undefined) {
@@ -449,6 +450,7 @@ document.addEventListener('DOMContentLoaded', function () {
             let priceDisplay = 'N/A';
             if (!isAllCompaniesView && book.price !== undefined) {
                 priceDisplay = parseFloat(book.price).toFixed(2);
+
             }
             row.insertCell().textContent = priceDisplay;
 
