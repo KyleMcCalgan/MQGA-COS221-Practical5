@@ -117,7 +117,7 @@ if (!function_exists('handleGetStoreProducts')) {
                     si.rating
                 FROM 
                     PRODUCTS p
-                LEFT JOIN 
+                JOIN 
                     STORE_INFO si ON p.id = si.book_id AND si.store_id = ?";
             
         $params = [$targetStoreId];
