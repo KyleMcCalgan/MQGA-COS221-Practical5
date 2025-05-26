@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     adminStoreID = storesResult.data.store_id;
                     adminStoreName = storesResult.data.name;
                     if (companySelect && companySelect.disabled) {
-                        companySelect.options[0].textContent = adminStoreName || "Your Store";
+                        companySelect.options[0].textContent = decodeHtmlEntities(adminStoreName) || "Your Store";
                     }
                     fetchProductsForAdmin(adminStoreName, searchBar ? searchBar.value.trim() : '');
                 } else {
@@ -118,7 +118,37 @@ document.addEventListener('DOMContentLoaded', function () {
             populateCategoryChecklist([]);
         }
     }
-
+    async function fetchStoresForSuperAdmin() {
+        showLoading();
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ type: 'GetStores', api_key: apiKey })
+            });
+            const result = await response.json();
+            if (result.status === 'success' && result.data) {
+                allStores = Array.isArray(result.data) ? result.data : [result.data];
+                if (companySelect) {
+                    companySelect.innerHTML = '<option value="">All Companies</option>';
+                    allStores.forEach(store => {
+                        const option = document.createElement('option');
+                        option.value = store.store_id;
+                        option.textContent = decodeHtmlEntities(store.name);
+                        option.dataset.storeName = store.name;
+                        companySelect.appendChild(option);
+                    });
+                }
+                fetchProductsForSuperAdmin("", searchBar ? searchBar.value : '');
+            } else {
+                hideLoading();
+                showMessage(result.message || 'Failed to load stores.', true, true);
+            }
+        } catch (error) {
+            hideLoading();
+            showMessage('Error fetching stores: ' + error.message, true, true);
+        }
+    }
     function populateCategoryChecklist(genres) {
         if (!catsChecklist) return;
         catsChecklist.innerHTML = '';
@@ -138,37 +168,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    async function fetchStoresForSuperAdmin() {
-        showLoading();
-        try {
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ type: 'GetStores', api_key: apiKey })
-            });
-            const result = await response.json();
-            if (result.status === 'success' && result.data) {
-                allStores = Array.isArray(result.data) ? result.data : [result.data];
-                if (companySelect) {
-                    companySelect.innerHTML = '<option value="">All Companies</option>';
-                    allStores.forEach(store => {
-                        const option = document.createElement('option');
-                        option.value = store.store_id;
-                        option.textContent = store.name;
-                        option.dataset.storeName = store.name;
-                        companySelect.appendChild(option);
-                    });
-                }
-                fetchProductsForSuperAdmin("", searchBar ? searchBar.value : '');
-            } else {
-                hideLoading();
-                showMessage(result.message || 'Failed to load stores.', true, true);
-            }
-        } catch (error) {
-            hideLoading();
-            showMessage('Error fetching stores: ' + error.message, true, true);
-        }
-    }
+
 
     function handleBookViewChange() {
         currentView = bookViewSelect.value;
@@ -206,6 +206,27 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    function decodeHtmlEntities(text) {
+        if (!text) return text;
+        try {
+            let decoded = text
+                .replace(/&#39;/g, "'")
+                .replace(/&quot;/g, '"')
+                .replace(/&lt;/g, '<')
+                .replace(/&gt;/g, '>')
+                .replace(/&amp;/g, '&');
+            const div = document.createElement('div');
+            div.innerHTML = decoded;
+            decoded = div.textContent;
+            console.log(`Original: ${text}, Decoded: ${decoded}`);
+            return decoded;
+        } catch (error) {
+            console.error('Error decoding HTML entities:', error, 'Text:', text);
+            return text;
+        }
+    }
+
+
     function handleSearch() {
         const searchTerm = searchBar.value.trim();
         if (userType === 'super') {
@@ -231,6 +252,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     }
+
 
     async function fetchProductsForSuperAdmin(storeNameToUse, searchTerm = '', storeIdContext = null) {
         showLoading();
@@ -286,77 +308,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    async function fetchProductsForAdmin(storeNameToUse, searchTerm = '') {
-        if (!document.body.querySelector('.loading-overlay-custom') && !storeNameToUse && userType === 'admin') {
-            if (!adminStoreName) {
-                showMessage("Your store details are not available. Cannot fetch products.", true, true);
-                hideLoading();
-                return;
-            }
-            storeNameToUse = adminStoreName;
-        }
-        if (!document.body.querySelector('.loading-overlay-custom')) {
-            showLoading();
-        }
 
-        const payload = {
-            type: 'GetStoreProducts',
-            api_key: apiKey,
-            store_name: storeNameToUse
-        };
-        if (searchTerm) payload.title = searchTerm;
-
-        if (!storeNameToUse && userType === 'admin') {
-            hideLoading();
-            showMessage("Admin store name is required to fetch products.", true, true);
-            renderProductsTable([], false, adminStoreID, null);
-            return;
-        }
-
-        try {
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            const result = await response.json();
-            hideLoading();
-
-            let isErrorState = false;
-            let messageToShow = result.message || '';
-
-            if (result.status !== 'success') {
-                isErrorState = true;
-                messageToShow = messageToShow || 'Failed to fetch your store products.';
-            } else if (!result.data) {
-                isErrorState = true;
-                messageToShow = messageToShow || 'Received success status but no product data.';
-            } else if (result.data.length === 0) {
-                messageToShow = messageToShow || 'No products found for your store.';
-            }
-            if (result.message && result.message.toLowerCase().includes('api key is required')) {
-                isErrorState = true;
-                messageToShow = result.message;
-            }
-
-            if (isErrorState) {
-                renderProductsTable([], false, adminStoreID, storeNameToUse);
-                showMessage(messageToShow, true, true);
-            } else if (result.data) {
-                renderProductsTable(result.data, false, adminStoreID, storeNameToUse);
-                if (result.data.length === 0) {
-                    showMessage(messageToShow, false, true);
-                }
-            } else {
-                renderProductsTable([], false, adminStoreID, storeNameToUse);
-                showMessage('An unexpected issue occurred while fetching your store products.', true, true);
-            }
-        } catch (error) {
-            hideLoading();
-            renderProductsTable([], false, adminStoreID, storeNameToUse);
-            showMessage('Error fetching your store products: ' + error.message, true, true);
-        }
-    }
 
     async function fetchMissingBooksForAdmin(storeId, searchTerm = '') {
         if (!storeId) {
@@ -409,6 +361,39 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+
+    function renderMissingBooksTable(books, storeId) {
+        if (!prodTable) return;
+        prodTable.innerHTML = '';
+
+        const expectedColumnCount = 5;
+
+        if (!books || books.length === 0) {
+            const colCount = tableHeaders ? tableHeaders.cells.length : expectedColumnCount;
+            prodTable.innerHTML = `<tr><td colspan="${colCount}">No missing books found.</td></tr>`;
+            return;
+        }
+
+        books.forEach(book => {
+            const row = prodTable.insertRow();
+
+            row.insertCell().textContent = decodeHtmlEntities(book.title) || 'N/A';
+            row.insertCell().textContent = decodeHtmlEntities(book.author) || 'N/A';
+            row.insertCell().textContent = 'N/A';
+            row.insertCell().textContent = 'N/A';
+
+            const actionsCell = row.insertCell();
+            actionsCell.style.whiteSpace = 'nowrap';
+
+            const addButton = document.createElement('button');
+            addButton.className = 'btn btn-sm btn-outline-success';
+            addButton.textContent = 'Add to My Store';
+            addButton.type = 'button';
+            addButton.addEventListener('click', () => handleAddClick(book.id, storeId));
+            actionsCell.appendChild(addButton);
+        });
+    }
+
     function renderProductsTable(products, isAllCompaniesView, currentStoreId, currentStoreNameToDisplay) {
         if (!prodTable) return;
         prodTable.innerHTML = '';
@@ -424,8 +409,8 @@ document.addEventListener('DOMContentLoaded', function () {
         products.forEach(book => {
             const row = prodTable.insertRow();
 
-            row.insertCell().textContent = book.title || 'N/A';
-            row.insertCell().textContent = book.author || 'N/A';
+            row.insertCell().textContent = decodeHtmlEntities(book.title) || 'N/A';
+            row.insertCell().textContent = decodeHtmlEntities(book.author) || 'N/A';
 
             let ratingDisplay = 'N/A';
 
@@ -443,7 +428,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             }
 
-            row.insertCell().textContent = ratingDisplay;
+            row.insertCell().textContent = decodeHtmlEntities(ratingDisplay);
 
             let priceDisplay = 'N/A';
 
@@ -455,7 +440,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
             }
-            row.insertCell().textContent = priceDisplay;
+            row.insertCell().textContent = decodeHtmlEntities(priceDisplay);
 
             const actionsCell = row.insertCell();
             actionsCell.style.whiteSpace = 'nowrap';
@@ -483,81 +468,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    function renderMissingBooksTable(books, storeId) {
-        if (!prodTable) return;
-        prodTable.innerHTML = '';
-
-        const expectedColumnCount = 5;
-
-        if (!books || books.length === 0) {
-            const colCount = tableHeaders ? tableHeaders.cells.length : expectedColumnCount;
-            prodTable.innerHTML = `<tr><td colspan="${colCount}">No missing books found.</td></tr>`;
-            return;
-        }
-
-        books.forEach(book => {
-            const row = prodTable.insertRow();
-
-            row.insertCell().textContent = book.title || 'N/A';
-            row.insertCell().textContent = book.author || 'N/A';
-            row.insertCell().textContent = 'N/A';
-            row.insertCell().textContent = 'N/A';
-
-            const actionsCell = row.insertCell();
-            actionsCell.style.whiteSpace = 'nowrap';
-
-            const addButton = document.createElement('button');
-            addButton.className = 'btn btn-sm btn-outline-success';
-            addButton.textContent = 'Add to My Store';
-            addButton.type = 'button';
-            addButton.addEventListener('click', () => handleAddClick(book.id, storeId));
-            actionsCell.appendChild(addButton);
-        });
-    }
-
-    async function handleEditClick(bookId, storeContextId, storeContextPrice, storeContextRating) {
-        showLoading();
-        try {
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ type: 'GetProduct', api_key: apiKey, book_id: bookId.toString() })
-            });
-            const result = await response.json();
-            hideLoading();
-
-            if (result.status === 'success' && result.data) {
-                currBookDataMod = result.data;
-                currBookDataMod.adminContextStoreId = userType === 'admin' ? adminStoreID : storeContextId;
-
-                if (userType === 'admin' && adminStoreID && currBookDataMod.stores) {
-                    const adminStoreDetails = currBookDataMod.stores.find(s => s.id && s.id.toString() === adminStoreID.toString());
-                    if (adminStoreDetails) {
-                        currBookDataMod.adminContextStorePrice = adminStoreDetails.price;
-                        currBookDataMod.adminContextStoreRating = adminStoreDetails.rating;
-                    } else {
-                        currBookDataMod.adminContextStorePrice = storeContextPrice;
-                        currBookDataMod.adminContextStoreRating = storeContextRating;
-                    }
-                } else {
-                    currBookDataMod.adminContextStorePrice = storeContextPrice;
-                    currBookDataMod.adminContextStoreRating = storeContextRating;
-                }
-                populateAndConfigureModal(currBookDataMod);
-                editBookModalInstance.show();
-            } else {
-                showMessage(result.message || 'Failed to fetch book details.', true, true);
-            }
-        } catch (error) {
-            hideLoading();
-            showMessage('Error fetching book details: ' + error.message, true, true);
-        }
-    }
-
-    function handleAddClick(bookId, storeId) {
-        currBookDataMod = { id: bookId, adminContextStoreId: storeId };
-        addBookModalInstance.show();
-    }
 
     async function handleAddBookFormSubmit(event) {
         event.preventDefault();
@@ -615,6 +525,52 @@ document.addEventListener('DOMContentLoaded', function () {
             showMessage(`Error adding book to store: ${error.message}`, true, false, 'modal');
         }
     }
+
+    async function handleEditClick(bookId, storeContextId, storeContextPrice, storeContextRating) {
+        showLoading();
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ type: 'GetProduct', api_key: apiKey, book_id: bookId.toString() })
+            });
+            const result = await response.json();
+            hideLoading();
+
+            if (result.status === 'success' && result.data) {
+                currBookDataMod = result.data;
+                currBookDataMod.adminContextStoreId = userType === 'admin' ? adminStoreID : storeContextId;
+
+                if (userType === 'admin' && adminStoreID && currBookDataMod.stores) {
+                    const adminStoreDetails = currBookDataMod.stores.find(s => s.id && s.id.toString() === adminStoreID.toString());
+                    if (adminStoreDetails) {
+                        currBookDataMod.adminContextStorePrice = adminStoreDetails.price;
+                        currBookDataMod.adminContextStoreRating = adminStoreDetails.rating;
+                    } else {
+                        currBookDataMod.adminContextStorePrice = storeContextPrice;
+                        currBookDataMod.adminContextStoreRating = storeContextRating;
+                    }
+                } else {
+                    currBookDataMod.adminContextStorePrice = storeContextPrice;
+                    currBookDataMod.adminContextStoreRating = storeContextRating;
+                }
+                populateAndConfigureModal(currBookDataMod);
+                editBookModalInstance.show();
+            } else {
+                showMessage(result.message || 'Failed to fetch book details.', true, true);
+            }
+        } catch (error) {
+            hideLoading();
+            showMessage('Error fetching book details: ' + error.message, true, true);
+        }
+    }
+
+    function handleAddClick(bookId, storeId) {
+        currBookDataMod = { id: bookId, adminContextStoreId: storeId };
+        addBookModalInstance.show();
+    }
+
+
 
     function populateAndConfigureModal(book) {
         editForm.querySelector('[name="title"]').value = book.title || '';
@@ -689,7 +645,20 @@ document.addEventListener('DOMContentLoaded', function () {
                         }
                     }
                 });
+
+            const selectedCategories = [];
+            if (catsChecklist) {
+                const categoryCheckboxes = catsChecklist.querySelectorAll('input[type="checkbox"]:checked');
+                categoryCheckboxes.forEach(checkbox => {
+                    const genreObj = allGenres.find(g => g.genre === checkbox.value);
+                    if (genreObj && genreObj.category_id) {
+                        selectedCategories.push(genreObj.category_id);
+                    }
+                });
+            }
+            bookUpdateData.categories = selectedCategories;
             payload.Book = bookUpdateData;
+
         } else if (userType === 'admin') {
             payload.type = 'AddInfoForStore';
             payload.book_id = currBookDataMod.id;
@@ -744,6 +713,23 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+
+
+    function showLoading(context = 'page') {
+        let container = document.body;
+        if (context === 'modal' && editBookModalElement) {
+            container = editBookModalElement.querySelector('.modal-content') || editBookModalElement;
+        }
+        const existingOverlay = container.querySelector('.loading-overlay-custom');
+        if (existingOverlay) existingOverlay.remove();
+
+        const loadingDiv = document.createElement('div');
+        const currentPosition = window.getComputedStyle(container).position;
+        if (currentPosition === 'static') {
+            container.style.position = 'relative';
+        }
+        container.appendChild(loadingDiv);
+    }
     async function handleDeleteClick(bookId, storeId, storeName, isAllCompaniesView) {
         let confirmMessage = '';
         let payload = { api_key: apiKey, book_id: bookId };
@@ -799,23 +785,6 @@ document.addEventListener('DOMContentLoaded', function () {
             showMessage(`Error during deletion: ${error.message}`, true, true);
         }
     }
-
-    function showLoading(context = 'page') {
-        let container = document.body;
-        if (context === 'modal' && editBookModalElement) {
-            container = editBookModalElement.querySelector('.modal-content') || editBookModalElement;
-        }
-        const existingOverlay = container.querySelector('.loading-overlay-custom');
-        if (existingOverlay) existingOverlay.remove();
-
-        const loadingDiv = document.createElement('div');
-        const currentPosition = window.getComputedStyle(container).position;
-        if (currentPosition === 'static') {
-            container.style.position = 'relative';
-        }
-        container.appendChild(loadingDiv);
-    }
-
     function hideLoading(context = 'page') {
         let container = document.body;
         if (context === 'modal' && editBookModalElement) {
@@ -848,7 +817,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (modalFooter.firstChild) modalFooter.insertBefore(msgElem, modalFooter.firstChild);
                 else modalFooter.appendChild(msgElem);
             }
-            msgElem.textContent = messageToDisplay;
+            msgElem.textContent = decodeHtmlEntities(messageToDisplay);
             msgElem.style.color = 'white';
             msgElem.style.backgroundColor = isError ? 'rgba(220, 53, 69, 0.9)' : 'rgba(25, 135, 84, 0.9)';
             msgElem.style.padding = '10px';
