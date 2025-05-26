@@ -126,6 +126,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const result = await response.json();
 
             if (result.status === 'success' && result.data) {
+                console.log(result.data.reviews); // Log reviews
                 return result.data;
             } else {
                 const errorMessage = result.message || 'Could not retrieve reviews and ratings.';
@@ -344,17 +345,24 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        function decodeReviewText(text) {
+        function decodeHtmlEntities(text) {
             if (!text) return text;
-            return text
-                .replace(/\\'/g, "'")
-                .replace(/\\"/g, '"')
-                .replace(/\\\\/g, '\\')
-                .replace(/&amp;/g, '&')
-                .replace(/&lt;/g, '<')
-                .replace(/&gt;/g, '>')
-                .replace(/&quot;/g, '"')
-                .replace(/&#39;/g, "'");
+            try {
+                let decoded = text
+                    .replace(/&#39;/g, "'")
+                    .replace(/&quot;/g, '"')
+                    .replace(/&lt;/g, '<')
+                    .replace(/&gt;/g, '>')
+                    .replace(/&amp;/g, '&');
+                const div = document.createElement('div');
+                div.innerHTML = decoded;
+                decoded = div.textContent;
+                console.log(`Original: ${text}, Decoded: ${decoded}`);
+                return decoded;
+            } catch (error) {
+                console.error('Error decoding HTML entities:', error, 'Text:', text);
+                return text;
+            }
         }
 
         const start = page * reviewsPerPage;
@@ -364,20 +372,40 @@ document.addEventListener('DOMContentLoaded', function () {
         paginatedReviews.forEach((review, index) => {
             const accordionItem = document.createElement('div');
             accordionItem.className = 'accordion-item';
-            accordionItem.innerHTML = `
-            <h2 class="accordion-header" id="heading${review.review_id}">
-                <button class="accordion-button${index === 0 ? '' : ' collapsed'}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${review.review_id}" aria-expanded="${index === 0 ? 'true' : 'false'}" aria-controls="collapse${review.review_id}">
-                    ${review.user_name}: ${review.rating ? review.rating + ' ⭐' : 'No rating'}
-                </button>
-            </h2>
-            <div id="collapse${review.review_id}" class="accordion-collapse collapse${index === 0 ? ' show' : ''}" aria-labelledby="heading${review.review_id}" data-bs-parent="#reviewAccordion">
-                <div class="accordion-body">
-                    ${decodeReviewText(review.review) || 'No review text provided.'}
-                </div>
-            </div>
-        `;
+
+            const header = document.createElement('h2');
+            header.className = 'accordion-header';
+            header.id = `heading${review.review_id}`;
+
+            const button = document.createElement('button');
+            button.className = `accordion-button${index === 0 ? '' : ' collapsed'}`;
+            button.type = 'button';
+            button.setAttribute('data-bs-toggle', 'collapse');
+            button.setAttribute('data-bs-target', `#collapse${review.review_id}`);
+            button.setAttribute('aria-expanded', index === 0 ? 'true' : 'false');
+            button.setAttribute('aria-controls', `collapse${review.review_id}`);
+            button.textContent = `${review.user_name}: ${review.rating ? review.rating + ' ⭐' : 'No rating'}`;
+
+            header.appendChild(button);
+
+            const collapseDiv = document.createElement('div');
+            collapseDiv.id = `collapse${review.review_id}`;
+            collapseDiv.className = `accordion-collapse collapse${index === 0 ? ' show' : ''}`;
+            collapseDiv.setAttribute('aria-labelledby', `heading${review.review_id}`);
+            collapseDiv.setAttribute('data-bs-parent', '#reviewAccordion');
+
+            const accordionBody = document.createElement('div');
+            accordionBody.className = 'accordion-body';
+            accordionBody.textContent = decodeHtmlEntities(review.review) || 'No review text provided.';
+
+            collapseDiv.appendChild(accordionBody);
+
+            accordionItem.appendChild(header);
+            accordionItem.appendChild(collapseDiv);
+
             reviewAccordion.appendChild(accordionItem);
         });
+
         prevPageButton.disabled = page === 0;
         nextPageButton.disabled = end >= reviews.length;
     }

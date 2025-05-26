@@ -452,6 +452,18 @@ switch ($actionType) {
         }
         break;
 
+    case 'GetStoreMissingBooks': // Cailin
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            apiResponse(false, null, 'Invalid request method for GetStoreMissingBooks. Use POST.', 405);
+        }
+        if (file_exists(__DIR__ . '/../src/handlers/getstoremissingbooks_handler.php')) {
+            require_once __DIR__ . '/../src/handlers/getstoremissingbooks_handler.php';
+            handleGetStoreMissingBooks($inputData, $dbConnection);
+        } else {
+            apiResponse(false, null, 'GetStoreMissingBooks handler not found.', 500);
+        }
+        break;
+
     case null:
         apiResponse(true, ['info' => 'API is operational. Please specify a type.'], null);
         break;

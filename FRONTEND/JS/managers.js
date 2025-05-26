@@ -43,9 +43,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const editTypeMessage = document.getElementById('edit-storetype-message');
     const adminsContainer = document.querySelector('.adminscont');
 
-    let stores = []; // Store full GetStores data
-    let storeIdToDelete = null; // Track store to delete
-    let adminIdToDelete = null; // Track admin to delete
+    let stores = []; 
+    let storeIdToDelete = null; 
+    let adminIdToDelete = null; 
 
     function showUserMessage(element, message, isError = false) {
         if (!element) {
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             element.textContent = '';
             element.style.display = 'none';
-        }, 3000); // Hide after 3s
+        }, 1000); 
     }
 
     async function fetchStores() {
