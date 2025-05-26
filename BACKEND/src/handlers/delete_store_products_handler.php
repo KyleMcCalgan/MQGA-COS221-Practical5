@@ -1,7 +1,7 @@
 <?php
 if (!function_exists('handleDeleteStoreProducts')) {
     function handleDeleteStoreProducts($inputData, $dbConnection) {
-        if (empty($inputData['apikey'])) {
+        if (empty($inputData['api_key'])) {
             apiResponse(false, null, 'API key is required', 400);
             return;
         }
@@ -16,7 +16,7 @@ if (!function_exists('handleDeleteStoreProducts')) {
             return;
         }
         
-        $apiKey = $inputData['apikey'];
+        $apiKey = $inputData['api_key'];
         $bookId = (int)$inputData['book_id'];
         $storeId = (int)$inputData['store_id'];
         
