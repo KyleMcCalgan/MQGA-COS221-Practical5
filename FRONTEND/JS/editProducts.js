@@ -333,16 +333,27 @@ document.addEventListener('DOMContentLoaded', function(){
             row.insertCell().textContent = book.author || 'N/A';
 
             let ratingDisplay = 'N/A';
-            if (isAllCompaniesView && book.book_rating !== undefined){
-                ratingDisplay = parseFloat(book.book_rating).toFixed(2);
-            } else if (!isAllCompaniesView && book.rating !== undefined){
-                ratingDisplay = parseFloat(book.rating).toFixed(2);
+            let numericRating;
+            if (isAllCompaniesView && book.book_rating !== null && book.book_rating !== undefined){
+                numericRating = parseFloat(book.book_rating);
+                if (!isNaN(numericRating)) {
+                    ratingDisplay = numericRating.toFixed(2);
+                }
+            } else if (!isAllCompaniesView && book.rating !== null && book.rating !== undefined){
+                numericRating = parseFloat(book.rating);
+                if (!isNaN(numericRating)) {
+                    ratingDisplay = numericRating.toFixed(2);
+                }
             }
             row.insertCell().textContent = ratingDisplay;
 
             let priceDisplay = "N/A";
-            if (!isAllCompaniesView && book.price !== undefined){
-                priceDisplay = parseFloat(book.price).toFixed(2);
+            let numericPrice;
+            if (!isAllCompaniesView && book.price !== null && book.price !== undefined){
+                numericPrice = parseFloat(book.price);
+                if (!isNaN(numericPrice)) {
+                    priceDisplay = numericPrice.toFixed(2);
+                }
             }
             row.insertCell().textContent = priceDisplay;
 
