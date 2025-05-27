@@ -22,14 +22,14 @@ $book_ids = [
     488, 489, 491, 492, 493, 494, 495, 496, 497, 498, 499, 505, 506, 507, 508
 ];
 
-$user_ids = [26, 27, 28, 29, 31, 32, 33, 34, 35, 36, 39, 40, 43, 47];
+$user_ids = [61,62];
 
-if (count($book_ids) !== 330) {
-    die("Error: Expected 330 book IDs, got " . count($book_ids));
-}
-if (count($user_ids) !== 14) {
-    die("Error: Expected 14 user IDs, got " . count($user_ids));
-}
+// if (count($book_ids) !== 330) {
+//     die("Error: Expected 330 book IDs, got " . count($book_ids));
+// }
+// if (count($user_ids) !== 14) {
+//     die("Error: Expected 14 user IDs, got " . count($user_ids));
+// }
 
 $sql = "INSERT INTO `RATINGS` (`book_id`, `user_id`, `rating`) VALUES\n";
 $rows = [];
@@ -38,15 +38,15 @@ foreach ($user_ids as $user_id) {
     $selected_book_ids = array_rand(array_flip($book_ids), 100);
     
     foreach ($selected_book_ids as $book_id) {
-        $rating = rand(1, 5);
+        $rating = rand(3, 5);
         
         $rows[] = "($book_id, $user_id, $rating)";
     }
 }
 
-if (count($rows) !== 1400) {
-    die("Error: Expected 1400 rows, got " . count($rows));
-}
+// if (count($rows) !== 1400) {
+//     die("Error: Expected 1400 rows, got " . count($rows));
+// }
 
 $sql .= implode(",\n", $rows) . ";";
 file_put_contents('ratings.sql', $sql);

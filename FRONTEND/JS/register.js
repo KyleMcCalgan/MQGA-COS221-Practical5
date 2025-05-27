@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const result = await response.json();
             if (result.status=== 'success' && result.data) {
                 sessionStorage.setItem('api_key', result.data.api_key);
-                sessionStorage.setItem('user_type', result.data.user_type);
+                sessionStorage.setItem('user_type', 'regular');
                 window.location.href = 'launch.php';
             } else document.getElementById('frmMsg').textContent = result.message;
             

@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function(){
             imageWrapper.className = 'image-wrapper-for-badge';
             const badge = document.createElement('div');
             badge.className = 'image-number-badge';
-            badge.textContent = index + 1;
+            badge.textContent = `#${index + 1}`; 
             imageWrapper.appendChild(img);
             imageWrapper.appendChild(badge);
             link.appendChild(imageWrapper);
@@ -99,9 +99,9 @@ document.addEventListener('DOMContentLoaded', function(){
         if (product.book_rating){
             const numericRating = parseFloat(product.book_rating);
             if (!isNaN(numericRating)){
-                ratingElement.textContent = `${numericRating.toFixed(1)} ⭐`;
+            ratingElement.textContent = `${numericRating.toFixed(1)} ⭐`;
             } else{
-                ratingElement.textContent = 'Rating N/A ⭐';
+            ratingElement.textContent = 'Rating N/A ⭐';
             }
         } else{
             ratingElement.textContent = 'Not Rated ⭐';
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function(){
         cardContent.appendChild(ratingElement);
         card.appendChild(cardContent);
         return card;
-    }
+  }
 
     function displayProducts(container, products, includeBadge = false){
         if (!container) return;

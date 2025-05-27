@@ -73,7 +73,7 @@ if (!function_exists('handleGetProduct')) {
         }
         $stmt->close();
 
-        $query = "SELECT S.name, SI.price, SI.rating 
+       $query = "SELECT S.name, SI.price, SI.rating, S.logo, S.domain
                   FROM STORES S 
                   JOIN STORE_INFO SI ON S.store_id = SI.store_id 
                   WHERE SI.book_id = ?";

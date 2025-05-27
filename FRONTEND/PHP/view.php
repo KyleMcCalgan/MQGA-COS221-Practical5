@@ -24,6 +24,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             <div class="DetialsContainer" id="book-details">
                 <h1 id="book-title">Loading...</h1>
                 <h2 id="book-author"></h2>
+                <h3 id="your-rating"></h3>
                 <p id="book-publisher"></p>
                 <p id="book-categories"></p>
                 <p id="book-pagecount"></p>
@@ -99,17 +100,12 @@ $currentPage = basename($_SERVER['PHP_SELF']);
         </div>
 
         <div class="VTableContainer">
-            <div class="pricestopcontainer">
-                <h1>Price Comparison</h1>
-                <h3>Compare the prices at various stores!</h3>
-            </div>
 
             <div class="comparesides">
                 <div class="rowcontainer">
-                    <div class="storerow">
-                        <h2>Store name</h2>
-                        <h2>Rating⭐</h2>
-                        <h2>Price</h2>
+                    <div class="pricestopcontainer">
+                        <h1>Price Comparison</h1>
+                        <h3>Compare the prices at various stores!</h3>
                     </div>
                 </div>
                 <img class="priceguy" src="../Images/cheapoakfinal.png">
@@ -125,7 +121,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             <div class="revtop functions">
                 <button class="blackbutton normalbutton" id="review-button">Rate/Review book</button>
                 <div class="sortheading">
-                    <h4>Sort by: </h4>
+                    <h3 class="sorth4">Sort by: </h3>
                     <select class="revsort" id="review-sort">
                         <option value="newest">Newest</option>
                         <option value="oldest">Oldest</option>
@@ -138,6 +134,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             <div class="revouterc">
                 <div class="revleft">
                     <h3 style="padding-left: 2%; padding-top: 2%;">Stats</h3>
+                    <h5 class="your-ratingstats">Your rating: N/A</h5>
                     <h5 class="statsavgR">Average rating: N/A</h5>
                     <h5 class="statsnoR">Number of ratings: 0</h5>
                     <h5 class="statsnoRe">Number of reviews: 0</h5>

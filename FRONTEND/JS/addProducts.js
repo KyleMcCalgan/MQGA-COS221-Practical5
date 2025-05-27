@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const apiKey = sessionStorage.getItem('api_key');//at the moment we have it hardcoded to always be super because logging in is hard
+    const apiKey = sessionStorage.getItem('api_key');
     const userType = sessionStorage.getItem('user_type');
 
     if (!apiKey || (userType !== 'admin' && userType !== 'super')) {
@@ -8,14 +8,28 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     const addProductForm = document.getElementById('addProduct-form');
+    const submitButton = document.getElementById('submit-button');
     const formMessage = document.getElementById('frmMsg');
-    const apiUrl = '../../BACKEND/public/index.php';//will need to change to our wheatley uploaded version for now its local
+    const apiUrl = '../../BACKEND/public/index.php';
 
     if (!formMessage.style.padding) {
         formMessage.style.padding = '10px';
         formMessage.style.marginTop = '20px';
         formMessage.style.borderRadius = '5px';
         formMessage.style.display = 'none';
+    }
+
+    function isValidImageUrl(url) {
+        try {
+            new URL(url);
+            const imageExtensions = /\.(jpg|jpeg|png|gif|bmp|webp|svg)(\?.*)?$/i;
+            const hasImageExtension = imageExtensions.test(url);
+            const hasImageParam = url.toLowerCase().includes('image') || url.toLowerCase().includes('img');
+            
+            return hasImageExtension || hasImageParam || url.includes('googleusercontent.com') || url.includes('books.google.com');
+        } catch (e) {
+            return false;
+        }
     }
 
     function showLoading() {
@@ -50,16 +64,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    if (!addProductForm) {
-        return;
-    }
-
-    addProductForm.addEventListener('submit', function(e) {
+    function handleFormSubmission(e) {
         e.preventDefault();
         formMessage.textContent = '';
         formMessage.style.display = 'none';
 
-        const tempID = 'tmp_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);//some random ah tempID from stack 
+        const tempID = 'tmp_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
         const title = document.getElementById('title').value.trim();
         const author = document.getElementById('author').value.trim();
         const publisher = document.getElementById('publisher').value.trim();
@@ -69,8 +79,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const maturityRating = document.getElementById('maturityRating').value.trim();
         const language = document.getElementById('language').value.trim();
         const accessibleIn = document.getElementById('accessibleIn').value.trim();
-        const ratingsCount = document.getElementById('ratingsCount').value ? parseInt(document.getElementById('ratingsCount').value) : 0; //make 0 if not provided
+        const ratingsCount = document.getElementById('ratingsCount').value ? parseInt(document.getElementById('ratingsCount').value) : 0;
         const isbn13 = document.getElementById('isbn13').value.trim();
+
+        const thumbnail = document.getElementById('thumbnail').value.trim();
 
         if (!title) {
             showMessage('Title is required', true);
@@ -113,6 +125,16 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+        if (thumbnail && !isValidImageUrl(thumbnail)) {
+            showMessage('Please enter a valid URL for the book cover image', true);
+            return;
+        }
+
+        if (thumbnail && thumbnail.length > 512) {
+            showMessage('Book cover image URL is too long (max 512 characters)', true);
+            return;
+        }
+
         const requestPayload = {
             type: 'AddProduct',
             apikey: apiKey,
@@ -128,13 +150,21 @@ document.addEventListener('DOMContentLoaded', function() {
             accessibleIn: accessibleIn || null,
             ratingsCount: ratingsCount,
             isbn13: isbn13 || null,
-            thumbnail: null,
-            smallThumbnail: null
+            thumbnail: thumbnail || null,
+            smallThumbnail: thumbnail || null
         };
 
         showLoading();
         submitForm(requestPayload);
-    });
+    }
+
+    if (addProductForm) {
+        addProductForm.addEventListener('submit', handleFormSubmission);
+    }
+    
+    if (submitButton) {
+        submitButton.addEventListener('click', handleFormSubmission);
+    }
 
     async function submitForm(requestPayload) {
         try {

@@ -1,11 +1,9 @@
-// Enhanced functionality for profile management
 const apiUrl = '../../BACKEND/public/index.php';
 let currentUserData = {};
 let currentReviewData = {};
 let editingReviewData = null;
 let selectedRating = 0;
 
-// Initialize profile on page load
 document.addEventListener('DOMContentLoaded', function() {
     const apiKey = sessionStorage.getItem('api_key');
     if (!apiKey) {
@@ -13,15 +11,18 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
     
-    initializeStarRating();
+    const userType = sessionStorage.getItem('user_type');
+    
+    if (userType === 'regular') {
+        initializeStarRating();
+        loadUserReviews();
+    }
+    
     loadUserProfile();
-    loadUserReviews();
     setupEventDelegation();
 });
 
-// Set up event delegation for dynamically generated content
 function setupEventDelegation() {
-    // Event delegation for edit buttons
     document.addEventListener('click', function(e) {
         if (e.target.matches('.edit-review-btn, .edit-review-btn *')) {
             const button = e.target.closest('.edit-review-btn');
@@ -34,7 +35,6 @@ function setupEventDelegation() {
             }
         }
         
-        // Event delegation for delete buttons
         if (e.target.matches('.delete-review-btn, .delete-review-btn *')) {
             const button = e.target.closest('.delete-review-btn');
             if (button) {
@@ -47,7 +47,6 @@ function setupEventDelegation() {
         }
     });
 
-    // Modal click outside to close
     document.addEventListener('click', function (event) {
         const modals = document.getElementsByClassName('modal');
         for (let modal of modals) {
@@ -57,7 +56,6 @@ function setupEventDelegation() {
         }
     });
 
-    // Prevent closing when clicking inside modal content
     document.querySelectorAll('.modal-content').forEach(content => {
         content.addEventListener('click', function (event) {
             event.stopPropagation();
@@ -65,7 +63,6 @@ function setupEventDelegation() {
     });
 }
 
-// Modal functions
 function openModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
@@ -99,22 +96,21 @@ function openPasswordModal() {
     openModal('passwordModal');
 }
 
-// Star Rating System
 function initializeStarRating() {
     const stars = document.querySelectorAll('.star-rating-input .star');
     const ratingText = document.getElementById('rating-text');
     
+    if (!stars.length) return;
+    
     stars.forEach((star, index) => {
         const rating = parseInt(star.dataset.rating);
         
-        // Click handler
         star.addEventListener('click', function() {
             selectedRating = rating;
             updateStarDisplay(rating);
             updateRatingText(rating);
         });
         
-        // Hover handlers
         star.addEventListener('mouseenter', function() {
             highlightStars(rating, true);
         });
@@ -161,6 +157,8 @@ function highlightStars(rating, isHover) {
 
 function updateRatingText(rating) {
     const ratingText = document.getElementById('rating-text');
+    if (!ratingText) return;
+    
     const ratingLabels = {
         1: '1 star - Poor',
         2: '2 stars - Fair', 
@@ -182,7 +180,6 @@ function setInitialRating(rating) {
     updateRatingText(rating);
 }
 
-// Load user profile information
 async function loadUserProfile() {
     const apiKey = sessionStorage.getItem('api_key');
     
@@ -211,22 +208,39 @@ async function loadUserProfile() {
     }
 }
 
-// Display user profile information
 function displayUserProfile(userData) {
     document.getElementById('display-name').textContent = `${userData.name} ${userData.surname}`;
     document.getElementById('display-email').textContent = userData.email;
-    document.getElementById('user-name-display').textContent = `${userData.name} ${userData.surname}`;
+    
+    const userNameDisplay = document.getElementById('user-name-display');
+    if (userNameDisplay) {
+        userNameDisplay.textContent = `${userData.name} ${userData.surname}`;
+    }
 }
 
-// Load user reviews and ratings with book images
 async function loadUserReviews() {
-    const apiKey = sessionStorage.getItem('api_key');
-    const sortBy = document.getElementById('sort-dropdown').value;
+    const userType = sessionStorage.getItem('user_type');
+    if (userType !== 'regular') {
+        return;
+    }
     
-    // Show loading state
-    document.getElementById('loading-reviews').style.display = 'block';
-    document.getElementById('reviews-container').innerHTML = '';
-    document.getElementById('no-reviews-message').style.display = 'none';
+    const apiKey = sessionStorage.getItem('api_key');
+    const sortDropdown = document.getElementById('sort-dropdown');
+    
+    const sortBy = sortDropdown ? sortDropdown.value : 'newest';
+    
+    const loadingElement = document.getElementById('loading-reviews');
+    const reviewsContainer = document.getElementById('reviews-container');
+    const noReviewsMessage = document.getElementById('no-reviews-message');
+    
+    if (!loadingElement || !reviewsContainer || !noReviewsMessage) {
+        console.log('Reviews elements not found - user is not regular type');
+        return;
+    }
+    
+    if (loadingElement) loadingElement.style.display = 'block';
+    if (reviewsContainer) reviewsContainer.innerHTML = '';
+    if (noReviewsMessage) noReviewsMessage.style.display = 'none';
     
     try {
         const response = await fetch(apiUrl, {
@@ -246,30 +260,27 @@ async function loadUserReviews() {
         if (result.status === 'success') {
             currentReviewData = result.data;
             
-            // Fetch book images for each review
             const reviewsWithImages = await fetchBookImagesForReviews(result.data.reviews);
             
             displayUserReviews(reviewsWithImages, result.data.stats);
         } else {
             showMessage('Failed to load reviews: ' + (result.message || 'Unknown error'), 'error');
-            document.getElementById('no-reviews-message').style.display = 'block';
+            if (noReviewsMessage) noReviewsMessage.style.display = 'block';
         }
     } catch (error) {
         showMessage('Error loading reviews: ' + error.message, 'error');
-        document.getElementById('no-reviews-message').style.display = 'block';
+        if (noReviewsMessage) noReviewsMessage.style.display = 'block';
     } finally {
-        document.getElementById('loading-reviews').style.display = 'none';
+        if (loadingElement) loadingElement.style.display = 'none';
     }
 }
 
-// Fetch book images for reviews using existing endpoints
 async function fetchBookImagesForReviews(reviews) {
     const apiKey = sessionStorage.getItem('api_key');
     const reviewsWithImages = [];
     
     for (const review of reviews) {
         try {
-            // Get all books and find the one that matches our review
             const bookResponse = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
@@ -284,17 +295,15 @@ async function fetchBookImagesForReviews(reviews) {
             const bookResult = await bookResponse.json();
             
             if (bookResult.status === 'success' && bookResult.data && bookResult.data.length > 0) {
-                // Find exact match or use first result
                 const bookData = bookResult.data.find(book => book.title === review.book_name);
                 
                 if (bookData) {
                     reviewsWithImages.push({
                         ...review,
                         book_image: bookData.thumbnail || bookData.smallThumbnail || null,
-                        book_id: bookData.id // Store the book ID for later use
+                        book_id: bookData.id
                     });
                 } else {
-                    // If no exact match found, add review without image but log the issue
                     console.warn('No book found for review:', review.book_name);
                     reviewsWithImages.push({
                         ...review,
@@ -303,7 +312,6 @@ async function fetchBookImagesForReviews(reviews) {
                     });
                 }
             } else {
-                // If no books found, add review without image
                 reviewsWithImages.push({
                     ...review,
                     book_image: null,
@@ -312,7 +320,6 @@ async function fetchBookImagesForReviews(reviews) {
             }
         } catch (error) {
             console.error('Error fetching book image for:', review.book_name, error);
-            // Add review without image if fetch fails
             reviewsWithImages.push({
                 ...review,
                 book_image: null,
@@ -324,23 +331,29 @@ async function fetchBookImagesForReviews(reviews) {
     return reviewsWithImages;
 }
 
-// Display user reviews with book images and proper event handling
 function displayUserReviews(reviews, stats) {
     const container = document.getElementById('reviews-container');
     
-    // Update stats
-    document.getElementById('review-count').textContent = `${stats.number_of_reviews} Reviews`;
-    document.getElementById('rating-count').textContent = `${stats.number_of_ratings} Ratings`;
-    document.getElementById('average-rating').textContent = stats.average_rating || '0.0';
-    document.getElementById('total-reviews').textContent = stats.number_of_reviews;
-    document.getElementById('total-ratings').textContent = stats.number_of_ratings;
+    const reviewCount = document.getElementById('review-count');
+    const ratingCount = document.getElementById('rating-count');
+    const averageRating = document.getElementById('average-rating');
+    const totalReviews = document.getElementById('total-reviews');
+    const totalRatings = document.getElementById('total-ratings');
+    
+    if (reviewCount) reviewCount.textContent = `${stats.number_of_reviews} Reviews`;
+    if (ratingCount) ratingCount.textContent = `${stats.number_of_ratings} Ratings`;
+    if (averageRating) averageRating.textContent = stats.average_rating || '0.0';
+    if (totalReviews) totalReviews.textContent = stats.number_of_reviews;
+    if (totalRatings) totalRatings.textContent = stats.number_of_ratings;
+    
+    if (!container) return;
     
     if (!reviews || reviews.length === 0) {
-        document.getElementById('no-reviews-message').style.display = 'block';
+        const noReviewsMessage = document.getElementById('no-reviews-message');
+        if (noReviewsMessage) noReviewsMessage.style.display = 'block';
         return;
     }
     
-    // Generate HTML for each review with proper data attributes
     container.innerHTML = reviews.map((review, index) => `
         <div class="review-item" data-review-id="${review.review_id}" data-review-index="${index}">
             <div class="product-info">
@@ -374,7 +387,6 @@ function displayUserReviews(reviews, stats) {
     `).join('');
 }
 
-// Generate star rating display
 function generateStars(rating) {
     const fullStars = Math.floor(rating);
     const halfStar = rating % 1 >= 0.5;
@@ -388,9 +400,7 @@ function generateStars(rating) {
     return stars;
 }
 
-// Enhanced edit review functionality
 function editReview(bookName, reviewText, rating) {
-    // Find the review data we need
     const reviewData = currentReviewData.reviews.find(r => r.book_name === bookName);
     if (!reviewData) {
         showMessage('Could not find review data', 'error');
@@ -399,26 +409,23 @@ function editReview(bookName, reviewText, rating) {
     
     editingReviewData = reviewData;
     
-    // Set the review text
-    document.getElementById('edit-review-text').value = reviewText;
+    const editReviewText = document.getElementById('edit-review-text');
+    if (editReviewText) editReviewText.value = reviewText;
     
-    // Set the rating using our star system
     const currentRating = rating && rating > 0 ? Math.floor(parseFloat(rating)) : 0;
     setInitialRating(currentRating);
     
-    // Clear any previous status messages
-    document.getElementById('review-edit-status').innerHTML = '';
+    const editStatus = document.getElementById('review-edit-status');
+    if (editStatus) editStatus.innerHTML = '';
     
     openModal('reviewEditModal');
 }
 
-// Enhanced delete review functionality
 async function deleteReview(bookName) {
     if (!confirm(`Are you sure you want to delete your review for "${bookName}"?`)) {
         return;
     }
     
-    // Find the review data we need
     const reviewData = currentReviewData.reviews.find(r => r.book_name === bookName);
     if (!reviewData) {
         showMessage('Could not find review data for deletion', 'error');
@@ -428,7 +435,6 @@ async function deleteReview(bookName) {
     const apiKey = sessionStorage.getItem('api_key');
     
     try {
-        // Use the stored book_id if available, otherwise try to find it
         let bookId = reviewData.book_id;
         if (!bookId) {
             bookId = await findBookIdByName(bookName);
@@ -442,7 +448,7 @@ async function deleteReview(bookName) {
         
         const payload = {
             type: 'RemoveUserReview',
-            apikey: apiKey,  // Note: this endpoint uses 'apikey' not 'api_key'
+            apikey: apiKey,
             book_id: bookId
         };
         
@@ -461,7 +467,7 @@ async function deleteReview(bookName) {
         
         if (result.status === 'success') {
             showMessage('Review deleted successfully!', 'success');
-            loadUserReviews(); // Reload reviews
+            loadUserReviews();
         } else {
             showMessage('Failed to delete review: ' + (result.message || 'Unknown error'), 'error');
         }
@@ -471,9 +477,9 @@ async function deleteReview(bookName) {
     }
 }
 
-// Enhanced save review changes with new star rating system
 async function saveReviewChanges() {
-    const reviewText = document.getElementById('edit-review-text').value.trim();
+    const editReviewText = document.getElementById('edit-review-text');
+    const reviewText = editReviewText ? editReviewText.value.trim() : '';
     const rating = selectedRating > 0 ? selectedRating : null;
     
     if (!reviewText) {
@@ -489,13 +495,13 @@ async function saveReviewChanges() {
     const apiKey = sessionStorage.getItem('api_key');
     const saveButton = document.getElementById('save-review-btn');
     
-    // Show loading state
-    saveButton.disabled = true;
-    saveButton.textContent = 'Saving...';
+    if (saveButton) {
+        saveButton.disabled = true;
+        saveButton.textContent = 'Saving...';
+    }
     showModalStatus('Updating review...', 'info');
     
     try {
-        // Use the stored book_id if available, otherwise try to find it
         let bookId = editingReviewData.book_id;
         if (!bookId) {
             bookId = await findBookIdByName(editingReviewData.book_name);
@@ -513,7 +519,6 @@ async function saveReviewChanges() {
         let reviewUpdated = false;
         let ratingUpdated = false;
         
-        // Update the review text if it changed
         if (reviewText !== editingReviewData.review) {
             const reviewPayload = {
                 type: 'AddUserReview',
@@ -551,7 +556,6 @@ async function saveReviewChanges() {
             reviewUpdated = true;
         }
         
-        // Update the rating if provided and different from current rating
         if (rating !== null) {
             const currentRating = editingReviewData.rating ? parseFloat(editingReviewData.rating) : null;
             
@@ -602,7 +606,6 @@ async function saveReviewChanges() {
             }
         }
         
-        // Show appropriate success message
         let successMessage = 'Updated successfully!';
         if (reviewUpdated && ratingUpdated) {
             successMessage = 'Review and rating updated successfully!';
@@ -617,7 +620,7 @@ async function saveReviewChanges() {
         showModalStatus(successMessage, 'success');
         setTimeout(() => {
             closeModal('reviewEditModal');
-            loadUserReviews(); // Reload reviews
+            loadUserReviews();
             showMessage(successMessage, 'success');
         }, 1500);
         
@@ -625,17 +628,17 @@ async function saveReviewChanges() {
         console.error('Error updating review:', error);
         showModalStatus('Error: ' + error.message, 'error');
     } finally {
-        saveButton.disabled = false;
-        saveButton.textContent = 'Save';
+        if (saveButton) {
+            saveButton.disabled = false;
+            saveButton.textContent = 'Save';
+        }
     }
 }
 
-// Helper function to find book ID by name
 async function findBookIdByName(bookName) {
     const apiKey = sessionStorage.getItem('api_key');
     
     try {
-        // First try exact title search
         const response = await fetch(apiUrl, {
             method: 'POST',
             headers: {
@@ -650,7 +653,6 @@ async function findBookIdByName(bookName) {
         const result = await response.json();
         
         if (result.status === 'success' && result.data && result.data.length > 0) {
-            // Find exact match by comparing titles directly
             console.log('Searching for book:', bookName);
             console.log('Available books:', result.data.map(book => book.title));
             
@@ -664,7 +666,6 @@ async function findBookIdByName(bookName) {
                 return exactMatch.id;
             }
             
-            // If no exact match, try a more lenient comparison
             const lenientMatch = result.data.find(book => {
                 const normalizedBookTitle = book.title.replace(/['']/g, "'").replace(/[""]/g, '"');
                 const normalizedSearchTitle = bookName.replace(/['']/g, "'").replace(/[""]/g, '"');
@@ -685,10 +686,11 @@ async function findBookIdByName(bookName) {
     return null;
 }
 
-// Save profile changes functions
 async function saveNameChanges() {
-    const name = document.getElementById('edit-name').value.trim();
-    const surname = document.getElementById('edit-surname').value.trim();
+    const editName = document.getElementById('edit-name');
+    const editSurname = document.getElementById('edit-surname');
+    const name = editName ? editName.value.trim() : '';
+    const surname = editSurname ? editSurname.value.trim() : '';
     
     if (!name || !surname) {
         showMessage('Both name and surname are required', 'error');
@@ -700,7 +702,8 @@ async function saveNameChanges() {
 }
 
 async function saveEmailChanges() {
-    const email = document.getElementById('edit-email').value.trim();
+    const editEmail = document.getElementById('edit-email');
+    const email = editEmail ? editEmail.value.trim() : '';
     
     if (!email || !isValidEmail(email)) {
         showMessage('Please enter a valid email address', 'error');
@@ -712,8 +715,10 @@ async function saveEmailChanges() {
 }
 
 async function savePasswordChanges() {
-    const oldPassword = document.getElementById('old-password').value;
-    const newPassword = document.getElementById('new-password').value;
+    const oldPasswordElement = document.getElementById('old-password');
+    const newPasswordElement = document.getElementById('new-password');
+    const oldPassword = oldPasswordElement ? oldPasswordElement.value : '';
+    const newPassword = newPasswordElement ? newPasswordElement.value : '';
     
     if (!oldPassword || !newPassword) {
         showMessage('Both current and new passwords are required', 'error');
@@ -729,7 +734,6 @@ async function savePasswordChanges() {
     closeModal('passwordModal');
 }
 
-// Update user information
 async function updateUserInfo(updateData) {
     const apiKey = sessionStorage.getItem('api_key');
     
@@ -750,7 +754,7 @@ async function updateUserInfo(updateData) {
         
         if (result.status === 'success') {
             showMessage('Profile updated successfully!', 'success');
-            loadUserProfile(); // Reload profile
+            loadUserProfile();
         } else {
             showMessage('Failed to update profile: ' + (result.message || 'Unknown error'), 'error');
         }
@@ -759,12 +763,13 @@ async function updateUserInfo(updateData) {
     }
 }
 
-// Helper functions
 function showModalStatus(message, type) {
     const statusDiv = document.getElementById('review-edit-status');
-    statusDiv.textContent = message;
-    statusDiv.className = `modal-status ${type}`;
-    statusDiv.style.display = 'block';
+    if (statusDiv) {
+        statusDiv.textContent = message;
+        statusDiv.className = `modal-status ${type}`;
+        statusDiv.style.display = 'block';
+    }
 }
 
 function escapeHtml(text) {
@@ -781,12 +786,13 @@ function isValidEmail(email) {
 
 function showMessage(message, type) {
     const messageDiv = document.getElementById('profile-message');
-    messageDiv.textContent = message;
-    messageDiv.className = `profile-message ${type}`;
-    messageDiv.style.display = 'block';
-    
-    // Hide message after 5 seconds
-    setTimeout(() => {
-        messageDiv.style.display = 'none';
-    }, 5000);
+    if (messageDiv) {
+        messageDiv.textContent = message;
+        messageDiv.className = `profile-message ${type}`;
+        messageDiv.style.display = 'block';
+        
+        setTimeout(() => {
+            messageDiv.style.display = 'none';
+        }, 3000);
+    }
 }
