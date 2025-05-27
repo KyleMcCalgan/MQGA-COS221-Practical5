@@ -28,13 +28,13 @@ form input[type="text"] {
   left: 0;
   border: 2px solid #323232;            
   border-radius: 5px;
-  box-shadow: 4px 4px #323232;          
+  box-shadow: 4px 4px #757575;          
   background-color: #ccc;            
   transition: all 0.3s;
 }
 
 .checkcon input:checked ~ .checkmark {
-  background-color: #2d8cf0;            
+  background-color: #000000;            
 }
 
 .checkmark:after {
