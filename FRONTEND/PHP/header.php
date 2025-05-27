@@ -34,7 +34,8 @@ include "config.php";
                                                         echo '../CSS/profile.css';
                                                     }
                                                     ?>">
-    <script src="../js/logout.js"></script>
+    <script src="../JS/launch_summary.js" defer></script>
+    <script src="../JS/logout.js"></script>
 
 </head>
 
@@ -135,7 +136,7 @@ include "config.php";
                 ribbon.appendChild(button);
             });
 
-            <?php if ($currentPage == 'products.php') : ?>
+            <?php if ($currentPage == 'products.php' || $currentPage == 'editProducts.php') : ?>
                 const searchBar = document.createElement('input');
                 searchBar.type = 'text';
                 searchBar.className = 'search-bar';

@@ -1,7 +1,7 @@
 <?php
 if (!function_exists('handleDeleteProduct')) {
     function handleDeleteProduct($inputData, $dbConnection) {
-        if (empty($inputData['apikey'])) {
+        if (empty($inputData['api_key'])) {
             apiResponse(false, null, 'API key is required', 400);
             return;
         }
@@ -11,7 +11,7 @@ if (!function_exists('handleDeleteProduct')) {
             return;
         }
         
-        $apiKey = $inputData['apikey'];
+        $apiKey = $inputData['api_key'];
         $bookId = (int)$inputData['book_id'];
         
         $stmt = $dbConnection->prepare("SELECT user_type FROM USERS WHERE apikey = ? LIMIT 1");

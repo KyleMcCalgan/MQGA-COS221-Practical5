@@ -28,12 +28,13 @@ if (!function_exists('handleUpdateProductAdmin')) {
             return;
         }
         
-        unset($bookDetails['id']);
-
-        if (empty($bookDetails)) {
-            apiResponse(false, null, 'No fields provided for update.', 400);
-            return;
+        $categoriesToUpdate = null;
+        if (isset($bookDetails['categories']) && is_array($bookDetails['categories'])) {
+            $categoriesToUpdate = array_map('intval', $bookDetails['categories']);
         }
+        unset($bookDetails['id']);
+        unset($bookDetails['categories']);
+
 
         $allowedFieldTypes = [
             'tempID' => 's',          
@@ -55,41 +56,86 @@ if (!function_exists('handleUpdateProductAdmin')) {
         $updateAssignments = [];
         $params = [];
         $paramTypes = '';
+        $productDataProvided = false;
 
         foreach ($bookDetails as $field => $value) {
             if (array_key_exists($field, $allowedFieldTypes)) {
                 $updateAssignments[] = "`" . $field . "` = ?";
                 $params[] = $value;
                 $paramTypes .= $allowedFieldTypes[$field];
+                $productDataProvided = true;
             }
         }
 
-        if (empty($updateAssignments)) {
-            apiResponse(false, null, 'No valid fields provided for update.', 400);
+        if (!$productDataProvided && $categoriesToUpdate === null) {
+            apiResponse(false, null, 'No fields or categories provided for update.', 400);
             return;
         }
 
-        $params[] = $productId;
-        $paramTypes .= 'i'; 
+        $db->begin_transaction();
+        $productUpdated = false;
+        $categoriesUpdated = false;
 
-        $sql = "UPDATE PRODUCTS SET " . implode(', ', $updateAssignments) . " WHERE id = ?";
+        try {
+            if ($productDataProvided) {
+                $currentParams = $params;
+                $currentParamTypes = $paramTypes;
+                $currentParams[] = $productId;
+                $currentParamTypes .= 'i'; 
 
-        $stmt = $db->prepare($sql);
-        if (!$stmt) {
-            error_log("DB Prepare Error: " . $db->error);
-            apiResponse(false, null, 'Database error: Unable to prepare update query.', 500);
-            return;
-        }
+                $sql = "UPDATE PRODUCTS SET " . implode(', ', $updateAssignments) . " WHERE id = ?";
+                $stmt = $db->prepare($sql);
+                if (!$stmt) {
+                    throw new Exception('Database error: Unable to prepare product update query. ' . $db->error);
+                }
+                if (!$stmt->bind_param($currentParamTypes, ...$currentParams)) {
+                    throw new Exception('Database error: Unable to bind parameters for product update. ' . $stmt->error);
+                }
+                if (!$stmt->execute()) {
+                    throw new Exception('Database error: Failed to execute product update. ' . $stmt->error);
+                }
+                if ($stmt->affected_rows > 0) {
+                    $productUpdated = true;
+                }
+                $stmt->close();
+            }
 
-        if (!$stmt->bind_param($paramTypes, ...$params)) {
-            error_log("DB Bind Param Error: " . $stmt->error);
-            apiResponse(false, null, 'Database error: Unable to bind parameters for update.', 500);
-            $stmt->close();
-            return;
-        }
+            if ($categoriesToUpdate !== null) {
+                $deleteSql = "DELETE FROM BOOK_CATS WHERE book_id = ?";
+                $stmtDel = $db->prepare($deleteSql);
+                if (!$stmtDel) {
+                    throw new Exception('Database error: Unable to prepare category delete query. ' . $db->error);
+                }
+                if (!$stmtDel->bind_param('i', $productId)) {
+                    throw new Exception('Database error: Unable to bind parameters for category delete. ' . $stmtDel->error);
+                }
+                if (!$stmtDel->execute()) {
+                    throw new Exception('Database error: Failed to delete existing categories. ' . $stmtDel->error);
+                }
+                $categoriesUpdated = true; 
+                $stmtDel->close();
 
-        if ($stmt->execute()) {
-            if ($stmt->affected_rows > 0) {
+                if (!empty($categoriesToUpdate)) {
+                    $insertSql = "INSERT INTO BOOK_CATS (book_id, category_id) VALUES (?, ?)";
+                    $stmtIns = $db->prepare($insertSql);
+                    if (!$stmtIns) {
+                        throw new Exception('Database error: Unable to prepare category insert query. ' . $db->error);
+                    }
+                    foreach ($categoriesToUpdate as $categoryId) {
+                        if (!$stmtIns->bind_param('ii', $productId, $categoryId)) {
+                            throw new Exception('Database error: Unable to bind parameters for category insert. ' . $stmtIns->error);
+                        }
+                        if (!$stmtIns->execute()) {
+                            throw new Exception('Database error: Failed to insert category. ' . $stmtIns->error);
+                        }
+                    }
+                    $stmtIns->close();
+                }
+            }
+
+            $db->commit();
+
+            if ($productUpdated || $categoriesUpdated) {
                 apiResponse(true, "Book has been updated :)", null, 200);
             } else {
                 $checkStmt = $db->prepare("SELECT id FROM PRODUCTS WHERE id = ?");
@@ -108,12 +154,12 @@ if (!function_exists('handleUpdateProductAdmin')) {
                     apiResponse(false, null, 'Book not updated. It may not exist or data was unchanged.', 404);
                 }
             }
-        } else {
-            error_log("DB Execute Error: " . $stmt->error);
-            apiResponse(false, null, 'Database error: Failed to execute update.', 500);
-        }
 
-        $stmt->close();
+        } catch (Exception $e) {
+            $db->rollback();
+            error_log("Transaction Error: " . $e->getMessage());
+            apiResponse(false, null, 'Database error during update: ' . $e->getMessage(), 500);
+        }
     }
 }
 ?>

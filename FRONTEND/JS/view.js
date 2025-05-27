@@ -126,6 +126,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const result = await response.json();
 
             if (result.status === 'success' && result.data) {
+                console.log(result.data.reviews); // Log reviews
                 return result.data;
             } else {
                 const errorMessage = result.message || 'Could not retrieve reviews and ratings.';
@@ -204,6 +205,56 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    async function fetchUserRating(bookId) {
+        const payload = {
+            type: 'GetUserBookRating',
+            api_key: apiKey,
+            book_id: bookId
+        };
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                let errorData;
+                try {
+                    errorData = await response.json();
+                } catch (e) { }
+                const errorMessage = errorData && errorData.message ? errorData.message : `An HTTP error ${response.status} occurred.`;
+                throw new Error(errorMessage);
+            }
+
+            const result = await response.json();
+
+            if (result.status === 'success' && result.data) {
+                const rating = result.data.rating;
+                const yourRating = document.getElementById('your-rating');
+                const yourRatingStats = document.querySelector('.your-ratingstats');
+                if (rating !== null) {
+                    yourRating.textContent = `Your rating: ${rating} ⭐`;
+                    yourRatingStats.textContent = `Your rating: ${rating} ⭐`;
+                } else {
+                    yourRating.textContent = 'Your rating: N/A';
+                    yourRatingStats.textContent = 'Your rating: N/A';
+                }
+            } else {
+                throw new Error(result.message || 'Could not retrieve user rating.');
+            }
+        } catch (error) {
+            console.error('Error fetching user rating:', error);
+            const yourRating = document.getElementById('your-rating');
+            const yourRatingStats = document.querySelector('.your-ratingstats');
+            yourRating.textContent = 'N/A';
+            yourRatingStats.textContent = 'Your rating: N/A';
+        }
+    }
+
     function populateBookDetails(product) {
         bookImage.src = product.thumbnail || product.smallThumbnail || '../Images/notfound.png';
         bookImage.alt = product.title;
@@ -258,11 +309,17 @@ document.addEventListener('DOMContentLoaded', function () {
         const validStores = sortedStores.filter(store => store.price && !isNaN(parseFloat(store.price)));
         const cheapestStore = validStores.length > 0 ? validStores[0] : null;
 
+        console.log(sortedStores);
         sortedStores.forEach(store => {
             const storeRow = document.createElement('div');
             storeRow.className = `storerow${cheapestStore && store.price === cheapestStore.price ? ' cheapest' : ''}`;
             storeRow.innerHTML = `
-                <h4 class="store-name rowinfo">${store.name || 'Unknown Store'}</h4>
+                <div class="store-name rowinfo">
+                    <a href="${store.domain || '#'}" target="_blank">
+                        <img src="${store.logo || '../Images/notfound.png'}" alt="${store.name || 'Store'} Logo" class="store-logo">
+                    </a>
+                    <h4>${store.name || 'Unknown Store'}</h4>
+                </div>
                 <h4 class="store-rating rowinfo">${store.rating ? store.rating + ' ⭐' : 'N/A'}</h4>
                 <h4 class="store-price rowinfo">${store.price ? 'R' + store.price : 'N/A'}</h4>
             `;
@@ -271,11 +328,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function populateReviewStats(stats) {
-        console.log('got here');
-        console.log(stats);
         statsAvgRating.textContent = `Average rating: ${stats.average_rating ? stats.average_rating + '⭐' : 'N/A'}`;
-        console.log('rating is' + stats);
-        console.log('not here');
         statsNumRatings.textContent = `Number of ratings: ${stats.number_of_ratings || 0}`;
         statsNumReviews.textContent = `Number of reviews: ${stats.number_of_reviews || 0}`;
     }
@@ -292,6 +345,26 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
+        function decodeHtmlEntities(text) {
+            if (!text) return text;
+            try {
+                let decoded = text
+                    .replace(/&#39;/g, "'")
+                    .replace(/&quot;/g, '"')
+                    .replace(/&lt;/g, '<')
+                    .replace(/&gt;/g, '>')
+                    .replace(/&amp;/g, '&');
+                const div = document.createElement('div');
+                div.innerHTML = decoded;
+                decoded = div.textContent;
+                console.log(`Original: ${text}, Decoded: ${decoded}`);
+                return decoded;
+            } catch (error) {
+                console.error('Error decoding HTML entities:', error, 'Text:', text);
+                return text;
+            }
+        }
+
         const start = page * reviewsPerPage;
         const end = start + reviewsPerPage;
         const paginatedReviews = reviews.slice(start, end);
@@ -299,20 +372,40 @@ document.addEventListener('DOMContentLoaded', function () {
         paginatedReviews.forEach((review, index) => {
             const accordionItem = document.createElement('div');
             accordionItem.className = 'accordion-item';
-            accordionItem.innerHTML = `
-                <h2 class="accordion-header" id="heading${review.review_id}">
-                    <button class="accordion-button${index === 0 ? '' : ' collapsed'}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${review.review_id}" aria-expanded="${index === 0 ? 'true' : 'false'}" aria-controls="collapse${review.review_id}">
-                        ${review.user_name}: ${review.rating ? review.rating + ' ⭐' : 'No rating'}
-                    </button>
-                </h2>
-                <div id="collapse${review.review_id}" class="accordion-collapse collapse${index === 0 ? ' show' : ''}" aria-labelledby="heading${review.review_id}" data-bs-parent="#reviewAccordion">
-                    <div class="accordion-body">
-                        ${review.review || 'No review text provided.'}
-                    </div>
-                </div>
-            `;
+
+            const header = document.createElement('h2');
+            header.className = 'accordion-header';
+            header.id = `heading${review.review_id}`;
+
+            const button = document.createElement('button');
+            button.className = `accordion-button${index === 0 ? '' : ' collapsed'}`;
+            button.type = 'button';
+            button.setAttribute('data-bs-toggle', 'collapse');
+            button.setAttribute('data-bs-target', `#collapse${review.review_id}`);
+            button.setAttribute('aria-expanded', index === 0 ? 'true' : 'false');
+            button.setAttribute('aria-controls', `collapse${review.review_id}`);
+            button.textContent = `${review.user_name}: ${review.rating ? review.rating + ' ⭐' : 'No rating'}`;
+
+            header.appendChild(button);
+
+            const collapseDiv = document.createElement('div');
+            collapseDiv.id = `collapse${review.review_id}`;
+            collapseDiv.className = `accordion-collapse collapse${index === 0 ? ' show' : ''}`;
+            collapseDiv.setAttribute('aria-labelledby', `heading${review.review_id}`);
+            collapseDiv.setAttribute('data-bs-parent', '#reviewAccordion');
+
+            const accordionBody = document.createElement('div');
+            accordionBody.className = 'accordion-body';
+            accordionBody.textContent = decodeHtmlEntities(review.review) || 'No review text provided.';
+
+            collapseDiv.appendChild(accordionBody);
+
+            accordionItem.appendChild(header);
+            accordionItem.appendChild(collapseDiv);
+
             reviewAccordion.appendChild(accordionItem);
         });
+
         prevPageButton.disabled = page === 0;
         nextPageButton.disabled = end >= reviews.length;
     }
@@ -342,7 +435,6 @@ document.addEventListener('DOMContentLoaded', function () {
             allReviews = reviewData.reviews || [];
             populateReviews(allReviews, page);
             populateReviewStats(reviewData.stats);
-            console.log(reviewData.stats);
         } catch (error) { }
     }
 
@@ -358,6 +450,7 @@ document.addEventListener('DOMContentLoaded', function () {
             populateBookDetails(product);
             populateModalDetails(product);
             populateStoreRows(product.stores);
+            await fetchUserRating(bookId);
             await loadReviews(bookId, currentSort, currentPage);
         } catch (error) { }
     }
