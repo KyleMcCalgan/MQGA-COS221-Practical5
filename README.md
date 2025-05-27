@@ -174,4 +174,17 @@ For testing and demonstration purposes, the following default accounts are avail
 
 ---
 
+## Run Project:
+using XAMPP->Paste FRONTEND and BACKEND in htdocs->
+example url:
+.../XAMPP/xamppfiles/htdocs/221/MQGA-COS221-Practical5/FRONTEND/PHP/launch.php
+->
+to run use the following url based on the url above on your local machine:
+http://localhost/221/MQGA-COS221-Practical5/FRONTEND/PHP/launch.php
+
+
+
+
+
+
 
