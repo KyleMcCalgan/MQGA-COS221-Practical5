@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function (){
 
     async function getGenres(){
         if (!apiKey){
-            console.warn('API key not found, cannot fetch genres.');
+            // console.warn('API key not found, cannot fetch genres.');
             genreFilterElement.disabled = true;
             genreFilterElement.innerHTML = '<option value="default">Genre filter unavailable</option>';
             return;
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function (){
                 throw new Error(result.message || 'Failed to parse genres.');
             }
         } catch (error){
-            console.error('Error fetching genres:', error);
+            // console.error('Error fetching genres:', error);
             genreFilterElement.innerHTML = '<option value="default">Error loading genres</option>';
             genreFilterElement.disabled = true;
         }
@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function (){
             }
         } catch (error){
             showUserMessage(rangeContainer, `Failed to load books: ${error.message}`, true);
-            console.error('Error fetching products:', error);
+            // console.error('Error fetching products:', error);
             allProductsArr = []; 
             return []; 
         }

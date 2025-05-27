@@ -234,7 +234,6 @@ async function loadUserReviews() {
     const noReviewsMessage = document.getElementById('no-reviews-message');
     
     if (!loadingElement || !reviewsContainer || !noReviewsMessage) {
-        console.log('Reviews elements not found - user is not regular type');
         return;
     }
     
@@ -304,7 +303,6 @@ async function fetchBookImagesForReviews(reviews) {
                         book_id: bookData.id
                     });
                 } else {
-                    console.warn('No book found for review:', review.book_name);
                     reviewsWithImages.push({
                         ...review,
                         book_image: null,
@@ -319,7 +317,6 @@ async function fetchBookImagesForReviews(reviews) {
                 });
             }
         } catch (error) {
-            console.error('Error fetching book image for:', review.book_name, error);
             reviewsWithImages.push({
                 ...review,
                 book_image: null,
@@ -444,15 +441,12 @@ async function deleteReview(bookName) {
             throw new Error('Could not find book ID for deletion');
         }
         
-        console.log('Deleting review for book ID:', bookId);
         
         const payload = {
             type: 'RemoveUserReview',
             apikey: apiKey,
             book_id: bookId
         };
-        
-        console.log('Sending delete payload:', payload);
         
         const response = await fetch(apiUrl, {
             method: 'POST',
@@ -511,11 +505,6 @@ async function saveReviewChanges() {
             throw new Error('Could not find book ID for review update');
         }
         
-        console.log('Updating review for book ID:', bookId);
-        console.log('Review text:', reviewText);
-        console.log('New rating:', rating);
-        console.log('Current rating:', editingReviewData.rating);
-        
         let reviewUpdated = false;
         let ratingUpdated = false;
         
@@ -527,8 +516,6 @@ async function saveReviewChanges() {
                 review: reviewText
             };
             
-            console.log('Sending review payload:', reviewPayload);
-            
             const reviewResponse = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
@@ -538,7 +525,6 @@ async function saveReviewChanges() {
             });
 
             const reviewResponseText = await reviewResponse.text();
-            console.log('Review raw response text:', reviewResponseText);
 
             let reviewResult;
             try {
@@ -547,8 +533,6 @@ async function saveReviewChanges() {
                 console.error('Review JSON parse error:', parseError);
                 throw new Error('Server returned invalid response for review update');
             }
-            
-            console.log('Review update response:', reviewResult);
             
             if (reviewResult.status !== 'success') {
                 throw new Error('Failed to update review: ' + (reviewResult.message || 'Unknown error'));
@@ -559,11 +543,11 @@ async function saveReviewChanges() {
         if (rating !== null) {
             const currentRating = editingReviewData.rating ? parseFloat(editingReviewData.rating) : null;
             
-            console.log('Rating comparison:', {
-                newRating: rating,
-                currentRating: currentRating,
-                shouldUpdate: rating !== currentRating
-            });
+            // console.log('Rating comparison:', {
+            //     newRating: rating,
+            //     currentRating: currentRating,
+            //     shouldUpdate: rating !== currentRating
+            // });
             
             if (rating !== currentRating) {
                 const ratingPayload = {
@@ -573,8 +557,6 @@ async function saveReviewChanges() {
                     rating: rating
                 };
                 
-                console.log('Sending rating payload:', ratingPayload);
-                
                 const ratingResponse = await fetch(apiUrl, {
                     method: 'POST',
                     headers: {
@@ -583,21 +565,16 @@ async function saveReviewChanges() {
                     body: JSON.stringify(ratingPayload)
                 });
 
-                console.log('Rating response status:', ratingResponse.status);
                 
                 const ratingResponseText = await ratingResponse.text();
-                console.log('Rating raw response text:', ratingResponseText);
 
                 let ratingResult;
                 try {
                     ratingResult = JSON.parse(ratingResponseText);
                 } catch (parseError) {
-                    console.error('Rating JSON parse error:', parseError);
-                    console.error('Raw rating response:', ratingResponseText);
-                    throw new Error('Server returned invalid response for rating update. Check console for details.');
+                    // throw new Error('Server returned invalid response for rating update. Check console for details.');
                 }
                 
-                console.log('Rating update response:', ratingResult);
                 
                 if (ratingResult.status !== 'success') {
                     throw new Error('Failed to update rating: ' + (ratingResult.message || 'Unknown error'));
@@ -625,7 +602,6 @@ async function saveReviewChanges() {
         }, 1500);
         
     } catch (error) {
-        console.error('Error updating review:', error);
         showModalStatus('Error: ' + error.message, 'error');
     } finally {
         if (saveButton) {
@@ -653,16 +629,12 @@ async function findBookIdByName(bookName) {
         const result = await response.json();
         
         if (result.status === 'success' && result.data && result.data.length > 0) {
-            console.log('Searching for book:', bookName);
-            console.log('Available books:', result.data.map(book => book.title));
-            
+          
             const exactMatch = result.data.find(book => {
-                console.log('Comparing:', book.title, 'vs', bookName, 'Match:', book.title === bookName);
                 return book.title === bookName;
             });
             
             if (exactMatch) {
-                console.log('Found exact match:', exactMatch.id);
                 return exactMatch.id;
             }
             
@@ -673,14 +645,11 @@ async function findBookIdByName(bookName) {
             });
             
             if (lenientMatch) {
-                console.log('Found lenient match:', lenientMatch.id);
                 return lenientMatch.id;
             }
             
-            console.log('No matches found for:', bookName);
         }
     } catch (error) {
-        console.error('Error finding book ID:', error);
     }
     
     return null;

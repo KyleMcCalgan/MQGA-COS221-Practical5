@@ -126,7 +126,6 @@ document.addEventListener('DOMContentLoaded', function () {
             const result = await response.json();
 
             if (result.status === 'success' && result.data) {
-                console.log(result.data.reviews); // Log reviews
                 return result.data;
             } else {
                 const errorMessage = result.message || 'Could not retrieve reviews and ratings.';
@@ -309,7 +308,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const validStores = sortedStores.filter(store => store.price && !isNaN(parseFloat(store.price)));
         const cheapestStore = validStores.length > 0 ? validStores[0] : null;
 
-        console.log(sortedStores);
         sortedStores.forEach(store => {
             const storeRow = document.createElement('div');
             storeRow.className = `storerow${cheapestStore && store.price === cheapestStore.price ? ' cheapest' : ''}`;
@@ -357,10 +355,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 const div = document.createElement('div');
                 div.innerHTML = decoded;
                 decoded = div.textContent;
-                console.log(`Original: ${text}, Decoded: ${decoded}`);
+                // console.log(`Original: ${text}, Decoded: ${decoded}`);
                 return decoded;
             } catch (error) {
-                console.error('Error decoding HTML entities:', error, 'Text:', text);
+                // console.error('Error decoding HTML entities:', error, 'Text:', text);
                 return text;
             }
         }

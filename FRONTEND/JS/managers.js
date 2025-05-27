@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function showUserMessage(element, message, isError = false) {
         if (!element) {
-            console.error('Message element is undefined');
+            // console.error('Message element is undefined');
             return;
         }
         element.textContent = message;
@@ -90,14 +90,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(result.message || 'Could not retrieve stores.');
             }
         } catch (error) {
-            console.error('Error fetching stores:', error);
+            // console.error('Error fetching stores:', error);
             showUserMessage(mantopMessage, `Error: ${error.message}`, true);
         }
     }
 
     function populateAdminsContainer(admins) {
         if (!adminsContainer) {
-            console.warn('Admins container not found');
+            // console.warn('Admins container not found');
             return;
         }
 
@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(result.message || 'Could not remove admin.');
             }
         } catch (error) {
-            console.error('Error removing admin:', error);
+            // console.error('Error removing admin:', error);
             showUserMessage(mantopMessage, `Error: ${error.message}`, true);
         }
     }
@@ -202,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 storeSelector.dispatchEvent(changeEvent);
             }
         } else {
-            console.warn('No valid stores to populate dropdown');
+            // console.warn('No valid stores to populate dropdown');
         }
         updateStoreInfo();
     }
@@ -222,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (element) {
                 element.textContent = fields[id] || 'N/A';
             } else {
-                console.warn(`Element with id ${id} not found`);
+                // console.warn(`Element with id ${id} not found`);
             }
         });
 
@@ -230,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (heading) {
             heading.textContent = store ? store.name : 'Select a Store';
         } else {
-            console.warn('Heading with class booknameheading not found');
+            // console.warn('Heading with class booknameheading not found');
         }
 
         populateAdminsContainer(store ? store.admins : []);
@@ -266,7 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(result.message || `Could not update ${field}.`);
             }
         } catch (error) {
-            console.error(`Error updating ${field}:`, error);
+            // console.error(`Error updating ${field}:`, error);
             showUserMessage(messageElement, `Error: ${error.message}`, true);
         }
     }
@@ -298,7 +298,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(result.message || 'Could not delete store.');
             }
         } catch (error) {
-            console.error('Error deleting store:', error);
+            // console.error('Error deleting store:', error);
             showUserMessage(mantopMessage, `Error: ${error.message}`, true);
         }
     }
@@ -331,7 +331,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(result.message || 'Could not add admin.');
             }
         } catch (error) {
-            console.error('Error adding admin:', error);
+            // console.error('Error adding admin:', error);
             showUserMessage(adminMessage, `Error: ${error.message}`, true);
         }
     }
@@ -362,7 +362,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(result.message || 'Could not add store.');
             }
         } catch (error) {
-            console.error('Error adding store:', error);
+            // console.error('Error adding store:', error);
             showUserMessage(storeMessage, `Error: ${error.message}`, true);
         }
     }

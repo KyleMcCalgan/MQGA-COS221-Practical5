@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
     async function loadFeaturedBooks(){
         if (!featuredBooksContainer){
-            console.warn('Featured books container not found.');
+            // console.warn('Featured books container not found.');
             return;
         }
         showUserMessage(featuredBooksContainer, 'Loading featured books...');
@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
     async function loadHighestRatedBooks(){
         if (!highestRatedBooksContainer){
-            console.warn('Highest rated books container not found.');
+            // console.warn('Highest rated books container not found.');
             return;
         }
         showUserMessage(highestRatedBooksContainer, 'Loading highest rated books...');

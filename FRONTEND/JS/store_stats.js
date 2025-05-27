@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const apiPath = '../../BACKEND/public/index.php';
 
     if (!displayArea) {
-        console.error('Store stats display area (store-stats-display-area) not found on the page.');
+        // console.error('Store stats display area (store-stats-display-area) not found on the page.');
         return;
     }
 
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
             decoded = textarea.value;
             return decoded;
         } catch (error) {
-            console.error('Error decoding HTML entities:', error, 'Text:', text);
+            // console.error('Error decoding HTML entities:', error, 'Text:', text);
             return text;
         }
     }

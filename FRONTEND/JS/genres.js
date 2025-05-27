@@ -239,7 +239,7 @@ document.addEventListener('DOMContentLoaded', function(){
     if (genTable && (userType === 'admin' || userType === 'super')){
         fetchGenres();
     } else if (!genTable){
-        console.warn('genTable element not found. Not fetching genres.');
+        // console.warn('genTable element not found. Not fetching genres.');
     }
 
 });

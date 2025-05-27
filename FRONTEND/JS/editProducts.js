@@ -218,10 +218,10 @@ document.addEventListener('DOMContentLoaded', function () {
             const div = document.createElement('div');
             div.innerHTML = decoded;
             decoded = div.textContent;
-            console.log(`Original: ${text}, Decoded: ${decoded}`);
+            // console.log(`Original: ${text}, Decoded: ${decoded}`);
             return decoded;
         } catch (error) {
-            console.error('Error decoding HTML entities:', error, 'Text:', text);
+            // console.error('Error decoding HTML entities:', error, 'Text:', text);
             return text;
         }
     }
