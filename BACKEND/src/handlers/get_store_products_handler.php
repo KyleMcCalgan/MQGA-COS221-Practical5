@@ -7,6 +7,7 @@ if (!function_exists('handleGetStoreProducts')) {
             return;
         }
 
+
         $apiKey = $inputData['api_key'];
         $storeNameFromInput = $inputData['store_name'] ?? null; 
         $searchTitle = $inputData['title'] ?? null;
@@ -15,6 +16,7 @@ if (!function_exists('handleGetStoreProducts')) {
         if (!$userAuthStmt) {
             error_log("GetStoreProducts - DB Prepare Error (User Auth): " . $dbConnection->error);
             apiResponse(false, null, 'Database query preparation failed', 500);
+
             return;
         }
         $userAuthStmt->bind_param("s", $apiKey);
@@ -52,11 +54,13 @@ if (!function_exists('handleGetStoreProducts')) {
                 apiResponse(false, null, 'Database query preparation failed (store check)', 500);
                 return;
             }
+
             $storeCheckStmt->bind_param("s", $targetStoreName);
             if(!$storeCheckStmt->execute()){
                 error_log("GetStoreProducts - DB Execute Error (Store Check): " . $storeCheckStmt->error);
                 $storeCheckStmt->close();
                 apiResponse(false, null, 'Database query execution failed (store check)', 500);
+
                 return;
             }
             $storeResult = $storeCheckStmt->get_result();
