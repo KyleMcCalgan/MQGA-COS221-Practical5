@@ -81,36 +81,50 @@ document.addEventListener('DOMContentLoaded', function() {
         const accessibleIn = document.getElementById('accessibleIn').value.trim();
         const ratingsCount = document.getElementById('ratingsCount').value ? parseInt(document.getElementById('ratingsCount').value) : 0;
         const isbn13 = document.getElementById('isbn13').value.trim();
-
         const thumbnail = document.getElementById('thumbnail').value.trim();
 
         if (!title) {
-            showMessage('Title is required', true);
+            showMessage('Title is required and cannot be empty.', true);
+            return;
+        }
+
+        if (!author) {
+            showMessage('Author is required and cannot be empty.', true);
+            return;
+        }
+
+        if (!publisher) {
+            showMessage('Publisher is required and cannot be empty.', true);
+            return;
+        }
+
+        if (title.length > 255) {
+            showMessage('Title cannot exceed 255 characters.', true);
+            return;
+        }
+
+        if (author.length > 255) {
+            showMessage('Author name cannot exceed 255 characters.', true);
+            return;
+        }
+
+        if (publisher.length > 255) {
+            showMessage('Publisher name cannot exceed 255 characters.', true);
             return;
         }
 
         if (publishedDate && !/^\d{4}-\d{2}-\d{2}$/.test(publishedDate)) {
-            showMessage('Published Date must be in YYYY-MM-DD format', true);
+            showMessage('Published Date must be in YYYY-MM-DD format.', true);
             return;
         }
 
         if (isbn13 && isbn13.length !== 13) {
-            showMessage('ISBN13 must be exactly 13 characters', true);
-            return;
-        }
-
-        if (publisher && publisher.length > 255) {
-            showMessage('Publisher name cannot exceed 255 characters', true);
-            return;
-        }
-
-        if (author && author.length > 255) {
-            showMessage('Author name cannot exceed 255 characters', true);
+            showMessage('ISBN13 must be exactly 13 characters.', true);
             return;
         }
 
         if (language && language.length > 50) {
-            showMessage('Language cannot exceed 50 characters', true);
+            showMessage('Language cannot exceed 50 characters.', true);
             return;
         }
 
@@ -121,17 +135,17 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         if (accessibleIn && accessibleIn.length > 100) {
-            showMessage('Accessible In field cannot exceed 100 characters', true);
+            showMessage('Accessible In field cannot exceed 100 characters.', true);
             return;
         }
 
         if (thumbnail && !isValidImageUrl(thumbnail)) {
-            showMessage('Please enter a valid URL for the book cover image', true);
+            showMessage('Please enter a valid URL for the book cover image.', true);
             return;
         }
 
         if (thumbnail && thumbnail.length > 512) {
-            showMessage('Book cover image URL is too long (max 512 characters)', true);
+            showMessage('Book cover image URL is too long (max 512 characters).', true);
             return;
         }
 
@@ -140,8 +154,8 @@ document.addEventListener('DOMContentLoaded', function() {
             apikey: apiKey,
             tempID: tempID,
             title: title,
-            author: author || null,
-            publisher: publisher || null,
+            author: author,
+            publisher: publisher,
             publishedDate: publishedDate || null,
             description: description || null,
             pageCount: pageCount,

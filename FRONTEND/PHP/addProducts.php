@@ -11,26 +11,40 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
         <script src="../JS/addProducts.js"></script>
+        <style>
+            .required {
+                color: #e74c3c;
+                font-weight: bold;
+            }
+            .fg label.required::after {
+                content: " *";
+                color: #e74c3c;
+                font-weight: bold;
+            }
+        </style>
     </head>
     <body>
         <div class="content">
             <h1>Add Books</h1>
+            <p style="text-align: center; color: #666; margin-bottom: 20px;">
+                Fields marked with <span class="required">*</span> are required
+            </p>
 
             <div class="main-form-card">
                 <form id="addProduct-form" method="POST" onsubmit="return false;">
                     <div class="form-columns">
                         <div class="smol-card">
                             <div class="fg">
-                                <label for="title">Title</label>
-                                <input type="text" id="title" name="title">
+                                <label for="title" class="required">Title</label>
+                                <input type="text" id="title" name="title" required>
                             </div>
                             <div class="fg">
-                                <label for="author">Author</label>
-                                <input type="text" id="author" name="author">
+                                <label for="author" class="required">Author</label>
+                                <input type="text" id="author" name="author" required>
                             </div>
                             <div class="fg">
-                                <label for="publisher">Publisher</label>
-                                <input type="text" id="publisher" name="publisher">
+                                <label for="publisher" class="required">Publisher</label>
+                                <input type="text" id="publisher" name="publisher" required>
                             </div>
                             <div class="fg">
                                 <label for="publishedDate">Published Date (Optional)</label>
@@ -42,7 +56,7 @@
                             </div>
                             <div class="fg">
                                 <label for="pageCount">Page Count (Optional)</label>
-                                <input type="number" id="pageCount" name="pageCount">
+                                <input type="number" id="pageCount" name="pageCount" min="1">
                             </div>
                         </div>
 
@@ -60,7 +74,7 @@
                             </div>
                             <div class="fg">
                                 <label for="language">Language (Optional)</label>
-                                <input type="text" id="language" name="language">
+                                <input type="text" id="language" name="language" placeholder="e.g., English, Spanish, French">
                             </div>
                             <div class="fg">
                                 <label for="thumbnail">Book Cover Image URL (Optional)</label>
@@ -70,30 +84,25 @@
                                 </small>
                             </div>
                             <div class="fg">
-                                <label for="smallThumbnail">Small Thumbnail URL (Optional)</label>
-                                <input type="url" id="smallThumbnail" name="smallThumbnail" placeholder="https://example.com/small-cover.jpg">
-                                <small style="display: block; margin-top: 5px; color: #666; font-size: 12px;">
-                                    Enter a URL for a smaller version of the cover image. If not provided, the main image will be used.
-                                </small>
-                            </div>
-                            <div class="fg">
                                 <label for="accessibleIn">Accessible In (Optional)</label>
-                                <input type="text" id="accessibleIn" name="accessibleIn">
+                                <input type="text" id="accessibleIn" name="accessibleIn" placeholder="e.g., Worldwide, US Only, Europe">
                             </div>
                             <div class="fg">
                                 <label for="ratingsCount">Ratings Count (Optional)</label>
-                                <input type="number" id="ratingsCount" name="ratingsCount">
+                                <input type="number" id="ratingsCount" name="ratingsCount" min="0">
                             </div>
                             <div class="fg">
                                 <label for="isbn13">ISBN13 (Optional)</label>
-                                <input type="text" id="isbn13" name="isbn13">
+                                <input type="text" id="isbn13" name="isbn13" placeholder="13-digit ISBN" maxlength="13" pattern="[0-9]{13}">
+                                <small style="display: block; margin-top: 5px; color: #666; font-size: 12px;">
+                                    Enter exactly 13 digits (numbers only)
+                                </small>
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
 
-            <!-- Button moved outside the form card -->
             <div class="add-book-button-container">
                 <button type="button" id="submit-button">Add book</button>
             </div>
