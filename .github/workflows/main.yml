@@ -11,7 +11,7 @@ jobs:
     - name: Get latest code
       uses: actions/checkout@v4
     
-    - name: Sync files
+    - name: Sync BACKEND files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
         server: wheatley.cs.up.ac.za
@@ -20,4 +20,15 @@ jobs:
         protocol: ftp
         server-dir: /MTQGA/BACKEND/
         local-dir: ./BACKEND/
+        debug: true
+    
+    - name: Sync FRONTEND files
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      with:
+        server: wheatley.cs.up.ac.za
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        protocol: ftp
+        server-dir: /MTQGA/FRONTEND/
+        local-dir: ./FRONTEND/
         debug: true
