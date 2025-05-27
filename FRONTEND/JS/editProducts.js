@@ -785,6 +785,79 @@ document.addEventListener('DOMContentLoaded', function () {
             showMessage(`Error during deletion: ${error.message}`, true, true);
         }
     }
+
+    async function fetchProductsForAdmin(storeNameToUse, searchTerm = '') {
+        if (!document.body.querySelector('.loading-overlay-custom') && !storeNameToUse && userType === 'admin') {
+            if (!adminStoreName) {
+                showMessage("Your store details are not available. Cannot fetch products.", true, true);
+                hideLoading();
+                return;
+            }
+            storeNameToUse = adminStoreName;
+        }
+        if (!document.body.querySelector('.loading-overlay-custom')) {
+            showLoading();
+        }
+
+        const payload = {
+            type: 'GetStoreProducts',
+            api_key: apiKey,
+            store_name: storeNameToUse
+        };
+        if (searchTerm) payload.title = searchTerm;
+
+        if (!storeNameToUse && userType === 'admin') {
+            hideLoading();
+            showMessage("Admin store name is required to fetch products.", true, true);
+            renderProductsTable([], false, adminStoreID, null);
+            return;
+        }
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const result = await response.json();
+            hideLoading();
+
+            let isErrorState = false;
+            let messageToShow = result.message || '';
+
+            if (result.status !== 'success') {
+                isErrorState = true;
+                messageToShow = messageToShow || 'Failed to fetch your store products.';
+            } else if (!result.data) {
+                isErrorState = true;
+                messageToShow = messageToShow || 'Received success status but no product data.';
+            } else if (result.data.length === 0) {
+                messageToShow = messageToShow || 'No products found for your store.';
+            }
+            if (result.message && result.message.toLowerCase().includes('api key is required')) {
+                isErrorState = true;
+                messageToShow = result.message;
+            }
+
+            if (isErrorState) {
+                renderProductsTable([], false, adminStoreID, storeNameToUse);
+                showMessage(messageToShow, true, true);
+            } else if (result.data) {
+                renderProductsTable(result.data, false, adminStoreID, storeNameToUse);
+                if (result.data.length === 0) {
+                    showMessage(messageToShow, false, true);
+                }
+            } else {
+                renderProductsTable([], false, adminStoreID, storeNameToUse);
+                showMessage('An unexpected issue occurred while fetching your store products.', true, true);
+            }
+        } catch (error) {
+            hideLoading();
+            renderProductsTable([], false, adminStoreID, storeNameToUse);
+            showMessage('Error fetching your store products: ' + error.message, true, true);
+        }
+    }
+    
     function hideLoading(context = 'page') {
         let container = document.body;
         if (context === 'modal' && editBookModalElement) {
